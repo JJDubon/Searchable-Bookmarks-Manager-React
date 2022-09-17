@@ -4,11 +4,13 @@ import { useTree } from "../../helpers/ChromeApiHelpers";
 
 export type BookmarksContextType = {
   loading: boolean;
+  root: string[];
   map: BookmarkMap;
 }
 
 const defaultContext: BookmarksContextType = {
   loading: true,
+  root: [],
   map: {}
 };
 
@@ -24,6 +26,15 @@ interface BookmarksProviderProps {
 
 export const BookmarksProvider = ({children}: BookmarksProviderProps) => {
   const { loading, tree } = useTree();
+
+  const root = useMemo(() => {
+    if (tree) {
+      return tree[0]?.children?.map(x => x.id) || [];
+    } else {
+      return [];
+    }
+  }, [tree]);
+
   const map = useMemo(() => {
     return createBookmarkMap(tree || []);
   }, [tree]);
@@ -31,6 +42,7 @@ export const BookmarksProvider = ({children}: BookmarksProviderProps) => {
   return (
     <BookmarksContext.Provider value={{
       loading,
+      root,
       map
     }}>
       {children}

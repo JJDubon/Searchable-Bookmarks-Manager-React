@@ -1,18 +1,24 @@
+import { StyledEngineProvider } from '@mui/material/styles';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import './index.css';
+import { AppThemeProvider } from './providers/AppThemeProvider';
 import { BookmarksProvider } from './providers/BookmarksProvider';
+import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <BookmarksProvider>
-      <App />
-    </BookmarksProvider>
+    <StyledEngineProvider injectFirst>
+      <AppThemeProvider>
+        <BookmarksProvider>
+          <App />
+        </BookmarksProvider>
+      </AppThemeProvider>
+    </StyledEngineProvider>
   </React.StrictMode>
 );
 
