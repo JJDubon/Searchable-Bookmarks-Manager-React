@@ -1,14 +1,15 @@
-import { createContext, useContext } from "react";
-import { useTree } from "../../helpers/ChromeApi";
+import { createContext, useContext, useMemo } from "react";
+import { BookmarkMap, createBookmarkMap } from "../../helpers/BookmarkHelpers";
+import { useTree } from "../../helpers/ChromeApiHelpers";
 
 export type BookmarksContextType = {
   loading: boolean;
-  tree: chrome.bookmarks.BookmarkTreeNode[] | null;
+  map: BookmarkMap;
 }
 
 const defaultContext: BookmarksContextType = {
   loading: true,
-  tree: null
+  map: {}
 };
 
 export const BookmarksContext = createContext<BookmarksContextType>(defaultContext);
@@ -23,11 +24,14 @@ interface BookmarksProviderProps {
 
 export const BookmarksProvider = ({children}: BookmarksProviderProps) => {
   const { loading, tree } = useTree();
+  const map = useMemo(() => {
+    return createBookmarkMap(tree || []);
+  }, [tree]);
 
   return (
     <BookmarksContext.Provider value={{
       loading,
-      tree: tree
+      map
     }}>
       {children}
     </BookmarksContext.Provider>

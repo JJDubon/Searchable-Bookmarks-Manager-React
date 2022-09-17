@@ -6,8 +6,7 @@ const Title = styled.h1`
 `;
 
 export const Header = () => {
-  const { loading, tree } = useBookmarks();
-  console.log({loading, tree});
+  const { loading, map } = useBookmarks();
   return (
     <Title>
       Select a bookmark:
