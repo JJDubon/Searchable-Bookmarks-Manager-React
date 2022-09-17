@@ -1,0 +1,12 @@
+{
+  "name": "New Tab Bookmarks",
+  "description": "Replace your new tab page with your bookmarks!",
+  "version": "1.0",
+  "manifest_version": 3,
+  "chrome_url_overrides" : {
+    "newtab": "index.html"
+  },
+  "permissions": [
+    "bookmarks"
+  ]
+}
