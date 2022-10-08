@@ -15,13 +15,15 @@ export const SettingsDrawer = ({open, hideSettings}: SettingsDrawerProps) => {
   const settings = useAppSettings();
   const [fontSize, setFontSize] = useState(settings.fontSize);
   const [padding, setPadding] = useState(settings.padding);
+  const [noWrap, setNoWrap] = useState(String(settings.noWrap));
 
   useEffect(() => {
     chrome.storage.local.set({
       fontSize,
-      padding
+      padding,
+      noWrap: noWrap === "true",
     } as SettingsContextType);
-  }, [fontSize, padding]);
+  }, [fontSize, padding, noWrap]);
 
   return (
     <Drawer
@@ -48,7 +50,7 @@ export const SettingsDrawer = ({open, hideSettings}: SettingsDrawerProps) => {
           <FormControl fullWidth>
             <TextField
               select
-              id="bookmark-size-field"
+              id="bookmark-spacing-field"
               variant="standard"
               label="Bookmark Spacing"
               value={padding}
@@ -57,6 +59,19 @@ export const SettingsDrawer = ({open, hideSettings}: SettingsDrawerProps) => {
               <MenuItem value={"2px"}>Small (Default)</MenuItem>
               <MenuItem value={"4px"}>Medium</MenuItem>
               <MenuItem value={"8px"}>Large</MenuItem>
+            </TextField>
+          </FormControl>
+          <FormControl fullWidth>
+            <TextField
+              select
+              id="bookmark-title-field"
+              variant="standard"
+              label="Titles"
+              value={noWrap}
+              onChange={(e) => setNoWrap(e.target.value)}
+            >
+              <MenuItem value={"true"}>Single Line</MenuItem>
+              <MenuItem value={"false"}>Multi line</MenuItem>
             </TextField>
           </FormControl>
         </SettingsForm>

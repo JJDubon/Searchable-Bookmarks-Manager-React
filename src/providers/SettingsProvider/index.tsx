@@ -1,15 +1,15 @@
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 
-const keys: (keyof SettingsContextType)[] = ['padding', 'fontSize'];
-
 export type SettingsContextType = {
   fontSize: string,
-  padding: string
+  padding: string,
+  noWrap: boolean,
 }
 
 const defaultValues: SettingsContextType = {
   fontSize: "14px",
-  padding: "2px"
+  padding: "2px",
+  noWrap: true,
 };
 
 export const SettingsContext = createContext<SettingsContextType>(defaultValues);
@@ -27,10 +27,12 @@ export const SettingsProvider = ({children}: SettingsProviderProps) => {
   const [settings, setSettings] = useState(defaultValues);
 
   const refreshSettings = useCallback((cb?: () => void) => {
-    chrome.storage.local.get(keys, (storedValues) => {
+    const settingsKeys: (keyof SettingsContextType)[] = ['fontSize', 'padding', 'noWrap'];
+    chrome.storage.local.get(settingsKeys, (storedValues) => {
       setSettings({
         fontSize: storedValues.fontSize || defaultValues.fontSize,
-        padding: storedValues.padding || defaultValues.padding
+        padding: storedValues.padding || defaultValues.padding,
+        noWrap: storedValues.noWrap === undefined ? defaultValues.noWrap : storedValues.noWrap === true
       });
 
       if (cb) {
@@ -50,7 +52,7 @@ export const SettingsProvider = ({children}: SettingsProviderProps) => {
       refreshSettings();
     }, 250);
     return () => clearInterval(intervalId);
-  });
+  }, []);
 
   return (
     <SettingsContext.Provider value={settings}>

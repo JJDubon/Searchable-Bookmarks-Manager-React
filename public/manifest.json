@@ -2,7 +2,7 @@
   "manifest_version": 3,
 
   "name": "Searchable Bookmarks Manager",
-  "description": "Search through your bookmarks easily with a popup manager, straight from your address bar!",
+  "description": "Easily search through your bookmarks, straight from your browser's address bar!",
   "version": "4.0.0",
   "short_name": "SBM",
 

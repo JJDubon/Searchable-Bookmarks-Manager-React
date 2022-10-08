@@ -2,12 +2,12 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import FolderIcon from '@mui/icons-material/Folder';
 import { Collapse, ListItemText } from '@mui/material';
 import { motion } from "framer-motion";
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { getIndent } from '../../providers/AppThemeProvider';
 import { useBookmarks } from "../../providers/BookmarksProvider";
 import { useAppSettings } from '../../providers/SettingsProvider';
 import { BookmarksList } from './bookmark-list';
-import { BookmarkButton, BookmarkIcon } from './styles';
+import { BookmarkButton, BookmarkIcon, BookmarkPrimaryTextOverrides } from './styles';
 
 interface FolderProps {
   id: string;
@@ -17,8 +17,11 @@ interface FolderProps {
 
 export const Folder = ({ id, indentLevel, defaultOpen = false }: FolderProps) => {
   const { map } = useBookmarks();
-  const { fontSize } = useAppSettings();
+  const { fontSize, noWrap } = useAppSettings();
   const [open, setOpen] = useState(defaultOpen);
+  const overrides = useMemo(() => {
+    return BookmarkPrimaryTextOverrides(fontSize, noWrap);
+  }, [fontSize, noWrap]);
   const folder = map[id];
   
   return <>
@@ -26,7 +29,9 @@ export const Folder = ({ id, indentLevel, defaultOpen = false }: FolderProps) =>
       <BookmarkIcon>
         <FolderIcon />
       </BookmarkIcon>
-      <ListItemText primary={folder.title} primaryTypographyProps={{fontSize: fontSize, marginTop: "1px"}} />
+      <ListItemText
+        primary={folder.title}
+        primaryTypographyProps={overrides} />
       <motion.div
         animate={{rotate: getRotation()}}
         transition={{type: "ease"}}

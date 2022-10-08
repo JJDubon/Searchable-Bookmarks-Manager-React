@@ -1,4 +1,4 @@
-import { ListItemButton, ListItemIcon, styled } from "@mui/material";
+import { ListItemButton, ListItemIcon, styled, TypographyProps } from "@mui/material";
 
 export const Container = styled('div')(({ theme }) => ({
   backgroundColor: theme.backgrounds.offset(1),
@@ -23,3 +23,18 @@ export const BookmarkImg = styled("img")(({theme}) => ({
   height: "1.5em",
   width: "1.5em",
 }));
+
+export const BookmarkPrimaryTextOverrides = (fontSize: string, noWrap: boolean) => {
+  let settings: TypographyProps = {
+    fontSize: fontSize, 
+    marginTop: "1px",
+  };
+
+  if (noWrap) {
+    settings.overflow = "hidden";
+    settings.textOverflow = "ellipsis";
+    settings.whiteSpace = "nowrap";
+  }
+
+  return settings;
+}
