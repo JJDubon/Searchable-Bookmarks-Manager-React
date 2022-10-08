@@ -8,13 +8,13 @@ export type BookmarksContextType = {
   map: BookmarkMap;
 }
 
-const defaultContext: BookmarksContextType = {
+const defaultValues: BookmarksContextType = {
   loading: true,
   root: [],
   map: {}
 };
 
-export const BookmarksContext = createContext<BookmarksContextType>(defaultContext);
+export const BookmarksContext = createContext<BookmarksContextType>(defaultValues);
 
 export function useBookmarks(): BookmarksContextType {
   return useContext(BookmarksContext);
@@ -47,5 +47,5 @@ export const BookmarksProvider = ({children}: BookmarksProviderProps) => {
     }}>
       {children}
     </BookmarksContext.Provider>
-  )
+  );
 }

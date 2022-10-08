@@ -1,7 +1,7 @@
 import { ListItemButton, ListItemIcon, styled } from "@mui/material";
 
 export const Container = styled('div')(({ theme }) => ({
-  backgroundColor: theme.backgrounds.offset(2),
+  backgroundColor: theme.backgrounds.offset(1),
   maxWidth: "100%",
   minHeight: "100%",
   padding: "8px 0",
@@ -23,4 +23,3 @@ export const BookmarkImg = styled("img")(({theme}) => ({
   height: "1.5em",
   width: "1.5em",
 }));
-

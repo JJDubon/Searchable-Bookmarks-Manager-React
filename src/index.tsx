@@ -5,6 +5,7 @@ import App from './App';
 import './index.css';
 import { AppThemeProvider } from './providers/AppThemeProvider';
 import { BookmarksProvider } from './providers/BookmarksProvider';
+import { SettingsProvider } from './providers/SettingsProvider';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(
@@ -13,11 +14,13 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <StyledEngineProvider injectFirst>
-      <AppThemeProvider>
-        <BookmarksProvider>
-          <App />
-        </BookmarksProvider>
-      </AppThemeProvider>
+      <SettingsProvider>
+        <AppThemeProvider>
+          <BookmarksProvider>
+            <App />
+          </BookmarksProvider>
+        </AppThemeProvider>
+      </SettingsProvider>
     </StyledEngineProvider>
   </React.StrictMode>
 );

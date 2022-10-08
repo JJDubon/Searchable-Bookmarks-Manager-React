@@ -1,6 +1,7 @@
 import { ListItemText } from '@mui/material';
 import { getIndent } from '../../providers/AppThemeProvider';
 import { useBookmarks } from "../../providers/BookmarksProvider";
+import { useAppSettings } from '../../providers/SettingsProvider';
 import { BookmarkButton, BookmarkIcon, BookmarkImg } from './styles';
 
 const getFaviconUrl = (url: string) => {
@@ -14,13 +15,14 @@ interface BookmarksProps {
 
 export const Bookmark = ({ id, indentLevel }: BookmarksProps) => {
   const { map } = useBookmarks();
+  const { fontSize } = useAppSettings();
   const bookmark = map[id];
   return (
     <BookmarkButton component="a" sx={{ pl: getIndent(indentLevel) }}>
       <BookmarkIcon>
         <BookmarkImg alt={''} src={getFaviconUrl(bookmark.url!)} />
       </BookmarkIcon>
-      <ListItemText primary={bookmark.title} />
+      <ListItemText primary={bookmark.title} primaryTypographyProps={{fontSize: fontSize, marginTop: "1px"}} />
     </BookmarkButton>
   );
 }

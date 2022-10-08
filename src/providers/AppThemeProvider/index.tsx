@@ -1,4 +1,5 @@
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useAppSettings } from '../SettingsProvider';
 
 declare module '@mui/material/styles' {
   interface Theme {
@@ -7,6 +8,7 @@ declare module '@mui/material/styles' {
     },
     bookmarks: {
       fontColor: string,
+      padding: string,
       adjustablePadding: (factor: number) => string,
     }
   }
@@ -16,11 +18,11 @@ declare module '@mui/material/styles' {
     },
     bookmarks?: {
       fontColor?: string,
+      padding?: string,
       adjustablePadding?: (factor: number) => string,
     }
   }
 }
-
 
 interface AppThemeProviderProps {
   children?: JSX.Element;
@@ -31,13 +33,15 @@ export const getIndent = (factor: number): number => {
 }
 
 export const AppThemeProvider = ({ children }: AppThemeProviderProps) => {
+  const settings = useAppSettings();
   const theme = createTheme({
     backgrounds: {
       offset: (factor) => `rgba(0,0,0,${0.01 * factor})`,
     },
     bookmarks: {
       fontColor: "black",
-      adjustablePadding: (factor: number) => `${2 * factor}px`,
+      padding: settings.padding,
+      adjustablePadding: (factor: number) => `calc(${settings.padding} * ${factor})`,
     },
   })
 
