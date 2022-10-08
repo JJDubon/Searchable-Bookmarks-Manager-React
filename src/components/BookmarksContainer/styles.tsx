@@ -14,7 +14,7 @@ export const BookmarkButton = styled(ListItemButton)(({theme}) => ({
 })) as typeof ListItemButton;
 
 export const BookmarkIcon = styled(ListItemIcon)(({theme}) => ({
-  minWidth: "34px",
+  minWidth: "32px",
   paddingLeft: "8px",
 }));
 

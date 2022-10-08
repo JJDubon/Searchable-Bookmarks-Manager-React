@@ -8,7 +8,7 @@ export type SettingsContextType = {
 }
 
 const defaultValues: SettingsContextType = {
-  fontSize: "16px",
+  fontSize: "14px",
   padding: "2px"
 };
 

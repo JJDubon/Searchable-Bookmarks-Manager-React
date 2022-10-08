@@ -1,14 +1,9 @@
-import { Box, Drawer, FormControl, MenuItem, styled, TextField } from '@mui/material';
+import { Box, Drawer, FormControl, MenuItem, Stack, styled, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { SettingsContextType, useAppSettings } from '../../providers/SettingsProvider';
 
-const Form = styled("form")(({theme}) => ({
-  padding: "4px 8px"
-}));
-
-const FormElement = styled("div")(({theme}) => ({
-  margin: "12px 8px",
-  paddingBottom: "12px"
+const SettingsForm = styled(Stack)(({theme}) => ({
+  padding: "12px"
 }));
 
 interface SettingsDrawerProps {
@@ -35,40 +30,36 @@ export const SettingsDrawer = ({open, hideSettings}: SettingsDrawerProps) => {
       onClose={hideSettings}
     >
       <Box sx={{width: 400}}>
-        <Form>
-          <FormElement>
-            <FormControl fullWidth>
-              <TextField
-                select
-                id="bookmark-size-field"
-                variant="standard"
-                label="Bookmark Size"
-                value={fontSize}
-                onChange={(e) => setFontSize(e.target.value as string)}
-              >
-                <MenuItem value={"14px"}>Small</MenuItem>
-                <MenuItem value={"16px"}>Medium (Default)</MenuItem>
-                <MenuItem value={"18px"}>Large</MenuItem>
-              </TextField>
-            </FormControl>
-          </FormElement>
-          <FormElement>
-            <FormControl fullWidth>
-              <TextField
-                select
-                id="bookmark-size-field"
-                variant="standard"
-                label="Bookmark Spacing"
-                value={padding}
-                onChange={(e) => setPadding(e.target.value as string)}
-              >
-                <MenuItem value={"2px"}>Small (Default)</MenuItem>
-                <MenuItem value={"4px"}>Medium</MenuItem>
-                <MenuItem value={"8px"}>Large</MenuItem>
-              </TextField>
-            </FormControl>
-          </FormElement>
-        </Form>
+        <SettingsForm spacing={3}>
+          <FormControl fullWidth>
+            <TextField
+              select
+              id="bookmark-size-field"
+              variant="standard"
+              label="Bookmark Size"
+              value={fontSize}
+              onChange={(e) => setFontSize(e.target.value as string)}
+            >
+              <MenuItem value={"14px"}>Small (Default)</MenuItem>
+              <MenuItem value={"16px"}>Medium</MenuItem>
+              <MenuItem value={"18px"}>Large</MenuItem>
+            </TextField>
+          </FormControl>
+          <FormControl fullWidth>
+            <TextField
+              select
+              id="bookmark-size-field"
+              variant="standard"
+              label="Bookmark Spacing"
+              value={padding}
+              onChange={(e) => setPadding(e.target.value as string)}
+            >
+              <MenuItem value={"2px"}>Small (Default)</MenuItem>
+              <MenuItem value={"4px"}>Medium</MenuItem>
+              <MenuItem value={"8px"}>Large</MenuItem>
+            </TextField>
+          </FormControl>
+        </SettingsForm>
       </Box>
     </Drawer>
   );

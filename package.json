@@ -1,6 +1,6 @@
 {
   "name": "searchable-bookmarks-manager",
-  "version": "3",
+  "version": "4.0.0",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.4",

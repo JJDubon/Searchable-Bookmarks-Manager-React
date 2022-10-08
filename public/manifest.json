@@ -3,7 +3,7 @@
 
   "name": "Searchable Bookmarks Manager",
   "description": "Search through your bookmarks easily with a popup manager, straight from your address bar!",
-  "version": "3",
+  "version": "4.0.0",
   "short_name": "SBM",
 
   "commands": {
