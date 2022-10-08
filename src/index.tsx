@@ -1,24 +1,26 @@
 import { StyledEngineProvider } from '@mui/material/styles';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
 import App from './App';
 import './index.css';
 import { AppThemeProvider } from './providers/AppThemeProvider';
-import { BookmarksProvider } from './providers/BookmarksProvider';
 import { SettingsProvider } from './providers/SettingsProvider';
+import store from './redux';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
     <StyledEngineProvider injectFirst>
       <SettingsProvider>
         <AppThemeProvider>
-          <BookmarksProvider>
+          <Provider store={store}>
             <App />
-          </BookmarksProvider>
+          </Provider>
         </AppThemeProvider>
       </SettingsProvider>
     </StyledEngineProvider>

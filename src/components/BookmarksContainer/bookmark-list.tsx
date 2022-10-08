@@ -1,5 +1,5 @@
 import { List } from '@mui/material';
-import { useBookmarks } from "../../providers/BookmarksProvider";
+import { useBookmarksState } from '../../redux/ducks/bookmarks/selectors';
 import { Bookmark } from './bookmark';
 import { Folder } from './folder';
 
@@ -14,7 +14,7 @@ export const BookmarksList = ({
   indentLevel = 0,
   defaultOpen = false,
 }: BookmarksListProps) => {
-  const { map } = useBookmarks();
+  const { map } = useBookmarksState();
   return (
     <List disablePadding>
       {ids.map(id => {

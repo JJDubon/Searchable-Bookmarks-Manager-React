@@ -1,8 +1,8 @@
 import { ListItemText } from '@mui/material';
 import { useMemo } from 'react';
 import { getIndent } from '../../providers/AppThemeProvider';
-import { useBookmarks } from "../../providers/BookmarksProvider";
 import { useAppSettings } from '../../providers/SettingsProvider';
+import { useBookmark } from '../../redux/ducks/bookmarks/selectors';
 import { BookmarkButton, BookmarkIcon, BookmarkImg, BookmarkPrimaryTextOverrides } from './styles';
 
 const getFaviconUrl = (url: string) => {
@@ -15,12 +15,11 @@ interface BookmarksProps {
 }
 
 export const Bookmark = ({ id, indentLevel }: BookmarksProps) => {
-  const { map } = useBookmarks();
+  const bookmark = useBookmark(id);
   const { fontSize, noWrap } = useAppSettings();
   const overrides = useMemo(() => {
     return BookmarkPrimaryTextOverrides(fontSize, noWrap);
   }, [fontSize, noWrap]);
-  const bookmark = map[id];
   return (
     <BookmarkButton component="a" sx={{ pl: getIndent(indentLevel) }}>
       <BookmarkIcon>

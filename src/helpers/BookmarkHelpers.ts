@@ -1,12 +1,4 @@
-export type BookmarkTreeNode = chrome.bookmarks.BookmarkTreeNode;
-
-export interface FlattenedBookmarkTreeNode extends Omit<BookmarkTreeNode, "children"> {
-  children?: string[];
-}
-
-export interface BookmarkMap {
-  [id: string]: FlattenedBookmarkTreeNode
-}
+import { BookmarkTreeNode, BookmarkMap } from "../redux/ducks/bookmarks/state";
 
 export function traverseTree(nodes: BookmarkTreeNode[], callback: (node: BookmarkTreeNode) => void): void {
   nodes.forEach((node) => {

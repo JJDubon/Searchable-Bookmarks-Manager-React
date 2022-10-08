@@ -52,7 +52,7 @@ export const SettingsProvider = ({children}: SettingsProviderProps) => {
       refreshSettings();
     }, 250);
     return () => clearInterval(intervalId);
-  }, []);
+  }, [refreshSettings]);
 
   return (
     <SettingsContext.Provider value={settings}>

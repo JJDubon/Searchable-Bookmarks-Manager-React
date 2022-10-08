@@ -1,9 +1,9 @@
-import { useBookmarks } from "../../providers/BookmarksProvider";
+import { useBookmarksState } from "../../redux/ducks/bookmarks/selectors";
 import { BookmarksList } from './bookmark-list';
 import { Container } from './styles';
 
 export const BookmarksContainer = () => {
-  const { loading, root } = useBookmarks();
+  const { loading, root } = useBookmarksState();
 
   if (loading) {
     return <></>;

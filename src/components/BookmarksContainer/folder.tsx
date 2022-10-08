@@ -4,8 +4,8 @@ import { Collapse, ListItemText } from '@mui/material';
 import { motion } from "framer-motion";
 import { useMemo, useState } from 'react';
 import { getIndent } from '../../providers/AppThemeProvider';
-import { useBookmarks } from "../../providers/BookmarksProvider";
 import { useAppSettings } from '../../providers/SettingsProvider';
+import { useBookmark } from '../../redux/ducks/bookmarks/selectors';
 import { BookmarksList } from './bookmark-list';
 import { BookmarkButton, BookmarkIcon, BookmarkPrimaryTextOverrides } from './styles';
 
@@ -16,13 +16,12 @@ interface FolderProps {
 }
 
 export const Folder = ({ id, indentLevel, defaultOpen = false }: FolderProps) => {
-  const { map } = useBookmarks();
+  const folder = useBookmark(id);
   const { fontSize, noWrap } = useAppSettings();
   const [open, setOpen] = useState(defaultOpen);
   const overrides = useMemo(() => {
     return BookmarkPrimaryTextOverrides(fontSize, noWrap);
   }, [fontSize, noWrap]);
-  const folder = map[id];
   
   return <>
     <BookmarkButton sx={{ pl: getIndent(indentLevel) }} onClick={() => setOpen(!open)}>
