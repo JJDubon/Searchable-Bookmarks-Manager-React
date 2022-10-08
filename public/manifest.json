@@ -1,12 +1,26 @@
 {
-  "name": "New Tab Bookmarks",
-  "description": "Replace your new tab page with your bookmarks!",
-  "version": "1.0",
   "manifest_version": 3,
-  "chrome_url_overrides" : {
-    "newtab": "index.html"
+
+  "name": "Searchable Bookmarks Manager",
+  "description": "Search through your bookmarks easily with a popup manager, straight from your address bar!",
+  "version": "3",
+  "short_name": "SBM",
+
+  "commands": {
+    "_execute_browser_action": {
+      "description": "Searchable Bookmarks Manager"
+    }
   },
+
+  "action": {
+    "default_popup": "index.html"
+  },
+
   "permissions": [
-    "bookmarks"
+    "activeTab",
+    "bookmarks",
+    "storage",
+    "contextMenus",
+    "chrome://favicon/"
   ]
 }

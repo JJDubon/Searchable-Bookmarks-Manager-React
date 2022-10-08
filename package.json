@@ -1,10 +1,11 @@
 {
-  "name": "my-app",
-  "version": "0.1.0",
+  "name": "searchable-bookmarks-manager",
+  "version": "3",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@mui/icons-material": "^5.10.3",
     "@mui/material": "^5.10.5",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
@@ -24,7 +25,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "watch": "npm-watch"
   },
   "eslintConfig": {
     "extends": [
@@ -46,6 +48,17 @@
   },
   "devDependencies": {
     "@types/chrome": "^0.0.197",
-    "@types/styled-components": "^5.1.26"
+    "@types/styled-components": "^5.1.26",
+    "dotenv-cli": "^6.0.0",
+    "npm-watch": "^0.11.0"
+  },
+  "watch": {
+    "build": {
+      "patterns": [
+        "src",
+        "public"
+      ],
+      "extensions": "js,jsx,json,ts,tsx,html,css,scss,svg,png,ico,txt"
+    }
   }
 }

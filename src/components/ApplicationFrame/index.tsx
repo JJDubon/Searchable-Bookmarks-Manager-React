@@ -1,26 +1,20 @@
-import styled from "styled-components";
+import { styled } from '@mui/material/styles';
 
-const Frame = styled.div`
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-  display: grid;
-  grid-template-columns: 1fr 800px 1fr;
-  grid-template-rows: 1fr 100px 500px 1fr;
-  grid-template-areas: 
-    ". . ."
-    ". header ."
-    ". main ."
-    ". . .";
-`;
+const Frame = styled('div')(({ theme }) => ({
+  height: "100vh",
+  width: "100vw",
+  overflow: "hidden",
 
-const Header = styled.header`
-  grid-area: header;
-`;
+  display: "grid",
+  gridTemplateRows: `86px 1fr`
+}));
 
-const Main = styled.main`
-  grid-area: main;
-`;
+const Header = styled('div')(({ theme }) => ({
+}));
+
+const Main = styled('div')(({ theme }) => ({
+  overflow: "auto"
+}));
 
 export interface ApplicationFrameProps {
   header: JSX.Element;

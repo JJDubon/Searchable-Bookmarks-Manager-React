@@ -1,15 +1,38 @@
-import styled from "styled-components";
-import { useBookmarks } from "../../providers/BookmarksProvider";
+import SearchIcon from '@mui/icons-material/Search';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import { styled } from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
 
-const Title = styled.h1`
-  
-`;
+const Container = styled('div')(({ theme }) => ({
+  backgroundColor: theme.backgrounds.offset(3),
+  borderBottom: `2px solid ${theme.backgrounds.offset(8)}`,
+  display: "flex",
+  height: "100%",
+  padding: "0 18px",
+}));
+
+const SearchField = styled(TextField)(({ theme }) => ({
+  alignSelf: "center",
+  width: "100%",
+}));
 
 export const Header = () => {
-  const { loading, map } = useBookmarks();
   return (
-    <Title>
-      Select a bookmark:
-    </Title>
+    <Container>
+      <SearchField 
+        label="Search bookmarks" 
+        variant="standard"
+        InputProps = {{
+          startAdornment: (
+            <InputAdornment position="start">
+              <IconButton aria-label="delete" color="primary">
+                <SearchIcon />
+              </IconButton>
+            </InputAdornment>
+            )
+          }}
+        />
+      </Container>
   )
 }
