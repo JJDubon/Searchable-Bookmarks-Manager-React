@@ -6,6 +6,7 @@ declare module '@mui/material/styles' {
       offset: (factor: number) => string,
     },
     bookmarks: {
+      fontColor: string,
       adjustablePadding: (factor: number) => string,
     }
   }
@@ -14,6 +15,7 @@ declare module '@mui/material/styles' {
       offset?: (factor: number) => string
     },
     bookmarks?: {
+      fontColor?: string,
       adjustablePadding?: (factor: number) => string,
     }
   }
@@ -33,6 +35,7 @@ export const AppThemeProvider = ({ children }: AppThemeProviderProps) => {
       offset: (factor) => `rgba(0,0,0,${0.01 * factor})`,
     },
     bookmarks: {
+      fontColor: "black",
       adjustablePadding: (factor: number) => `${2 * factor}px`,
     }
   })

@@ -16,6 +16,7 @@ export const Folder = ({ id, indentLevel, defaultOpen = false }: FolderProps) =>
   const { map } = useBookmarks();
   const [open, setOpen] = useState(defaultOpen);
   const folder = map[id];
+  
   return <>
     <BookmarkButton sx={{ pl: getIndent(indentLevel) }} onClick={() => setOpen(!open)}>
       <BookmarkIcon>

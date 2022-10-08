@@ -1,9 +1,11 @@
-import TabIcon from '@mui/icons-material/Tab';
 import { ListItemText } from '@mui/material';
 import { getIndent } from '../../providers/AppThemeProvider';
 import { useBookmarks } from "../../providers/BookmarksProvider";
-import { Folder } from './folder';
-import { BookmarkButton, BookmarkIcon } from './styles';
+import { BookmarkButton, BookmarkIcon, BookmarkImg } from './styles';
+
+const getFaviconUrl = (url: string) => {
+  return `chrome-extension://${chrome.runtime.id}/_favicon/?pageUrl=${encodeURIComponent(url)}&size=32`;
+}
 
 interface BookmarksProps {
   id: string;
@@ -13,18 +15,12 @@ interface BookmarksProps {
 export const Bookmark = ({ id, indentLevel }: BookmarksProps) => {
   const { map } = useBookmarks();
   const bookmark = map[id];
-  if (bookmark.children) {
-    return (
-      <Folder id={bookmark.id} indentLevel={indentLevel} />
-    );
-  } else {
-    return (
-      <BookmarkButton sx={{ pl: getIndent(indentLevel) }}>
-        <BookmarkIcon>
-          <TabIcon />
-        </BookmarkIcon>
-        <ListItemText primary={bookmark.title} />
-      </BookmarkButton>
-    );
-  }
+  return (
+    <BookmarkButton sx={{ pl: getIndent(indentLevel) }}>
+      <BookmarkIcon>
+        <BookmarkImg alt={''} src={getFaviconUrl(bookmark.url!)} />
+      </BookmarkIcon>
+      <ListItemText primary={bookmark.title} />
+    </BookmarkButton>
+  );
 }

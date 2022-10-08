@@ -1,4 +1,5 @@
 import SearchIcon from '@mui/icons-material/Search';
+import SettingsIcon from '@mui/icons-material/Settings';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import { styled } from '@mui/material/styles';
@@ -23,15 +24,24 @@ export const Header = () => {
       <SearchField 
         label="Search bookmarks" 
         variant="standard"
-        InputProps = {{
-          startAdornment: (
-            <InputAdornment position="start">
-              <IconButton aria-label="delete" color="primary">
-                <SearchIcon />
-              </IconButton>
-            </InputAdornment>
+        InputProps = {
+          {
+            startAdornment: (
+              <InputAdornment position="start">
+                <IconButton aria-label="search">
+                  <SearchIcon />
+                </IconButton>
+              </InputAdornment>
+            ),
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton aria-label="settings">
+                  <SettingsIcon />
+                </IconButton>
+              </InputAdornment>
             )
-          }}
+          }
+        }
         />
       </Container>
   )
