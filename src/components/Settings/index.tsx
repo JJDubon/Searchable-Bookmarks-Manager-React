@@ -1,6 +1,8 @@
 import { Box, Drawer, FormControl, MenuItem, Stack, styled, TextField } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { SettingsContextType, useAppSettings } from '../../providers/SettingsProvider';
+import { useDispatch } from 'react-redux';
+import { setSettings } from '../../redux/ducks/settings/actions';
+import { useSettings } from '../../redux/ducks/settings/selectors';
+import { useAppIsLoading } from '../../redux/selectors';
 
 const SettingsForm = styled(Stack)(({theme}) => ({
   padding: "12px"
@@ -12,18 +14,13 @@ interface SettingsDrawerProps {
 }
 
 export const SettingsDrawer = ({open, hideSettings}: SettingsDrawerProps) => {
-  const settings = useAppSettings();
-  const [fontSize, setFontSize] = useState(settings.fontSize);
-  const [padding, setPadding] = useState(settings.padding);
-  const [noWrap, setNoWrap] = useState(String(settings.noWrap));
+  const loading = useAppIsLoading();
+  const dispatch = useDispatch();
+  const { fontSize, padding, noWrap } = useSettings();
 
-  useEffect(() => {
-    chrome.storage.local.set({
-      fontSize,
-      padding,
-      noWrap: noWrap === "true",
-    } as SettingsContextType);
-  }, [fontSize, padding, noWrap]);
+  if (loading) {
+    return <></>;
+  }
 
   return (
     <Drawer
@@ -40,8 +37,10 @@ export const SettingsDrawer = ({open, hideSettings}: SettingsDrawerProps) => {
               variant="standard"
               label="Bookmark Size"
               value={fontSize}
-              onChange={(e) => setFontSize(e.target.value as string)}
-            >
+              onChange={(e) => {
+                const value = e.target.value as string;
+                dispatch(setSettings({ fontSize: value }));
+              }}>
               <MenuItem value={"14px"}>Small (Default)</MenuItem>
               <MenuItem value={"16px"}>Medium</MenuItem>
               <MenuItem value={"18px"}>Large</MenuItem>
@@ -54,8 +53,10 @@ export const SettingsDrawer = ({open, hideSettings}: SettingsDrawerProps) => {
               variant="standard"
               label="Bookmark Spacing"
               value={padding}
-              onChange={(e) => setPadding(e.target.value as string)}
-            >
+              onChange={(e) => {
+                const value = e.target.value as string;
+                dispatch(setSettings({ padding: value }));
+              }}>
               <MenuItem value={"2px"}>Small (Default)</MenuItem>
               <MenuItem value={"4px"}>Medium</MenuItem>
               <MenuItem value={"8px"}>Large</MenuItem>
@@ -68,8 +69,10 @@ export const SettingsDrawer = ({open, hideSettings}: SettingsDrawerProps) => {
               variant="standard"
               label="Titles"
               value={noWrap}
-              onChange={(e) => setNoWrap(e.target.value)}
-            >
+              onChange={(e) => {
+                const value = e.target.value as string;
+                dispatch(setSettings({ noWrap: value === "true" }));
+              }}>
               <MenuItem value={"true"}>Single Line</MenuItem>
               <MenuItem value={"false"}>Multi line</MenuItem>
             </TextField>

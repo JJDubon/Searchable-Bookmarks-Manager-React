@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import { BookmarkTreeNode } from "../redux/ducks/bookmarks/state";
+import { SettingsState } from "../redux/ducks/settings/state";
 
 export function getChromeInstance(): typeof chrome {
   const browserInstance = window.chrome || (window as any)['browser'];
@@ -15,13 +15,20 @@ export async function getTree(): Promise<BookmarkTreeNode[]> {
   });
 }
 
-export function useTree(): { loading: boolean, tree: BookmarkTreeNode[] | null } {
-  const [tree, setTree] = useState<BookmarkTreeNode[] | null>(null);
-  useEffect(() => {
-    const instance = getChromeInstance();
-    instance.bookmarks.getTree()
-      .then(setTree);
-  }, []);
+export async function getAppSettings(keys: (keyof SettingsState)[]): Promise<Partial<SettingsState>> {
+  return new Promise((resolve, reject) => {
+    chrome.storage.local.get(keys, (values) => {
+      console.log(values);
+      resolve(values);
+    })
+  });
+}
 
-  return { loading: tree === null, tree };
+export async function setAppSettings(settings: Partial<SettingsState>): Promise<void> {
+  console.log(settings);
+  return new Promise((resolve, reject) => {
+    chrome.storage.local.set(settings, () => {
+      resolve();
+    });
+  });
 }

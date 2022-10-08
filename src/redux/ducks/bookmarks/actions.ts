@@ -1,18 +1,18 @@
 import { BookmarkMap } from "./state";
 
 export function loadBookmarks() {
-  return { type: "LOAD_BOOKMARKS" as "LOAD_BOOKMARKS" };
+  return { type: "BOOKMARKS_LOAD" as "BOOKMARKS_LOAD" };
 }
 
 export function loadBookmarksSuccess(root: string[], map: BookmarkMap) {
   return { 
-    type: "LOAD_BOOKMARKS_SUCCESS" as "LOAD_BOOKMARKS_SUCCESS",
+    type: "BOOKMARKS_LOAD_SUCCESS" as "BOOKMARKS_LOAD_SUCCESS",
     payload: { root, map }
   };
 }
 
 export function loadBookmarksFailure() {
-  return { type: "LOAD_BOOKMARKS_FAILURE" as "LOAD_BOOKMARKS_FAILURE" };
+  return { type: "BOOKMARKS_LOAD_FAILURE" as "BOOKMARKS_LOAD_FAILURE" };
 }
 
 export type BookmarksActions = 

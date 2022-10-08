@@ -1,10 +1,10 @@
-import { call, put } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { createBookmarkMap } from '../../../helpers/BookmarkHelpers';
 import { getTree } from '../../../helpers/ChromeApiHelpers';
 import { loadBookmarksFailure, loadBookmarksSuccess } from './actions';
 import { BookmarkTreeNode } from './state';
 
-export function* bookmarksSaga(): any {
+function* loadBookmarkSaga() {
   try {
     const tree: BookmarkTreeNode[] = yield call(getTree);
     const map = createBookmarkMap(tree);
@@ -12,4 +12,8 @@ export function* bookmarksSaga(): any {
   } catch (ex) {
     yield put(loadBookmarksFailure());
   }
+}
+
+export function* bookmarksSagas() {
+  yield takeEvery("BOOKMARKS_LOAD", loadBookmarkSaga);
 }

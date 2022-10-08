@@ -1,5 +1,5 @@
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useAppSettings } from '../SettingsProvider';
+import { useSettings } from '../../redux/ducks/settings/selectors';
 
 declare module '@mui/material/styles' {
   interface Theme {
@@ -33,7 +33,7 @@ export const getIndent = (factor: number): number => {
 }
 
 export const AppThemeProvider = ({ children }: AppThemeProviderProps) => {
-  const settings = useAppSettings();
+  const settings = useSettings();
   const theme = createTheme({
     backgrounds: {
       offset: (factor) => `rgba(0,0,0,${0.01 * factor})`,

@@ -1,17 +1,28 @@
-import { createStore, applyMiddleware } from '@reduxjs/toolkit'
-import createSagaMiddleware from 'redux-saga'
+import { applyMiddleware, createStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
-
+import createSagaMiddleware from 'redux-saga';
+import { all } from 'redux-saga/effects';
 import bookmarksReducer from './ducks/bookmarks/reducer';
-import { bookmarksSaga } from './ducks/bookmarks/sagas';
+import { bookmarksSagas } from './ducks/bookmarks/sagas';
+import settingsReducer from './ducks/settings/reducer';
+import { settingsSagas } from './ducks/settings/sagas';
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
   combineReducers({
-    bookmarks: bookmarksReducer
+    bookmarks: bookmarksReducer,
+    settings: settingsReducer
   }),
   applyMiddleware(sagaMiddleware)
 )
 
-sagaMiddleware.run(bookmarksSaga)
+function* defaultSaga() {
+  yield all([
+    settingsSagas(),
+    bookmarksSagas()
+  ]);
+}
+
+sagaMiddleware.run(defaultSaga);
+
 export default store;

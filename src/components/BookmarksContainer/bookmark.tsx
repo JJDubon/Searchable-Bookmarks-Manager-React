@@ -1,8 +1,8 @@
 import { ListItemText } from '@mui/material';
 import { useMemo } from 'react';
 import { getIndent } from '../../providers/AppThemeProvider';
-import { useAppSettings } from '../../providers/SettingsProvider';
 import { useBookmark } from '../../redux/ducks/bookmarks/selectors';
+import { useSettings } from '../../redux/ducks/settings/selectors';
 import { BookmarkButton, BookmarkIcon, BookmarkImg, BookmarkPrimaryTextOverrides } from './styles';
 
 const getFaviconUrl = (url: string) => {
@@ -16,7 +16,7 @@ interface BookmarksProps {
 
 export const Bookmark = ({ id, indentLevel }: BookmarksProps) => {
   const bookmark = useBookmark(id);
-  const { fontSize, noWrap } = useAppSettings();
+  const { fontSize, noWrap } = useSettings();
   const overrides = useMemo(() => {
     return BookmarkPrimaryTextOverrides(fontSize, noWrap);
   }, [fontSize, noWrap]);
