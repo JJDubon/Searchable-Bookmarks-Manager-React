@@ -16,7 +16,7 @@ export const Bookmark = ({ id, indentLevel }: BookmarksProps) => {
   const { map } = useBookmarks();
   const bookmark = map[id];
   return (
-    <BookmarkButton sx={{ pl: getIndent(indentLevel) }}>
+    <BookmarkButton component="a" sx={{ pl: getIndent(indentLevel) }}>
       <BookmarkIcon>
         <BookmarkImg alt={''} src={getFaviconUrl(bookmark.url!)} />
       </BookmarkIcon>

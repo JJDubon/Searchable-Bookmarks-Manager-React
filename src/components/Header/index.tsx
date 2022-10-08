@@ -18,12 +18,17 @@ const SearchField = styled(TextField)(({ theme }) => ({
   width: "100%",
 }));
 
-export const Header = () => {
+interface HeaderProps {
+  showSettings: () => void;
+};
+
+export const Header = ({ showSettings }: HeaderProps) => {
   return (
     <Container>
       <SearchField 
         label="Search bookmarks" 
         variant="standard"
+        sx={{ "& .MuiInput-underline": { paddingBottom: "4px" } }}
         InputProps = {
           {
             startAdornment: (
@@ -35,7 +40,7 @@ export const Header = () => {
             ),
             endAdornment: (
               <InputAdornment position="end">
-                <IconButton aria-label="settings">
+                <IconButton aria-label="settings" onClick={showSettings}>
                   <SettingsIcon />
                 </IconButton>
               </InputAdornment>

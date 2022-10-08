@@ -21,6 +21,7 @@ declare module '@mui/material/styles' {
   }
 }
 
+
 interface AppThemeProviderProps {
   children?: JSX.Element;
 }
@@ -37,7 +38,7 @@ export const AppThemeProvider = ({ children }: AppThemeProviderProps) => {
     bookmarks: {
       fontColor: "black",
       adjustablePadding: (factor: number) => `${2 * factor}px`,
-    }
+    },
   })
 
   return (
