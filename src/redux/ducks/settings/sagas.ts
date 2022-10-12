@@ -3,11 +3,6 @@ import { getAppSettings, setAppSettings } from '../../../helpers/ChromeApiHelper
 import { loadSettingsFailure, loadSettingsSuccess, setSettings, setSettingsFailure, setSettingsSuccess } from './actions';
 import { SettingsState, SettingsStateKeys } from './state';
 
-export function* settingsSagas() {
-  yield takeEvery("SETTINGS_LOAD", loadSettingsSaga);
-  yield takeEvery<ReturnType<typeof setSettings>>("SETTINGS_SET", setSettingsSaga);
-}
-
 export function* loadSettingsSaga() {
   try {
     const settings: SettingsState = yield call(getAppSettings, SettingsStateKeys);
@@ -24,4 +19,9 @@ export function* setSettingsSaga({ payload }: ReturnType<typeof setSettings>) {
   } catch (ex) {
     yield put(setSettingsFailure());
   }
+}
+
+export function* settingsSagas() {
+  yield takeEvery("SETTINGS_LOAD", loadSettingsSaga);
+  yield takeEvery<ReturnType<typeof setSettings>>("SETTINGS_SET", setSettingsSaga);
 }
