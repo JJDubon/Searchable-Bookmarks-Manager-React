@@ -1,8 +1,10 @@
-import { Box, Drawer, FormControl, MenuItem, Stack, styled, TextField } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import { Box, Drawer, FormControl, IconButton, MenuItem, Stack, styled, TextField } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { setSettings } from '../../redux/ducks/settings/actions';
 import { useSettings } from '../../redux/ducks/settings/selectors';
 import { useAppIsLoading } from '../../redux/selectors';
+import { SettingsHeader, SettingsTitle } from './styles';
 
 const SettingsForm = styled(Stack)(({ theme }) => ({
   padding: '12px',
@@ -26,6 +28,12 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
     <Drawer anchor={'right'} open={open} onClose={hideSettings}>
       <Box sx={{ width: 400 }}>
         <SettingsForm spacing={3}>
+          <SettingsHeader>
+            <SettingsTitle variant='h6'>Settings</SettingsTitle>
+            <IconButton aria-label='close' onClick={hideSettings}>
+              <CloseIcon />
+            </IconButton>
+          </SettingsHeader>
           <FormControl fullWidth>
             <TextField
               select
