@@ -11,6 +11,8 @@ export interface BookmarkMap {
 export interface BookmarksState {
   loading: boolean;
   root: string[];
+  rootNodes: string[];
   activeNodes: string[];
   map: BookmarkMap;
+  query: string;
 }

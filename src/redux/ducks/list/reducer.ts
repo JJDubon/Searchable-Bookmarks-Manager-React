@@ -6,7 +6,6 @@ const defaultState: ListState = {
 };
 
 export default function reducer(state: ListState = defaultState, action: ListStateActions) {
-  console.log('test', state, action);
   switch (action.type) {
     case 'LIST_STATE_SET_SUCCESS':
       return {

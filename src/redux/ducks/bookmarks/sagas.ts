@@ -1,7 +1,13 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import { createBookmarkMap } from '../../../helpers/BookmarkHelpers';
-import { getTree } from '../../../helpers/ChromeApiHelpers';
-import { loadBookmarksFailure, loadBookmarksSuccess } from './actions';
+import { getTree, searchTree } from '../../../helpers/ChromeApiHelpers';
+import {
+  loadBookmarksFailure,
+  loadBookmarksSuccess,
+  searchBookmarks,
+  searchBookmarksFailure,
+  searchBookmarksSuccess,
+} from './actions';
 import { BookmarkTreeNode } from './state';
 
 function* loadBookmarkSaga() {
@@ -14,6 +20,17 @@ function* loadBookmarkSaga() {
   }
 }
 
+function* loadSearchResults({ payload }: ReturnType<typeof searchBookmarks>) {
+  try {
+    const nodes: BookmarkTreeNode[] = yield call(searchTree, payload.query);
+    const ids = nodes.map((node) => node.id);
+    yield put(searchBookmarksSuccess(payload.query, ids));
+  } catch (ex) {
+    yield put(searchBookmarksFailure());
+  }
+}
+
 export function* bookmarksSagas() {
   yield takeEvery('BOOKMARKS_LOAD', loadBookmarkSaga);
+  yield takeLatest('BOOKMARKS_SEARCH', loadSearchResults);
 }

@@ -20,8 +20,8 @@ export function* loadSettingsSaga() {
 
 export function* setSettingsSaga({ payload }: ReturnType<typeof setSettings>) {
   try {
-    yield call(() => setAppSettings(payload));
-    yield put(setSettingsSuccess(payload));
+    yield call(() => setAppSettings(payload.settings));
+    yield put(setSettingsSuccess(payload.settings));
   } catch (ex) {
     yield put(setSettingsFailure());
   }

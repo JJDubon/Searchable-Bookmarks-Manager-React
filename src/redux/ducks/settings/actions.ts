@@ -7,7 +7,7 @@ export function loadSettings() {
 export function loadSettingsSuccess(settings: SettingsState) {
   return {
     type: 'SETTINGS_LOAD_SUCCESS' as 'SETTINGS_LOAD_SUCCESS',
-    payload: settings,
+    payload: { settings },
   };
 }
 
@@ -22,14 +22,14 @@ export function getSettings() {
 export function setSettings(settings: Partial<SettingsState>) {
   return {
     type: 'SETTINGS_SET' as 'SETTINGS_SET',
-    payload: settings,
+    payload: { settings },
   };
 }
 
 export function setSettingsSuccess(settings: Partial<SettingsState>) {
   return {
     type: 'SETTINGS_SET_SUCCESS' as 'SETTINGS_SET_SUCCESS',
-    payload: settings,
+    payload: { settings },
   };
 }
 

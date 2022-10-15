@@ -11,6 +11,11 @@ export async function getTree(): Promise<BookmarkTreeNode[]> {
   return instance.bookmarks.getTree();
 }
 
+export async function searchTree(query: string): Promise<BookmarkTreeNode[]> {
+  const instance = getChromeInstance();
+  return instance.bookmarks.search(query);
+}
+
 export async function getAppSettings(keys: (keyof SettingsState)[]): Promise<Partial<SettingsState>> {
   return chrome.storage.local.get(keys);
 }
