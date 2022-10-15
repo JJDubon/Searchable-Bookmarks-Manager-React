@@ -44,6 +44,7 @@ export const SettingsDrawer = ({open, hideSettings}: SettingsDrawerProps) => {
               <MenuItem value={"14px"}>Small (Default)</MenuItem>
               <MenuItem value={"16px"}>Medium</MenuItem>
               <MenuItem value={"18px"}>Large</MenuItem>
+              <MenuItem value={"24px"}>Very Large</MenuItem>
             </TextField>
           </FormControl>
           <FormControl fullWidth>
@@ -57,9 +58,10 @@ export const SettingsDrawer = ({open, hideSettings}: SettingsDrawerProps) => {
                 const value = e.target.value as string;
                 dispatch(setSettings({ padding: value }));
               }}>
-              <MenuItem value={"2px"}>Small (Default)</MenuItem>
-              <MenuItem value={"4px"}>Medium</MenuItem>
-              <MenuItem value={"8px"}>Large</MenuItem>
+              <MenuItem value={"0px"}>Small (Default)</MenuItem>
+              <MenuItem value={"2px"}>Medium</MenuItem>
+              <MenuItem value={"4px"}>Large</MenuItem>
+              <MenuItem value={"8px"}>Very Large</MenuItem>
             </TextField>
           </FormControl>
           <FormControl fullWidth>
