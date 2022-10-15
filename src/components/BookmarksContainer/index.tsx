@@ -28,7 +28,7 @@ export const BookmarksContainer = () => {
     <Container>
       <DndProvider backend={HTML5Backend}>
         <BookmarkDragPreview />
-        <BookmarksList ids={activeNodes} defaultOpen={true} />
+        <BookmarksList ids={activeNodes} />
       </DndProvider>
     </Container>
   );

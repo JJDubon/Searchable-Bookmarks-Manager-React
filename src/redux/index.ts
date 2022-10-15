@@ -4,12 +4,15 @@ import createSagaMiddleware from 'redux-saga';
 import { all } from 'redux-saga/effects';
 import bookmarksReducer from './ducks/bookmarks/reducer';
 import { bookmarksSagas } from './ducks/bookmarks/sagas';
+import listReducer from './ducks/list/reducer';
+import { listStateSagas } from './ducks/list/sagas';
 import settingsReducer from './ducks/settings/reducer';
 import { settingsSagas } from './ducks/settings/sagas';
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
   combineReducers({
+    list: listReducer,
     bookmarks: bookmarksReducer,
     settings: settingsReducer,
   }),
@@ -17,7 +20,7 @@ const store = createStore(
 );
 
 function* defaultSaga() {
-  yield all([settingsSagas(), bookmarksSagas()]);
+  yield all([listStateSagas(), settingsSagas(), bookmarksSagas()]);
 }
 
 sagaMiddleware.run(defaultSaga);

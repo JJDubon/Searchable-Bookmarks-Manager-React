@@ -3,29 +3,31 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import FolderIcon from '@mui/icons-material/Folder';
 import { Collapse, ListItemText } from '@mui/material';
 import { motion } from 'framer-motion';
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import { getIndent } from '../../providers/AppThemeProvider';
 import { useBookmark } from '../../redux/ducks/bookmarks/selectors';
+import { setListItemOpen } from '../../redux/ducks/list/actions';
 import { useSettings } from '../../redux/ducks/settings/selectors';
 import { BookmarksList } from './bookmark-list';
 import { useBookmarkDrag, useBookmarkDrop } from './drag';
 import { BookmarkButton, BookmarkContainer, BookmarkIcon, BookmarkPrimaryTextOverrides } from './styles';
-import { getDropBehavior, isModifiable } from './utils';
+import { getDropBehavior, isModifiable, useOpenStatus } from './utils';
 
 interface FolderProps {
   id: string;
   indentLevel: number;
-  defaultOpen?: boolean;
   hideDetails?: boolean;
 }
 
-export const Folder = ({ id, indentLevel, defaultOpen = false, hideDetails = false }: FolderProps) => {
+export const Folder = ({ id, indentLevel, hideDetails = false }: FolderProps) => {
+  const dispatch = useDispatch();
   const ref = useRef<HTMLDivElement>(null);
   const folder = useBookmark(id);
   const { isDragging } = useBookmarkDrag(id, ref);
   const { dropType } = useBookmarkDrop(id, ref);
   const { fontSize, noWrap } = useSettings();
-  const [open, setOpen] = useState(defaultOpen);
+  const open = useOpenStatus(id);
 
   const overrides = useMemo(() => {
     return BookmarkPrimaryTextOverrides(fontSize, noWrap);
@@ -50,7 +52,7 @@ export const Folder = ({ id, indentLevel, defaultOpen = false, hideDetails = fal
         isModifiable={isModifiable(folder)}
         dropType={dropType}
       >
-        <BookmarkButton sx={{ pl: getIndent(indentLevel) }} onClick={() => setOpen(!open)}>
+        <BookmarkButton sx={{ pl: getIndent(indentLevel) }} onClick={() => toggleOpen()}>
           <BookmarkIcon>{folderIcon}</BookmarkIcon>
           <ListItemText primary={folder.title} primaryTypographyProps={overrides} />
           {!hideDetails && (
@@ -72,5 +74,9 @@ export const Folder = ({ id, indentLevel, defaultOpen = false, hideDetails = fal
 
   function getRotation(): number {
     return open ? 0 : 180;
+  }
+
+  function toggleOpen(): void {
+    dispatch(setListItemOpen(folder.id, !open));
   }
 };

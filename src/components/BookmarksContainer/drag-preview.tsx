@@ -55,7 +55,7 @@ export const BookmarkDragPreview = () => {
   return (
     <div style={layerStyles}>
       <div style={itemStyles}>
-        <BookmarkSwitch id={item.id} indentLevel={0} defaultOpen={false} hideDetails />
+        <BookmarkSwitch id={item.id} indentLevel={0} hideDetails />
       </div>
     </div>
   );

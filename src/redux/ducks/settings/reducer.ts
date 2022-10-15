@@ -6,6 +6,7 @@ const defaultState: SettingsState = {
   fontSize: '14px',
   padding: '2px',
   noWrap: true,
+  defaultOpenMap: {},
 };
 
 export default function reducer(state: SettingsState = defaultState, action: SettingsActions) {
