@@ -26,15 +26,25 @@ export const Folder = ({ id, indentLevel, defaultOpen = false, hideDetails = fal
   const { dropType } = useBookmarkDrop(id, ref);
   const { fontSize, noWrap } = useSettings();
   const [open, setOpen] = useState(defaultOpen);
+
   const overrides = useMemo(() => {
     return BookmarkPrimaryTextOverrides(fontSize, noWrap);
   }, [fontSize, noWrap]);
+
+  const folderIcon = useMemo(() => {
+    const dropBehavior = getDropBehavior('folder', isModifiable(folder), open, dropType);
+    if (dropBehavior === 'inside') {
+      return <CreateNewFolderIcon />;
+    } else {
+      return <FolderIcon />;
+    }
+  }, [dropType, folder, open]);
   
   return <>
     <BookmarkContainer ref={ref} type={'folder'} isDragging={isDragging} isOpen={open} isModifiable={isModifiable(folder)} dropType={dropType}>
       <BookmarkButton sx={{ pl: getIndent(indentLevel) }} onClick={() => setOpen(!open)}>
         <BookmarkIcon>
-          {getFolderIcon()}
+          {folderIcon}
         </BookmarkIcon>
         <ListItemText
           primary={folder.title}
@@ -53,15 +63,6 @@ export const Folder = ({ id, indentLevel, defaultOpen = false, hideDetails = fal
       <BookmarksList ids={folder.children || []} indentLevel={indentLevel + 1} />
     </Collapse>
   </>;
-
-  function getFolderIcon(): JSX.Element {
-    const dropBehavior = getDropBehavior('folder', isModifiable(folder), open, dropType);
-    if (dropBehavior === 'inside') {
-      return <CreateNewFolderIcon />;
-    } else {
-      return <FolderIcon />;
-    }
-  }
 
   function getRotation(): number {
     return open ? 0 : 180;
