@@ -7,6 +7,7 @@ import { useBookmarksState } from "../../redux/ducks/bookmarks/selectors";
 import { loadSettings } from "../../redux/ducks/settings/actions";
 import { useAppIsLoading } from "../../redux/selectors";
 import { BookmarksList } from './bookmark-list';
+import { BookmarkDragPreview } from "./drag-preview";
 import { Container } from './styles';
 
 export const BookmarksContainer = () => {
@@ -26,6 +27,7 @@ export const BookmarksContainer = () => {
   return (
     <Container>
       <DndProvider backend={HTML5Backend}>
+        <BookmarkDragPreview />
         <BookmarksList ids={activeNodes} defaultOpen={true} />
       </DndProvider>
     </Container>

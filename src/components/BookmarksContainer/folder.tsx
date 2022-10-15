@@ -16,9 +16,10 @@ interface FolderProps {
   id: string;
   indentLevel: number;
   defaultOpen?: boolean;
+  hideDetails?: boolean;
 }
 
-export const Folder = ({ id, indentLevel, defaultOpen = false }: FolderProps) => {
+export const Folder = ({ id, indentLevel, defaultOpen = false, hideDetails = false }: FolderProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const folder = useBookmark(id);
   const { isDragging } = useBookmarkDrag(id,ref);
@@ -38,12 +39,14 @@ export const Folder = ({ id, indentLevel, defaultOpen = false }: FolderProps) =>
         <ListItemText
           primary={folder.title}
           primaryTypographyProps={overrides} />
-        <motion.div
-          animate={{rotate: getRotation()}}
-          transition={{type: "ease"}}
-          style={{rotate: getRotation()}}>
-          <ExpandLess style={{opacity: 0.15}} />
-        </motion.div>
+        {!hideDetails && (
+          <motion.div
+            animate={{rotate: getRotation()}}
+            transition={{type: "ease"}}
+            style={{rotate: getRotation()}}>
+            <ExpandLess style={{opacity: 0.15}} />
+          </motion.div>
+        )}
       </BookmarkButton>
     </BookmarkContainer>
     <Collapse in={open} timeout="auto" unmountOnExit>

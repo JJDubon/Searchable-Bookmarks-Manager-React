@@ -1,5 +1,6 @@
-import { RefObject, useState } from "react";
-import { ConnectDragPreview, useDrag, useDrop, XYCoord } from "react-dnd";
+import { RefObject, useEffect, useState } from "react";
+import { useDrag, useDrop, XYCoord } from "react-dnd";
+import { getEmptyImage } from "react-dnd-html5-backend";
 import { useBookmark, useBookmarksState } from "../../redux/ducks/bookmarks/selectors";
 import { BookmarkMap, FlattenedBookmarkTreeNode } from "../../redux/ducks/bookmarks/state";
 import { DropType, isModifiable } from "./utils";
@@ -8,9 +9,7 @@ export const DragTypes = {
   BOOKMARK: "bookmark"
 };
 
-// TODO - Better drag preview - Preferably a copy of the element in a portal
 export function useBookmarkDrag(id: string, ref: RefObject<HTMLDivElement>): { 
-  preview: ConnectDragPreview, 
   isDragging: boolean 
 } {
   const bookmark = useBookmark(id);
@@ -22,9 +21,13 @@ export function useBookmarkDrag(id: string, ref: RefObject<HTMLDivElement>): {
       isDragging: !!monitor.isDragging()
     })
   }));
+  
+  useEffect(() => {
+    preview(getEmptyImage(), { captureDraggingState: true });
+  }, [preview]);
 
   drag(ref);
-  return { preview, isDragging };
+  return { isDragging };
 }
 
 // TODO - Functional drop
