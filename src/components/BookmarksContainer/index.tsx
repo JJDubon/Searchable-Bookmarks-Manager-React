@@ -1,4 +1,6 @@
 import { useEffect } from "react";
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useDispatch } from 'react-redux';
 import { loadBookmarks } from "../../redux/ducks/bookmarks/actions";
 import { useBookmarksState } from "../../redux/ducks/bookmarks/selectors";
@@ -23,7 +25,9 @@ export const BookmarksContainer = () => {
 
   return (
     <Container>
-      <BookmarksList ids={activeNodes} defaultOpen={true} />
+      <DndProvider backend={HTML5Backend}>
+        <BookmarksList ids={activeNodes} defaultOpen={true} />
+      </DndProvider>
     </Container>
   )
 }

@@ -1,7 +1,5 @@
 import { List } from '@mui/material';
-import { useBookmarksState } from '../../redux/ducks/bookmarks/selectors';
-import { Bookmark } from './bookmark';
-import { Folder } from './folder';
+import { BookmarkSwitch } from './bookmark-switch';
 
 interface BookmarksListProps {
   ids: string[];
@@ -14,17 +12,16 @@ export const BookmarksList = ({
   indentLevel = 0,
   defaultOpen = false,
 }: BookmarksListProps) => {
-  const { map } = useBookmarksState();
   return (
     <List disablePadding>
-      {ids.map(id => {
-        const node = map[id];
-        if (node.children) {
-          return <Folder key={id} id={id} indentLevel={indentLevel} defaultOpen={defaultOpen} />
-        } else {
-          return <Bookmark key={id} id={id} indentLevel={indentLevel} />
-        }
-      })}
+      {ids.map(id => (
+        <BookmarkSwitch 
+          key={id} 
+          id={id} 
+          indentLevel={indentLevel} 
+          defaultOpen={defaultOpen} 
+        />)
+      )}
     </List>
   );
 }

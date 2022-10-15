@@ -9,7 +9,6 @@ const defaultState: SettingsState = {
 };
 
 export default function reducer(state: SettingsState = defaultState, action: SettingsActions) {
-  console.log({state, action});
   switch (action.type) {
     case 'SETTINGS_LOAD_SUCCESS':
       return {
