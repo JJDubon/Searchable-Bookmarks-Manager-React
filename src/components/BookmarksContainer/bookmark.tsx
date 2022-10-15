@@ -5,6 +5,7 @@ import { useBookmark } from '../../redux/ducks/bookmarks/selectors';
 import { useSettings } from '../../redux/ducks/settings/selectors';
 import { useBookmarkDrag, useBookmarkDrop } from './drag';
 import { BookmarkButton, BookmarkContainer, BookmarkIcon, BookmarkImg, BookmarkPrimaryTextOverrides } from './styles';
+import { isModifiable } from './utils';
 
 const getFaviconUrl = (url: string, size: number = 32) => {
   return `chrome-extension://${chrome.runtime.id}/_favicon/?pageUrl=${encodeURIComponent(url)}&size=${size}`;
@@ -26,7 +27,7 @@ export const Bookmark = ({ id, indentLevel }: BookmarksProps) => {
   }, [fontSize, noWrap]);
 
   return (
-    <BookmarkContainer ref={ref} type={'bookmark'} isDragging={isDragging} dropType={dropType}>
+    <BookmarkContainer ref={ref} type={'bookmark'} isDragging={isDragging} isModifiable={isModifiable(bookmark)} dropType={dropType}>
       <BookmarkButton component="a" sx={{ pl: getIndent(indentLevel) }}>
         <BookmarkIcon>
           <BookmarkImg alt={''} src={getFaviconUrl(bookmark.url!)} />

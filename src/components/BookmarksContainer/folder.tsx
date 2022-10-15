@@ -1,3 +1,4 @@
+import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import FolderIcon from '@mui/icons-material/Folder';
 import { Collapse, ListItemText } from '@mui/material';
@@ -9,6 +10,7 @@ import { useSettings } from '../../redux/ducks/settings/selectors';
 import { BookmarksList } from './bookmark-list';
 import { useBookmarkDrag, useBookmarkDrop } from './drag';
 import { BookmarkButton, BookmarkContainer, BookmarkIcon, BookmarkPrimaryTextOverrides } from './styles';
+import { isModifiable } from './utils';
 
 interface FolderProps {
   id: string;
@@ -28,10 +30,10 @@ export const Folder = ({ id, indentLevel, defaultOpen = false }: FolderProps) =>
   }, [fontSize, noWrap]);
   
   return <>
-    <BookmarkContainer ref={ref} type={'folder'} isDragging={isDragging} isOpen={open} dropType={dropType}>
+    <BookmarkContainer ref={ref} type={'folder'} isDragging={isDragging} isOpen={open} isModifiable={isModifiable(folder)} dropType={dropType}>
       <BookmarkButton sx={{ pl: getIndent(indentLevel) }} onClick={() => setOpen(!open)}>
         <BookmarkIcon>
-          <FolderIcon />
+          {getFolderIcon()}
         </BookmarkIcon>
         <ListItemText
           primary={folder.title}
@@ -48,6 +50,24 @@ export const Folder = ({ id, indentLevel, defaultOpen = false }: FolderProps) =>
       <BookmarksList ids={folder.children || []} indentLevel={indentLevel + 1} />
     </Collapse>
   </>;
+
+  function getFolderIcon(): JSX.Element {
+    const isCenter = dropType === 'top-center' || dropType === 'bottom-center';
+    const isBottom = dropType === 'bottom';
+    if (open) {
+      if (isCenter || isBottom) {
+        return <CreateNewFolderIcon />;
+      } else {
+        return <FolderIcon />;
+      }
+    } else {
+      if (isCenter) {
+        return <CreateNewFolderIcon />;
+      } else {
+        return <FolderIcon />;
+      }
+    }
+  }
 
   function getRotation(): number {
     return open ? 0 : 180;

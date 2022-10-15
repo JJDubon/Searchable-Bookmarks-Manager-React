@@ -1,7 +1,8 @@
 import { RefObject, useState } from "react";
 import { ConnectDragPreview, useDrag, useDrop, XYCoord } from "react-dnd";
-import { useBookmark } from "../../redux/ducks/bookmarks/selectors";
-import { FlattenedBookmarkTreeNode } from "../../redux/ducks/bookmarks/state";
+import { useBookmark, useBookmarksState } from "../../redux/ducks/bookmarks/selectors";
+import { BookmarkMap, FlattenedBookmarkTreeNode } from "../../redux/ducks/bookmarks/state";
+import { isModifiable } from "./utils";
 
 export type DropType = 'bottom' | 'top' | 'bottom-center' | 'top-center' | null;
 
@@ -17,7 +18,7 @@ export function useBookmarkDrag(id: string, ref: RefObject<HTMLDivElement>): {
   const bookmark = useBookmark(id);
   const [{ isDragging }, drag, preview] = useDrag(() => ({
     type: DragTypes.BOOKMARK,
-    canDrag: () => bookmark.parentId !== "0",
+    canDrag: () => isModifiable(bookmark),
     item: () => bookmark,
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging()
@@ -33,9 +34,13 @@ export function useBookmarkDrop(id: string, ref: RefObject<HTMLDivElement>): {
   isOver: boolean,
   dropType: DropType
 } {
+  const { map } = useBookmarksState();
   const [dropType, setDropType] = useState<DropType>(null);
   const [{ isOver }, drop] = useDrop(() => ({
     accept: DragTypes.BOOKMARK,
+    canDrop: (item: FlattenedBookmarkTreeNode) => {
+      return item.id === id || !isChildOf(map, item.id, id)
+    },
     hover: (item: FlattenedBookmarkTreeNode, monitor) => {
       if (!ref.current || id === item.id) {
         setDropType(null);
@@ -58,6 +63,19 @@ export function useBookmarkDrop(id: string, ref: RefObject<HTMLDivElement>): {
     isOver, 
     dropType: isOver ? dropType : null,
   };
+}
+
+function isChildOf(map: BookmarkMap, dragId: string, targetId: string): boolean {
+  let current = targetId as string | undefined;
+  while (current && map[current]) {
+    if (map[current].id === dragId) {
+      return true;
+    }
+
+    current = map[current].parentId;
+  }
+
+  return false;
 }
 
 function getDropType(hoverClientY: number, hoverMiddleY: number): DropType {

@@ -13,6 +13,7 @@ interface BookmarkContainerProps {
   type: BookmarkType,
   isDragging: boolean,
   isOpen?: boolean,
+  isModifiable?: boolean,
   dropType: DropType,
 }
 
@@ -21,10 +22,11 @@ export const BookmarkContainer = styled("div")<BookmarkContainerProps>(({
   type,
   isDragging,
   isOpen = false,
+  isModifiable = true,
   dropType,
 }) => ({
   opacity: isDragging ? 0.5 : 1,
-  ...getDragStyles(theme, type, isOpen, dropType)
+  ...getDragStyles(theme, type,isModifiable, isOpen, dropType)
 }));
 
 export const BookmarkButton = styled(ListItemButton)(({theme}) => ({
@@ -59,42 +61,48 @@ export const BookmarkPrimaryTextOverrides = (fontSize: string, noWrap: boolean) 
   return settings;
 }
 
-function getDragStyles(theme: Theme, type: BookmarkType, isOpen: boolean, dropType: DropType) {
+function getDragStyles(theme: Theme, type: BookmarkType, isModifiable: boolean, isOpen: boolean, dropType: DropType) {
+  const defaultStyles = { backgroundColor: theme.backgrounds.offset(0), padding: '2px 0' };
+  const dropInsideStyles = { backgroundColor: theme.backgrounds.offset(8), padding: '2px 0' };
+  const dropAboveStyles = { borderTop: '2px solid gray', paddingBottom: '2px' };
+  const dropBelowStyles = { borderBottom: '2px solid gray', paddingTop: '2px' };
   if (type === 'folder') {
-    if (isOpen) {
+    if (!isModifiable) {
+      return dropType === null ? defaultStyles : dropInsideStyles;
+    } else if (isOpen) {
       switch (dropType) {
         case 'top':
-          return { borderTop: '2px solid gray' };
+          return dropAboveStyles;
         case 'bottom':
         case 'top-center':
         case 'bottom-center':
-          return { backgroundColor: theme.backgrounds.offset(8) };
+          return dropInsideStyles;
         default:
-          return { backgroundColor: theme.backgrounds.offset(0) };
+          return defaultStyles;
       }
     } else {
       switch (dropType) {
         case 'top':
-          return { borderTop: '2px solid gray' };
+          return dropAboveStyles;
         case 'bottom':
-          return { borderBottom: '2px solid gray' };
+          return dropBelowStyles;
         case 'top-center':
         case 'bottom-center':
-          return { backgroundColor: theme.backgrounds.offset(8) };
+          return dropInsideStyles;
         default:
-          return { backgroundColor: theme.backgrounds.offset(0) };
+          return defaultStyles;
       }
     }
   } else {
     switch (dropType) {
       case 'top':
       case 'top-center':
-        return { borderTop: '2px solid gray' };
+        return dropAboveStyles;
       case 'bottom':
       case 'bottom-center':
-        return { borderBottom: '2px solid gray' };
+        return dropBelowStyles;
       default:
-        return { backgroundColor: theme.backgrounds.offset(0) };
+        return defaultStyles;
     }
   }
 }
