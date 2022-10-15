@@ -10,7 +10,7 @@ import { useSettings } from '../../redux/ducks/settings/selectors';
 import { BookmarksList } from './bookmark-list';
 import { useBookmarkDrag, useBookmarkDrop } from './drag';
 import { BookmarkButton, BookmarkContainer, BookmarkIcon, BookmarkPrimaryTextOverrides } from './styles';
-import { isModifiable } from './utils';
+import { getDropBehavior, isModifiable } from './utils';
 
 interface FolderProps {
   id: string;
@@ -52,20 +52,11 @@ export const Folder = ({ id, indentLevel, defaultOpen = false }: FolderProps) =>
   </>;
 
   function getFolderIcon(): JSX.Element {
-    const isCenter = dropType === 'top-center' || dropType === 'bottom-center';
-    const isBottom = dropType === 'bottom';
-    if (open) {
-      if (isCenter || isBottom) {
-        return <CreateNewFolderIcon />;
-      } else {
-        return <FolderIcon />;
-      }
+    const dropBehavior = getDropBehavior('folder', isModifiable(folder), open, dropType);
+    if (dropBehavior === 'inside') {
+      return <CreateNewFolderIcon />;
     } else {
-      if (isCenter) {
-        return <CreateNewFolderIcon />;
-      } else {
-        return <FolderIcon />;
-      }
+      return <FolderIcon />;
     }
   }
 

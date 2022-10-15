@@ -1,5 +1,5 @@
 import { ListItemButton, ListItemIcon, styled, Theme, TypographyProps } from "@mui/material";
-import { DropType } from "./drag";
+import { BookmarkType, DropType, getDropBehavior } from "./utils";
 
 export const Container = styled('div')(({ theme }) => ({
   backgroundColor: theme.backgrounds.offset(1),
@@ -8,7 +8,6 @@ export const Container = styled('div')(({ theme }) => ({
   padding: "8px 0",
 }));
 
-type BookmarkType = 'folder' | 'bookmark';
 interface BookmarkContainerProps {
   type: BookmarkType,
   isDragging: boolean,
@@ -62,47 +61,14 @@ export const BookmarkPrimaryTextOverrides = (fontSize: string, noWrap: boolean) 
 }
 
 function getDragStyles(theme: Theme, type: BookmarkType, isModifiable: boolean, isOpen: boolean, dropType: DropType) {
-  const defaultStyles = { backgroundColor: theme.backgrounds.offset(0), padding: '2px 0' };
-  const dropInsideStyles = { backgroundColor: theme.backgrounds.offset(8), padding: '2px 0' };
-  const dropAboveStyles = { borderTop: '2px solid gray', paddingBottom: '2px' };
-  const dropBelowStyles = { borderBottom: '2px solid gray', paddingTop: '2px' };
-  if (type === 'folder') {
-    if (!isModifiable) {
-      return dropType === null ? defaultStyles : dropInsideStyles;
-    } else if (isOpen) {
-      switch (dropType) {
-        case 'top':
-          return dropAboveStyles;
-        case 'bottom':
-        case 'top-center':
-        case 'bottom-center':
-          return dropInsideStyles;
-        default:
-          return defaultStyles;
-      }
-    } else {
-      switch (dropType) {
-        case 'top':
-          return dropAboveStyles;
-        case 'bottom':
-          return dropBelowStyles;
-        case 'top-center':
-        case 'bottom-center':
-          return dropInsideStyles;
-        default:
-          return defaultStyles;
-      }
-    }
-  } else {
-    switch (dropType) {
-      case 'top':
-      case 'top-center':
-        return dropAboveStyles;
-      case 'bottom':
-      case 'bottom-center':
-        return dropBelowStyles;
-      default:
-        return defaultStyles;
-    }
+  switch (getDropBehavior(type, isModifiable, isOpen, dropType)) {
+    case 'above':
+      return { borderTop: '2px solid gray', paddingBottom: '2px' };
+    case 'below':
+      return { borderBottom: '2px solid gray', paddingTop: '2px' };
+    case 'inside':
+      return { backgroundColor: theme.backgrounds.offset(8), padding: '2px 0' };
+    default:
+      return { backgroundColor: theme.backgrounds.offset(0), padding: '2px 0' };
   }
 }

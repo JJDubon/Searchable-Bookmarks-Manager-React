@@ -2,9 +2,7 @@ import { RefObject, useState } from "react";
 import { ConnectDragPreview, useDrag, useDrop, XYCoord } from "react-dnd";
 import { useBookmark, useBookmarksState } from "../../redux/ducks/bookmarks/selectors";
 import { BookmarkMap, FlattenedBookmarkTreeNode } from "../../redux/ducks/bookmarks/state";
-import { isModifiable } from "./utils";
-
-export type DropType = 'bottom' | 'top' | 'bottom-center' | 'top-center' | null;
+import { DropType, isModifiable } from "./utils";
 
 export const DragTypes = {
   BOOKMARK: "bookmark"
@@ -81,7 +79,7 @@ function isChildOf(map: BookmarkMap, dragId: string, targetId: string): boolean 
 function getDropType(hoverClientY: number, hoverMiddleY: number): DropType {
   const isBottomHalf = hoverClientY > hoverMiddleY;
   const difference = Math.abs(hoverMiddleY - hoverClientY);
-  const isCenter = difference <= 6;
+  const isCenter = difference <= 7;
   const direction = isBottomHalf ? 'bottom' : 'top';
   return (isCenter ? direction + '-center' : direction) as DropType;
 }
