@@ -15,5 +15,5 @@ function* loadBookmarkSaga() {
 }
 
 export function* bookmarksSagas() {
-  yield takeEvery("BOOKMARKS_LOAD", loadBookmarkSaga);
+  yield takeEvery('BOOKMARKS_LOAD', loadBookmarkSaga);
 }

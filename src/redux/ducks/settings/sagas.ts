@@ -1,6 +1,12 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { getAppSettings, setAppSettings } from '../../../helpers/ChromeApiHelpers';
-import { loadSettingsFailure, loadSettingsSuccess, setSettings, setSettingsFailure, setSettingsSuccess } from './actions';
+import {
+  loadSettingsFailure,
+  loadSettingsSuccess,
+  setSettings,
+  setSettingsFailure,
+  setSettingsSuccess,
+} from './actions';
 import { SettingsState, SettingsStateKeys } from './state';
 
 export function* loadSettingsSaga() {
@@ -22,6 +28,6 @@ export function* setSettingsSaga({ payload }: ReturnType<typeof setSettings>) {
 }
 
 export function* settingsSagas() {
-  yield takeEvery("SETTINGS_LOAD", loadSettingsSaga);
-  yield takeEvery<ReturnType<typeof setSettings>>("SETTINGS_SET", setSettingsSaga);
+  yield takeEvery('SETTINGS_LOAD', loadSettingsSaga);
+  yield takeEvery<ReturnType<typeof setSettings>>('SETTINGS_SET', setSettingsSaga);
 }

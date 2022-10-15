@@ -1,11 +1,11 @@
-import { CSSProperties, useMemo } from "react";
-import { useDragLayer, XYCoord } from "react-dnd";
-import { FlattenedBookmarkTreeNode } from "../../redux/ducks/bookmarks/state";
-import { BookmarkSwitch } from "./bookmark-switch";
+import { CSSProperties, useMemo } from 'react';
+import { useDragLayer, XYCoord } from 'react-dnd';
+import { FlattenedBookmarkTreeNode } from '../../redux/ducks/bookmarks/state';
+import { BookmarkSwitch } from './bookmark-switch';
 
 const layerStyles: CSSProperties = {
-  position: "fixed",
-  pointerEvents: "none",
+  position: 'fixed',
+  pointerEvents: 'none',
   zIndex: 100,
   left: 0,
   top: 0,
@@ -18,7 +18,7 @@ function getItemStyles(
 ) {
   if (!initialOffset || !currentOffset || !initialCursorOffset) {
     return {
-      display: "none",
+      display: 'none',
     };
   }
 
@@ -33,20 +33,16 @@ function getItemStyles(
 }
 
 export const BookmarkDragPreview = () => {
-  const {
-    item,
-    isDragging,
-    initialCursorOffset,
-    initialFileOffset,
-    currentFileOffset,
-  } = useDragLayer((monitor) => ({
-    item: monitor.getItem() as FlattenedBookmarkTreeNode,
-    itemType: monitor.getItemType(),
-    initialCursorOffset: monitor.getInitialClientOffset(),
-    initialFileOffset: monitor.getInitialSourceClientOffset(),
-    currentFileOffset: monitor.getSourceClientOffset(),
-    isDragging: monitor.isDragging(),
-  }));
+  const { item, isDragging, initialCursorOffset, initialFileOffset, currentFileOffset } = useDragLayer(
+    (monitor) => ({
+      item: monitor.getItem() as FlattenedBookmarkTreeNode,
+      itemType: monitor.getItemType(),
+      initialCursorOffset: monitor.getInitialClientOffset(),
+      initialFileOffset: monitor.getInitialSourceClientOffset(),
+      currentFileOffset: monitor.getSourceClientOffset(),
+      isDragging: monitor.isDragging(),
+    })
+  );
 
   const itemStyles = useMemo(() => {
     return getItemStyles(initialCursorOffset, initialFileOffset, currentFileOffset);
@@ -59,12 +55,7 @@ export const BookmarkDragPreview = () => {
   return (
     <div style={layerStyles}>
       <div style={itemStyles}>
-        <BookmarkSwitch
-          id={item.id}
-          indentLevel={0}
-          defaultOpen={false}
-          hideDetails
-        />
+        <BookmarkSwitch id={item.id} indentLevel={0} defaultOpen={false} hideDetails />
       </div>
     </div>
   );

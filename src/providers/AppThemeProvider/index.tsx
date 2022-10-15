@@ -4,23 +4,23 @@ import { useSettings } from '../../redux/ducks/settings/selectors';
 declare module '@mui/material/styles' {
   interface Theme {
     backgrounds: {
-      offset: (factor: number) => string,
-    },
+      offset: (factor: number) => string;
+    };
     bookmarks: {
-      fontColor: string,
-      padding: string,
-      adjustablePadding: (factor: number) => string,
-    }
+      fontColor: string;
+      padding: string;
+      adjustablePadding: (factor: number) => string;
+    };
   }
   interface ThemeOptions {
     backgrounds?: {
-      offset?: (factor: number) => string
-    },
+      offset?: (factor: number) => string;
+    };
     bookmarks?: {
-      fontColor?: string,
-      padding?: string,
-      adjustablePadding?: (factor: number) => string,
-    }
+      fontColor?: string;
+      padding?: string;
+      adjustablePadding?: (factor: number) => string;
+    };
   }
 }
 
@@ -30,7 +30,7 @@ interface AppThemeProviderProps {
 
 export const getIndent = (factor: number): number => {
   return 0.8 * factor;
-}
+};
 
 export const AppThemeProvider = ({ children }: AppThemeProviderProps) => {
   const settings = useSettings();
@@ -39,15 +39,11 @@ export const AppThemeProvider = ({ children }: AppThemeProviderProps) => {
       offset: (factor) => `rgba(0,0,0,${0.01 * factor})`,
     },
     bookmarks: {
-      fontColor: "black",
+      fontColor: 'black',
       padding: settings.padding,
       adjustablePadding: (factor: number) => `calc(${settings.padding} * ${factor})`,
     },
-  })
+  });
 
-  return (
-    <ThemeProvider theme={theme}>
-      {children}
-    </ThemeProvider>
-  )
-}
+  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+};

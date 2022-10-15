@@ -8,9 +8,7 @@ import { AppThemeProvider } from './providers/AppThemeProvider';
 import store from './redux';
 import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(
   <React.StrictMode>

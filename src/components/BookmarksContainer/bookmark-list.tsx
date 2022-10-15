@@ -7,21 +7,12 @@ interface BookmarksListProps {
   defaultOpen?: boolean;
 }
 
-export const BookmarksList = ({ 
-  ids, 
-  indentLevel = 0,
-  defaultOpen = false,
-}: BookmarksListProps) => {
+export const BookmarksList = ({ ids, indentLevel = 0, defaultOpen = false }: BookmarksListProps) => {
   return (
     <List disablePadding>
-      {ids.map(id => (
-        <BookmarkSwitch 
-          key={id} 
-          id={id} 
-          indentLevel={indentLevel} 
-          defaultOpen={defaultOpen} 
-        />)
-      )}
+      {ids.map((id) => (
+        <BookmarkSwitch key={id} id={id} indentLevel={indentLevel} defaultOpen={defaultOpen} />
+      ))}
     </List>
   );
-}
+};

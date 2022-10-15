@@ -11,16 +11,13 @@ const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
   combineReducers({
     bookmarks: bookmarksReducer,
-    settings: settingsReducer
+    settings: settingsReducer,
   }),
   applyMiddleware(sagaMiddleware)
-)
+);
 
 function* defaultSaga() {
-  yield all([
-    settingsSagas(),
-    bookmarksSagas()
-  ]);
+  yield all([settingsSagas(), bookmarksSagas()]);
 }
 
 sagaMiddleware.run(defaultSaga);

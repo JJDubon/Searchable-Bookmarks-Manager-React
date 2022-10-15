@@ -1,11 +1,11 @@
-import { BookmarksActions } from "./actions";
-import { BookmarksState } from "./state"
+import { BookmarksActions } from './actions';
+import { BookmarksState } from './state';
 
 const defaultState: BookmarksState = {
   loading: true,
   root: [],
   activeNodes: [],
-  map: {}
+  map: {},
 };
 
 export default function reducer(state: BookmarksState = defaultState, action: BookmarksActions) {
@@ -17,7 +17,7 @@ export default function reducer(state: BookmarksState = defaultState, action: Bo
         root: action.payload.root,
         activeNodes: action.payload.root,
         map: action.payload.map,
-      }
+      };
     case 'BOOKMARKS_LOAD_FAILURE':
       return {
         ...state,
@@ -25,8 +25,8 @@ export default function reducer(state: BookmarksState = defaultState, action: Bo
         root: [],
         activeNodes: [],
         map: {},
-      }
+      };
     default:
-      return state
+      return state;
   }
 }

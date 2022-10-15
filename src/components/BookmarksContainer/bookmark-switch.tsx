@@ -9,16 +9,24 @@ interface BookmarkSwitchProps {
   hideDetails?: boolean;
 }
 
-export const BookmarkSwitch = ({ 
-  id, 
+export const BookmarkSwitch = ({
+  id,
   indentLevel = 0,
   defaultOpen = false,
   hideDetails = false,
 }: BookmarkSwitchProps) => {
   const bookmark = useBookmark(id);
   if (bookmark.children) {
-    return <Folder key={id} id={id} indentLevel={indentLevel} defaultOpen={defaultOpen} hideDetails={hideDetails} />;
+    return (
+      <Folder
+        key={id}
+        id={id}
+        indentLevel={indentLevel}
+        defaultOpen={defaultOpen}
+        hideDetails={hideDetails}
+      />
+    );
   } else {
-    return <Bookmark key={id} id={id} indentLevel={indentLevel} />
+    return <Bookmark key={id} id={id} indentLevel={indentLevel} />;
   }
-}
+};

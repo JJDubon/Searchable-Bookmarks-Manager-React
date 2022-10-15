@@ -1,19 +1,18 @@
 import { styled } from '@mui/material/styles';
 
 const Frame = styled('div')(({ theme }) => ({
-  height: "100vh",
-  width: "100vw",
-  overflow: "hidden",
+  height: '100vh',
+  width: '100vw',
+  overflow: 'hidden',
 
-  display: "grid",
-  gridTemplateRows: `86px 1fr`
+  display: 'grid',
+  gridTemplateRows: `86px 1fr`,
 }));
 
-const Header = styled('div')(({ theme }) => ({
-}));
+const Header = styled('div')(({ theme }) => ({}));
 
 const Main = styled('div')(({ theme }) => ({
-  overflow: "auto"
+  overflow: 'auto',
 }));
 
 export interface ApplicationFrameProps {
@@ -21,15 +20,11 @@ export interface ApplicationFrameProps {
   children: JSX.Element;
 }
 
-export const ApplicationFrame = ({header, children}: ApplicationFrameProps) => {
+export const ApplicationFrame = ({ header, children }: ApplicationFrameProps) => {
   return (
     <Frame>
-      <Header>
-        {header}
-      </Header>
-      <Main>
-        {children}
-      </Main>
+      <Header>{header}</Header>
+      <Main>{children}</Main>
     </Frame>
-  )
-}
+  );
+};

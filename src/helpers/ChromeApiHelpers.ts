@@ -1,5 +1,5 @@
-import { BookmarkTreeNode } from "../redux/ducks/bookmarks/state";
-import { SettingsState } from "../redux/ducks/settings/state";
+import { BookmarkTreeNode } from '../redux/ducks/bookmarks/state';
+import { SettingsState } from '../redux/ducks/settings/state';
 
 export function getChromeInstance(): typeof chrome {
   const browserInstance = window.chrome || (window as any)['browser'];

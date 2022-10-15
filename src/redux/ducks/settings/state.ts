@@ -1,12 +1,8 @@
-export const SettingsStateKeys: (keyof SettingsState)[] = [
-  'fontSize',
-  'padding',
-  'noWrap'
-];
+export const SettingsStateKeys: (keyof SettingsState)[] = ['fontSize', 'padding', 'noWrap'];
 
 export interface SettingsState {
-  loading: boolean,
-  fontSize: string,
-  padding: string,
-  noWrap: boolean,
+  loading: boolean;
+  fontSize: string;
+  padding: string;
+  noWrap: boolean;
 }

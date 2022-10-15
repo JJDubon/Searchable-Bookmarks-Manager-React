@@ -1,17 +1,17 @@
-import { FlattenedBookmarkTreeNode } from "../../redux/ducks/bookmarks/state";
+import { FlattenedBookmarkTreeNode } from '../../redux/ducks/bookmarks/state';
 
 export type BookmarkType = 'folder' | 'bookmark';
 
 export type DropType = 'bottom' | 'top' | 'bottom-center' | 'top-center' | null;
 
 export function isModifiable(bookmark: FlattenedBookmarkTreeNode): boolean {
-  return bookmark.parentId !== "0";
+  return bookmark.parentId !== '0';
 }
 
 export function getDropBehavior(
-  type: BookmarkType, 
-  isModifiable: boolean, 
-  isOpen: boolean, 
+  type: BookmarkType,
+  isModifiable: boolean,
+  isOpen: boolean,
   dropType: DropType
 ): 'above' | 'below' | 'inside' | null {
   if (type === 'folder') {

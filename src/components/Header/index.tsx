@@ -8,46 +8,44 @@ import TextField from '@mui/material/TextField';
 const Container = styled('div')(({ theme }) => ({
   backgroundColor: theme.backgrounds.offset(3),
   borderBottom: `2px solid ${theme.backgrounds.offset(8)}`,
-  display: "flex",
-  height: "100%",
-  padding: "0 18px",
+  display: 'flex',
+  height: '100%',
+  padding: '0 18px',
 }));
 
 const SearchField = styled(TextField)(({ theme }) => ({
-  alignSelf: "center",
-  width: "100%",
+  alignSelf: 'center',
+  width: '100%',
 }));
 
 interface HeaderProps {
   showSettings: () => void;
-};
+}
 
 export const Header = ({ showSettings }: HeaderProps) => {
   return (
     <Container>
-      <SearchField 
-        label="Search bookmarks" 
-        variant="standard"
-        sx={{ "& .MuiInput-underline": { paddingBottom: "4px" } }}
-        InputProps = {
-          {
-            startAdornment: (
-              <InputAdornment position="start">
-                <IconButton aria-label="search">
-                  <SearchIcon />
-                </IconButton>
-              </InputAdornment>
-            ),
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton aria-label="settings" onClick={showSettings}>
-                  <SettingsIcon />
-                </IconButton>
-              </InputAdornment>
-            )
-          }
-        }
-        />
-      </Container>
-  )
-}
+      <SearchField
+        label='Search bookmarks'
+        variant='standard'
+        sx={{ '& .MuiInput-underline': { paddingBottom: '4px' } }}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position='start'>
+              <IconButton aria-label='search'>
+                <SearchIcon />
+              </IconButton>
+            </InputAdornment>
+          ),
+          endAdornment: (
+            <InputAdornment position='end'>
+              <IconButton aria-label='settings' onClick={showSettings}>
+                <SettingsIcon />
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+      />
+    </Container>
+  );
+};

@@ -1,10 +1,10 @@
-import { SettingsActions } from "./actions";
-import { SettingsState } from "./state";
+import { SettingsActions } from './actions';
+import { SettingsState } from './state';
 
 const defaultState: SettingsState = {
   loading: true,
-  fontSize: "14px",
-  padding: "2px",
+  fontSize: '14px',
+  padding: '2px',
   noWrap: true,
 };
 
@@ -14,19 +14,19 @@ export default function reducer(state: SettingsState = defaultState, action: Set
       return {
         ...state,
         ...action.payload,
-        loading: false
-      }
+        loading: false,
+      };
     case 'SETTINGS_LOAD_FAILURE':
       return {
         ...state,
-        loading: false
-      }
+        loading: false,
+      };
     case 'SETTINGS_SET_SUCCESS':
       return {
         ...state,
-        ...action.payload
-      }
+        ...action.payload,
+      };
     default:
-      return state
+      return state;
   }
 }

@@ -1,11 +1,11 @@
 export type BookmarkTreeNode = chrome.bookmarks.BookmarkTreeNode;
 
-export interface FlattenedBookmarkTreeNode extends Omit<BookmarkTreeNode, "children"> {
+export interface FlattenedBookmarkTreeNode extends Omit<BookmarkTreeNode, 'children'> {
   children?: string[];
 }
 
 export interface BookmarkMap {
-  [id: string]: FlattenedBookmarkTreeNode
+  [id: string]: FlattenedBookmarkTreeNode;
 }
 
 export interface BookmarksState {

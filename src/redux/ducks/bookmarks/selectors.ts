@@ -1,5 +1,5 @@
-import { useSelector } from "react-redux";
-import { State } from "../../state";
+import { useSelector } from 'react-redux';
+import { State } from '../../state';
 
 export function useBookmarksState() {
   return useSelector((state: State) => {
