@@ -7,7 +7,7 @@ interface ContextMenuContainerProps {
 }
 
 export const ContextMenuContainer = styled(Paper)<ContextMenuContainerProps>(({ theme, open, x, y }) => ({
-  display: open ? 'inline' : 'none',
+  display: open ? 'block' : 'none',
   position: 'fixed',
   left: x,
   top: y,
