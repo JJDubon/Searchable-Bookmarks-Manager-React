@@ -9,6 +9,7 @@ import { useAppIsLoading } from '../../redux/selectors';
 import { BookmarksList } from './bookmark-list';
 import { BookmarkDragPreview } from './drag-preview';
 import { Container } from './styles';
+import { ContextMenu } from './WithContextMenu/context-menu';
 
 export const BookmarksContainer = () => {
   const loading = useAppIsLoading();
@@ -28,6 +29,7 @@ export const BookmarksContainer = () => {
     <Container>
       <DndProvider backend={HTML5Backend}>
         <BookmarkDragPreview />
+        <ContextMenu />
         <BookmarksList ids={activeNodes} />
       </DndProvider>
     </Container>

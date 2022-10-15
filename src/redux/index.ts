@@ -4,6 +4,8 @@ import createSagaMiddleware from 'redux-saga';
 import { all } from 'redux-saga/effects';
 import bookmarksReducer from './ducks/bookmarks/reducer';
 import { bookmarksSagas } from './ducks/bookmarks/sagas';
+import contextReducer from './ducks/context/reducer';
+import { contextStateSagas } from './ducks/context/sagas';
 import listReducer from './ducks/list/reducer';
 import { listStateSagas } from './ducks/list/sagas';
 import settingsReducer from './ducks/settings/reducer';
@@ -15,12 +17,13 @@ const store = createStore(
     list: listReducer,
     bookmarks: bookmarksReducer,
     settings: settingsReducer,
+    context: contextReducer,
   }),
   applyMiddleware(sagaMiddleware)
 );
 
 function* defaultSaga() {
-  yield all([listStateSagas(), settingsSagas(), bookmarksSagas()]);
+  yield all([listStateSagas(), settingsSagas(), bookmarksSagas(), contextStateSagas()]);
 }
 
 sagaMiddleware.run(defaultSaga);

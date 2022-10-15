@@ -13,6 +13,7 @@ import { BookmarksList } from './bookmark-list';
 import { useBookmarkDrag, useBookmarkDrop } from './drag';
 import { BookmarkButton, BookmarkContainer, BookmarkIcon, BookmarkPrimaryTextOverrides } from './styles';
 import { getDropBehavior, isModifiable, useOpenStatus } from './utils';
+import { WithContextMenu } from './WithContextMenu';
 
 interface FolderProps {
   id: string;
@@ -48,28 +49,30 @@ export const Folder = ({ id, indentLevel, hideDetails = false, forceClose = fals
 
   return (
     <>
-      <BookmarkContainer
-        ref={ref}
-        type={'folder'}
-        isDragging={isDragging}
-        isOpen={open}
-        isModifiable={isModifiable(folder)}
-        dropType={dropType}
-      >
-        <BookmarkButton sx={{ pl: getIndent(indentLevel) }} onClick={() => toggleOpen()}>
-          <BookmarkIcon>{folderIcon}</BookmarkIcon>
-          <ListItemText primary={folder.title} primaryTypographyProps={overrides} />
-          {!hideDetails && (
-            <motion.div
-              animate={{ rotate: getRotation() }}
-              transition={{ type: 'ease' }}
-              style={{ rotate: getRotation() }}
-            >
-              <ExpandLess style={{ opacity: 0.15 }} />
-            </motion.div>
-          )}
-        </BookmarkButton>
-      </BookmarkContainer>
+      <WithContextMenu bookmark={folder}>
+        <BookmarkContainer
+          ref={ref}
+          type={'folder'}
+          isDragging={isDragging}
+          isOpen={open}
+          isModifiable={isModifiable(folder)}
+          dropType={dropType}
+        >
+          <BookmarkButton sx={{ pl: getIndent(indentLevel) }} onClick={() => toggleOpen()}>
+            <BookmarkIcon>{folderIcon}</BookmarkIcon>
+            <ListItemText primary={folder.title} primaryTypographyProps={overrides} />
+            {!hideDetails && (
+              <motion.div
+                animate={{ rotate: getRotation() }}
+                transition={{ type: 'ease' }}
+                style={{ rotate: getRotation() }}
+              >
+                <ExpandLess style={{ opacity: 0.15 }} />
+              </motion.div>
+            )}
+          </BookmarkButton>
+        </BookmarkContainer>
+      </WithContextMenu>
       <Collapse in={open} timeout='auto' unmountOnExit>
         <BookmarksList ids={folder.children || []} indentLevel={indentLevel + 1} />
       </Collapse>

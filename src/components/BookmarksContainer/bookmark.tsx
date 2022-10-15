@@ -12,6 +12,7 @@ import {
   BookmarkPrimaryTextOverrides,
 } from './styles';
 import { isModifiable } from './utils';
+import { WithContextMenu } from './WithContextMenu';
 
 const getFaviconUrl = (url: string, size: number = 32) => {
   return `chrome-extension://${chrome.runtime.id}/_favicon/?pageUrl=${encodeURIComponent(url)}&size=${size}`;
@@ -33,19 +34,21 @@ export const Bookmark = ({ id, indentLevel }: BookmarksProps) => {
   }, [fontSize, noWrap]);
 
   return (
-    <BookmarkContainer
-      ref={ref}
-      type={'bookmark'}
-      isDragging={isDragging}
-      isModifiable={isModifiable(bookmark)}
-      dropType={dropType}
-    >
-      <BookmarkButton component='a' sx={{ pl: getIndent(indentLevel) }}>
-        <BookmarkIcon>
-          <BookmarkImg alt={''} src={getFaviconUrl(bookmark.url!)} />
-        </BookmarkIcon>
-        <ListItemText primary={bookmark.title} primaryTypographyProps={overrides} />
-      </BookmarkButton>
-    </BookmarkContainer>
+    <WithContextMenu bookmark={bookmark}>
+      <BookmarkContainer
+        ref={ref}
+        type={'bookmark'}
+        isDragging={isDragging}
+        isModifiable={isModifiable(bookmark)}
+        dropType={dropType}
+      >
+        <BookmarkButton component='a' sx={{ pl: getIndent(indentLevel) }}>
+          <BookmarkIcon>
+            <BookmarkImg alt={''} src={getFaviconUrl(bookmark.url!)} />
+          </BookmarkIcon>
+          <ListItemText primary={bookmark.title} primaryTypographyProps={overrides} />
+        </BookmarkButton>
+      </BookmarkContainer>
+    </WithContextMenu>
   );
 };
