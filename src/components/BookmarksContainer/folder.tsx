@@ -18,16 +18,20 @@ interface FolderProps {
   id: string;
   indentLevel: number;
   hideDetails?: boolean;
+  forceClose?: boolean;
 }
 
-export const Folder = ({ id, indentLevel, hideDetails = false }: FolderProps) => {
+export const Folder = ({ id, indentLevel, hideDetails = false, forceClose = false }: FolderProps) => {
   const dispatch = useDispatch();
   const ref = useRef<HTMLDivElement>(null);
   const folder = useBookmark(id);
   const { isDragging } = useBookmarkDrag(id, ref);
   const { dropType } = useBookmarkDrop(id, ref);
   const { fontSize, noWrap } = useSettings();
-  const open = useOpenStatus(id);
+  let open = useOpenStatus(id);
+  if (forceClose) {
+    open = false;
+  }
 
   const overrides = useMemo(() => {
     return BookmarkPrimaryTextOverrides(fontSize, noWrap);
@@ -77,6 +81,8 @@ export const Folder = ({ id, indentLevel, hideDetails = false }: FolderProps) =>
   }
 
   function toggleOpen(): void {
-    dispatch(setListItemOpen(folder.id, !open));
+    if (!forceClose) {
+      dispatch(setListItemOpen(folder.id, !open));
+    }
   }
 };
