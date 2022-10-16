@@ -35,3 +35,15 @@ export async function openInCurrentTab(url: string): Promise<void> {
     await chrome.tabs.update(openWindow.id, { active: true, url: String(url) });
   }
 }
+
+export async function openInNewTab(url: string): Promise<void> {
+  await chrome.tabs.create({ url: String(url), active: false });
+}
+
+export async function openInNewWindow(url: string): Promise<void> {
+  await chrome.windows.create({ url: String(url), incognito: false });
+}
+
+export async function openInNewIncognitoWindow(url: string): Promise<void> {
+  await chrome.windows.create({ url: String(url), incognito: true });
+}

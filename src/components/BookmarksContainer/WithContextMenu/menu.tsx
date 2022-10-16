@@ -14,7 +14,12 @@ import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
-import { openInCurrentTab } from '../../../helpers/ChromeApiHelpers';
+import {
+  openInCurrentTab,
+  openInNewIncognitoWindow,
+  openInNewTab,
+  openInNewWindow,
+} from '../../../helpers/ChromeApiHelpers';
 import { FlattenedBookmarkTreeNode } from '../../../redux/ducks/bookmarks/state';
 import { setActiveDialog } from '../../../redux/ducks/context/actions';
 import { AppDialogs } from '../../../redux/ducks/context/state';
@@ -36,19 +41,19 @@ export const Menu = ({ bookmark }: MenuProps) => {
         </ListItemIcon>
         <ListItemText>Open in current tab</ListItemText>
       </MenuItem>,
-      <MenuItem key='open-new-tab'>
+      <MenuItem key='open-new-tab' onClick={() => openInNewTab(bookmark!.url!)}>
         <ListItemIcon>
           <TabIcon fontSize='small' />
         </ListItemIcon>
         <ListItemText>Open in new tab</ListItemText>
       </MenuItem>,
-      <MenuItem key='open-new-window'>
+      <MenuItem key='open-new-window' onClick={() => openInNewWindow(bookmark!.url!)}>
         <ListItemIcon>
           <OpenInNewIcon fontSize='small' />
         </ListItemIcon>
         <ListItemText>Open in new window</ListItemText>
       </MenuItem>,
-      <MenuItem key='open-new-i-window'>
+      <MenuItem key='open-new-i-window' onClick={() => openInNewIncognitoWindow(bookmark!.url!)}>
         <ListItemIcon>
           <PreviewIcon fontSize='small' />
         </ListItemIcon>
@@ -118,7 +123,7 @@ export const Menu = ({ bookmark }: MenuProps) => {
       ...(type === 'folder' ? folderOptions : []),
       ...(modifiable ? modifiableOptions : []),
     ];
-  }, [type, modifiable, dispatch]);
+  }, [type, modifiable, bookmark, dispatch]);
 
   return <MenuList dense>{menuItems}</MenuList>;
 };
