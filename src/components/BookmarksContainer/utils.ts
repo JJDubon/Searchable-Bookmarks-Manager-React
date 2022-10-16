@@ -25,7 +25,7 @@ export function isRootNode(bookmark: FlattenedBookmarkTreeNode): boolean {
 }
 
 export function isModifiable(bookmark: FlattenedBookmarkTreeNode): boolean {
-  return bookmark.parentId !== '0';
+  return !isRootNode(bookmark) && !bookmark.unmodifiable;
 }
 
 export function getDropBehavior(
