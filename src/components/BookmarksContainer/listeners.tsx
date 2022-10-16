@@ -43,3 +43,21 @@ export function useOnRemovedListener() {
 
   useReset(eventCallback);
 }
+
+export function useOnMovedListener() {
+  const eventCallback = useCallback(() => {
+    const instance = getChromeInstance();
+    return instance.bookmarks.onMoved;
+  }, []);
+
+  useReset(eventCallback);
+}
+
+export function useOnReorderedListener() {
+  const eventCallback = useCallback(() => {
+    const instance = getChromeInstance();
+    return instance.bookmarks.onChildrenReordered;
+  }, []);
+
+  useReset(eventCallback);
+}

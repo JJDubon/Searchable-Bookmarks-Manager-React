@@ -105,7 +105,7 @@ export const Menu = ({ bookmark }: MenuProps) => {
         <ListItemIcon>
           <FolderOpenIcon fontSize='small' />
         </ListItemIcon>
-        <ListItemText>Toggle {openByDefault ? 'closed' : 'open'} by default</ListItemText>
+        <ListItemText>Set {openByDefault ? 'closed' : 'open'} by default</ListItemText>
       </MenuItem>,
       <Divider key='d2' />,
       <MenuItem key='add-bookmark' onClick={() => dispatch(setActiveDialog(AppDialogs.AddBookmark))}>

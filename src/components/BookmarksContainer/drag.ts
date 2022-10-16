@@ -1,9 +1,10 @@
 import { RefObject, useEffect, useState } from 'react';
-import { useDrag, useDrop, XYCoord } from 'react-dnd';
+import { DropTargetMonitor, useDrag, useDrop, XYCoord } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
+import { moveBookmark } from '../../helpers/ChromeApiHelpers';
 import { useBookmark, useBookmarksState } from '../../redux/ducks/bookmarks/selectors';
 import { BookmarkMap, FlattenedBookmarkTreeNode } from '../../redux/ducks/bookmarks/state';
-import { DropType, isModifiable } from './utils';
+import { DropType, getDropBehavior, isModifiable, useOpenStatus } from './utils';
 
 export const DragTypes = {
   BOOKMARK: 'bookmark',
@@ -34,7 +35,6 @@ export function useBookmarkDrag(
   return { isDragging };
 }
 
-// TODO - Functional drop
 export function useBookmarkDrop(
   id: string,
   ref: RefObject<HTMLDivElement>
@@ -42,31 +42,54 @@ export function useBookmarkDrop(
   isOver: boolean;
   dropType: DropType;
 } {
+  const open = useOpenStatus(id);
   const { map } = useBookmarksState();
   const [dropType, setDropType] = useState<DropType>(null);
   const [{ isOver }, drop] = useDrop(
     () => ({
       accept: DragTypes.BOOKMARK,
-      canDrop: (item: FlattenedBookmarkTreeNode) => {
-        return item.id === id || !isChildOf(map, item.id, id);
+      canDrop: (dragItem: FlattenedBookmarkTreeNode) => {
+        return dragItem.id === id || !isChildOf(map, dragItem.id, id);
       },
-      hover: (item: FlattenedBookmarkTreeNode, monitor) => {
-        if (!ref.current || id === item.id) {
+      hover: (dragItem: FlattenedBookmarkTreeNode, monitor) => {
+        if (!ref.current || id === dragItem.id) {
           setDropType(null);
         } else {
-          const hoverBoundingRect = ref.current?.getBoundingClientRect();
-          const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-          const clientOffset = monitor.getClientOffset();
-          const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
-          const dropType = getDropType(hoverClientY, hoverMiddleY);
+          const dropType = calculateDropType(ref.current, monitor);
           setDropType(dropType);
+        }
+      },
+      drop: (dragItem: FlattenedBookmarkTreeNode, monitor) => {
+        if (ref.current) {
+          const dropItem = map[id];
+          const targetFolder = map[dropItem.parentId!];
+          const dropIndex = targetFolder.children?.indexOf(dropItem.id);
+          const dropType = calculateDropType(ref.current, monitor);
+          const behavior = getDropBehavior(
+            dropItem.children ? 'folder' : 'bookmark',
+            isModifiable(dropItem),
+            open,
+            dropType
+          );
+
+          switch (behavior) {
+            case 'above':
+              moveBookmark(dragItem.id, targetFolder.id, dropIndex!);
+              break;
+            case 'below':
+              moveBookmark(dragItem.id, targetFolder.id, dropIndex! + 1);
+              break;
+            case 'inside':
+              moveBookmark(dragItem.id, dropItem.id, 0);
+              break;
+          }
         }
       },
       collect: (monitor) => ({
         isOver: !!monitor.isOver(),
       }),
     }),
-    [id]
+    [id, map, open]
   );
 
   drop(ref);
@@ -87,6 +110,17 @@ function isChildOf(map: BookmarkMap, dragId: string, targetId: string): boolean 
   }
 
   return false;
+}
+
+function calculateDropType(
+  current: HTMLDivElement,
+  monitor: DropTargetMonitor<FlattenedBookmarkTreeNode, unknown>
+) {
+  const hoverBoundingRect = current?.getBoundingClientRect();
+  const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+  const clientOffset = monitor.getClientOffset();
+  const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
+  return getDropType(hoverClientY, hoverMiddleY);
 }
 
 function getDropType(hoverClientY: number, hoverMiddleY: number): DropType {

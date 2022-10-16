@@ -34,6 +34,11 @@ export async function editBookmark(id: string, title: string, url?: string) {
   await instance.bookmarks.update(id, { title, url });
 }
 
+export async function moveBookmark(id: string, parentId: string, index: number) {
+  const instance = getChromeInstance();
+  await instance.bookmarks.move(id, { parentId, index });
+}
+
 export async function removeBookmark(id: string) {
   const instance = getChromeInstance();
   await instance.bookmarks.remove(id);
