@@ -1,28 +1,37 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as validUrl from 'valid-url';
 import { cleanUrl } from '../../../helpers/BrowserHelpers';
-import { createBookmark } from '../../../helpers/ChromeApiHelpers';
+import { editBookmark } from '../../../helpers/ChromeApiHelpers';
 import { useContextState } from '../../../redux/ducks/context/selectors';
 import { DialogErrorText } from './styles';
 
-interface AddBookmarkDialogProps {
+interface EditBookmarkDialogProps {
   open: boolean;
   onClose: () => void;
 }
 
-export const AddBookmarkDialog = ({ open, onClose }: AddBookmarkDialogProps) => {
+export const EditBookmarkDialog = ({ open, onClose }: EditBookmarkDialogProps) => {
   const { bookmark } = useContextState();
   const [error, setError] = useState('');
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
+
+  useEffect(() => {
+    if (bookmark) {
+      setError('');
+      setTitle(bookmark?.title ?? '');
+      setUrl(bookmark?.url ?? '');
+    }
+  }, [bookmark]);
+
   if (!bookmark) {
     return <></>;
   }
 
   return (
     <Dialog open={open} onClose={() => handleClose()}>
-      <DialogTitle>Add Bookmark</DialogTitle>
+      <DialogTitle>Edit Bookmark</DialogTitle>
       <DialogContent>
         <TextField
           autoFocus
@@ -53,7 +62,7 @@ export const AddBookmarkDialog = ({ open, onClose }: AddBookmarkDialogProps) => 
       </DialogContent>
       <DialogActions>
         <Button onClick={() => handleClose()}>Cancel</Button>
-        <Button onClick={() => handleAdd()}>Add</Button>
+        <Button onClick={() => handleEdit()}>Edit</Button>
       </DialogActions>
     </Dialog>
   );
@@ -65,7 +74,7 @@ export const AddBookmarkDialog = ({ open, onClose }: AddBookmarkDialogProps) => 
     onClose();
   }
 
-  function handleAdd() {
+  function handleEdit() {
     const cleanedUrl = cleanUrl(url);
     const urlValid = validUrl.isUri(url);
     const cleanedUrlValid = validUrl.isUri(cleanedUrl);
@@ -77,10 +86,10 @@ export const AddBookmarkDialog = ({ open, onClose }: AddBookmarkDialogProps) => 
       setError('Please provide a valid url');
     } else {
       if (!urlValid) {
-        createBookmark(title, bookmark!.children!.length ?? 0, bookmark!.id, cleanedUrl);
+        editBookmark(bookmark!.id, title, cleanedUrl);
         handleClose();
       } else {
-        createBookmark(title, bookmark!.children!.length ?? 0, bookmark!.id, url);
+        editBookmark(bookmark!.id, title, url);
         handleClose();
       }
     }

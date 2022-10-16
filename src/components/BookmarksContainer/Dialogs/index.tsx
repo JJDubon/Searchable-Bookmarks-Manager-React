@@ -4,6 +4,7 @@ import { setActiveDialog } from '../../../redux/ducks/context/actions';
 import { useContextState } from '../../../redux/ducks/context/selectors';
 import { AppDialogs } from '../../../redux/ducks/context/state';
 import { AddBookmarkDialog } from './add-bookmark-dialog';
+import { EditBookmarkDialog } from './edit-bookmark-dialog';
 
 export const Dialogs = () => {
   const dispatch = useDispatch();
@@ -11,6 +12,7 @@ export const Dialogs = () => {
   return ReactDOM.createPortal(
     <>
       <AddBookmarkDialog open={activeDialog === AppDialogs.AddBookmark} onClose={() => close()} />
+      <EditBookmarkDialog open={activeDialog === AppDialogs.EditBookmark} onClose={() => close()} />
     </>,
     document.body
   );

@@ -104,7 +104,7 @@ export const Menu = ({ bookmark }: MenuProps) => {
 
     const modifiableOptions = [
       <Divider key='d3' />,
-      <MenuItem key='edit'>
+      <MenuItem key='edit' onClick={() => dispatch(setActiveDialog(AppDialogs.EditBookmark))}>
         <ListItemIcon>
           <EditIcon fontSize='small' />
         </ListItemIcon>

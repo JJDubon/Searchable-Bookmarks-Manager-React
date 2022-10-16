@@ -3,6 +3,7 @@ import { FlattenedBookmarkTreeNode } from '../bookmarks/state';
 export enum AppDialogs {
   None,
   AddBookmark,
+  EditBookmark,
 }
 
 export interface ContextState {

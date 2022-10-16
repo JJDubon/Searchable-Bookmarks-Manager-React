@@ -29,6 +29,11 @@ export async function createBookmark(title: string, index: number, parentId: str
   instance.bookmarks.create({ title, index, parentId, url });
 }
 
+export async function editBookmark(id: string, title: string, url?: string) {
+  const instance = getChromeInstance();
+  instance.bookmarks.update(id, { title, url });
+}
+
 export async function openInCurrentTab(url: string): Promise<void> {
   const [openWindow] = await chrome.tabs.query({ active: true, currentWindow: true });
   if (openWindow?.id) {

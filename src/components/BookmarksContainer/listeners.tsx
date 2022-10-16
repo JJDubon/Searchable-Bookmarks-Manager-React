@@ -17,3 +17,18 @@ export function useOnCreatedListener() {
     };
   });
 }
+
+export function useOnChangedListener() {
+  const dispatch = useDispatch();
+  const resetCallback = useCallback(() => {
+    dispatch(resetBookmarks());
+  }, [dispatch]);
+
+  return useEffect(() => {
+    const instance = getChromeInstance();
+    instance.bookmarks.onChanged.addListener(resetCallback);
+    return () => {
+      instance.bookmarks.onChanged.removeListener(resetCallback);
+    };
+  });
+}
