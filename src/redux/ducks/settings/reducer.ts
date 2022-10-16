@@ -9,7 +9,7 @@ const defaultState: SettingsState = {
   defaultOpenMap: {},
 };
 
-export default function reducer(state: SettingsState = defaultState, action: SettingsActions) {
+export default function reducer(state: SettingsState = defaultState, action: SettingsActions): SettingsState {
   switch (action.type) {
     case 'SETTINGS_LOAD_SUCCESS':
       return {

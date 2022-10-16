@@ -32,3 +32,12 @@ export const useElementSize = (ref: RefObject<HTMLElement>) => {
 
   return size;
 };
+
+export function cleanUrl(url: string): string {
+  const hasValidHttpOrHttpsHeader = url.indexOf('http://') !== -1 || url.indexOf('https://') !== -1;
+  if (!hasValidHttpOrHttpsHeader) {
+    url = `https://${url}`;
+  }
+
+  return url;
+}

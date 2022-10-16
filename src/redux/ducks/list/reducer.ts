@@ -5,7 +5,7 @@ const defaultState: ListState = {
   openMap: {},
 };
 
-export default function reducer(state: ListState = defaultState, action: ListStateActions) {
+export default function reducer(state: ListState = defaultState, action: ListStateActions): ListState {
   switch (action.type) {
     case 'LIST_STATE_SET_SUCCESS':
       return {

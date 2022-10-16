@@ -1,14 +1,18 @@
 import { ContextStateActions } from './actions';
-import { ContextState } from './state';
+import { AppDialogs, ContextState } from './state';
 
 const defaultState: ContextState = {
   open: false,
   bookmark: null,
   x: 0,
   y: 0,
+  activeDialog: AppDialogs.None,
 };
 
-export default function reducer(state: ContextState = defaultState, action: ContextStateActions) {
+export default function reducer(
+  state: ContextState = defaultState,
+  action: ContextStateActions
+): ContextState {
   switch (action.type) {
     case 'CONTEXT_MENU_OPEN_SUCCESS':
       return {
@@ -22,6 +26,11 @@ export default function reducer(state: ContextState = defaultState, action: Cont
       return {
         ...state,
         open: false,
+      };
+    case 'CONTEXT_SET_ACTIVE_DIALOG_SUCCESS':
+      return {
+        ...state,
+        activeDialog: action.payload.dialog,
       };
     default:
       return state;

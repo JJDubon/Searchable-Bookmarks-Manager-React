@@ -4,6 +4,8 @@ import { getTree, searchTree } from '../../../helpers/ChromeApiHelpers';
 import {
   loadBookmarksFailure,
   loadBookmarksSuccess,
+  resetBookmarksFailure,
+  resetBookmarksSuccess,
   searchBookmarks,
   searchBookmarksFailure,
   searchBookmarksSuccess,
@@ -30,7 +32,18 @@ function* loadSearchResults({ payload }: ReturnType<typeof searchBookmarks>) {
   }
 }
 
+function* resetBookmarksSaga() {
+  try {
+    const tree: BookmarkTreeNode[] = yield call(getTree);
+    const map = createBookmarkMap(tree);
+    yield put(resetBookmarksSuccess(tree[0]?.children?.map((x) => x.id) || [], map));
+  } catch (ex) {
+    yield put(resetBookmarksFailure());
+  }
+}
+
 export function* bookmarksSagas() {
   yield takeEvery('BOOKMARKS_LOAD', loadBookmarkSaga);
   yield takeLatest('BOOKMARKS_SEARCH', loadSearchResults);
+  yield takeLatest('BOOKMARKS_RESET', resetBookmarksSaga);
 }

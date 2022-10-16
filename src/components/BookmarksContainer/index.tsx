@@ -7,7 +7,9 @@ import { useBookmarksState } from '../../redux/ducks/bookmarks/selectors';
 import { loadSettings } from '../../redux/ducks/settings/actions';
 import { useAppIsLoading } from '../../redux/selectors';
 import { BookmarksList } from './bookmark-list';
+import { Dialogs } from './Dialogs';
 import { BookmarkDragPreview } from './drag-preview';
+import { useOnCreatedListener } from './listeners';
 import { Container } from './styles';
 import { ContextMenu } from './WithContextMenu/context-menu';
 
@@ -21,6 +23,8 @@ export const BookmarksContainer = () => {
     dispatch(loadBookmarks());
   }, [dispatch]);
 
+  useOnCreatedListener();
+
   if (loading) {
     return <></>;
   }
@@ -30,6 +34,7 @@ export const BookmarksContainer = () => {
       <DndProvider backend={HTML5Backend}>
         <BookmarkDragPreview />
         <ContextMenu />
+        <Dialogs />
         <BookmarksList ids={activeNodes} />
       </DndProvider>
     </Container>

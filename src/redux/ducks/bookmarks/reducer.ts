@@ -10,7 +10,10 @@ const defaultState: BookmarksState = {
   query: '',
 };
 
-export default function reducer(state: BookmarksState = defaultState, action: BookmarksActions) {
+export default function reducer(
+  state: BookmarksState = defaultState,
+  action: BookmarksActions
+): BookmarksState {
   switch (action.type) {
     case 'BOOKMARKS_LOAD_SUCCESS':
       return {
@@ -40,6 +43,13 @@ export default function reducer(state: BookmarksState = defaultState, action: Bo
       return {
         ...state,
         activeNodes: state.rootNodes,
+      };
+    case 'BOOKMARKS_RESET_SUCCESS':
+      return {
+        ...state,
+        root: action.payload.root,
+        rootNodes: action.payload.root,
+        map: action.payload.map,
       };
     default:
       return state;
