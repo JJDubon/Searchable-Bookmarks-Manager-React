@@ -4,6 +4,8 @@ export enum AppDialogs {
   None,
   AddBookmark,
   EditBookmark,
+  AddFolder,
+  EditFolder,
 }
 
 export interface ContextState {

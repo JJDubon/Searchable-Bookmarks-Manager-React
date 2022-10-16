@@ -1,5 +1,6 @@
 import AddLinkIcon from '@mui/icons-material/AddLink';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
@@ -94,9 +95,9 @@ export const Menu = ({ bookmark }: MenuProps) => {
         </ListItemIcon>
         <ListItemText>Add Bookmark</ListItemText>
       </MenuItem>,
-      <MenuItem key='add-folder'>
+      <MenuItem key='add-folder' onClick={() => dispatch(setActiveDialog(AppDialogs.AddFolder))}>
         <ListItemIcon>
-          <AddLinkIcon fontSize='small' />
+          <CreateNewFolderIcon fontSize='small' />
         </ListItemIcon>
         <ListItemText>Add Folder</ListItemText>
       </MenuItem>,
@@ -104,7 +105,16 @@ export const Menu = ({ bookmark }: MenuProps) => {
 
     const modifiableOptions = [
       <Divider key='d3' />,
-      <MenuItem key='edit' onClick={() => dispatch(setActiveDialog(AppDialogs.EditBookmark))}>
+      <MenuItem
+        key='edit'
+        onClick={() => {
+          if (type === 'folder') {
+            dispatch(setActiveDialog(AppDialogs.EditFolder));
+          } else {
+            dispatch(setActiveDialog(AppDialogs.EditBookmark));
+          }
+        }}
+      >
         <ListItemIcon>
           <EditIcon fontSize='small' />
         </ListItemIcon>

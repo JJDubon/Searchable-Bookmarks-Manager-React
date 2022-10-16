@@ -4,7 +4,9 @@ import { setActiveDialog } from '../../../redux/ducks/context/actions';
 import { useContextState } from '../../../redux/ducks/context/selectors';
 import { AppDialogs } from '../../../redux/ducks/context/state';
 import { AddBookmarkDialog } from './add-bookmark-dialog';
+import { AddFolderDialog } from './add-folder-dialog';
 import { EditBookmarkDialog } from './edit-bookmark-dialog';
+import { EditFolderDialog } from './edit-folder-dialog';
 
 export const Dialogs = () => {
   const dispatch = useDispatch();
@@ -13,6 +15,8 @@ export const Dialogs = () => {
     <>
       <AddBookmarkDialog open={activeDialog === AppDialogs.AddBookmark} onClose={() => close()} />
       <EditBookmarkDialog open={activeDialog === AppDialogs.EditBookmark} onClose={() => close()} />
+      <AddFolderDialog open={activeDialog === AppDialogs.AddFolder} onClose={() => close()} />
+      <EditFolderDialog open={activeDialog === AppDialogs.EditFolder} onClose={() => close()} />
     </>,
     document.body
   );
