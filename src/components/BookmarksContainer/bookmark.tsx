@@ -1,5 +1,6 @@
 import { ListItemText } from '@mui/material';
 import { useMemo, useRef } from 'react';
+import { openInNewTab, openInNewWindow } from '../../helpers/ChromeApiHelpers';
 import { getIndent } from '../../providers/AppThemeProvider';
 import { useBookmark } from '../../redux/ducks/bookmarks/selectors';
 import { useSettings } from '../../redux/ducks/settings/selectors';
@@ -42,7 +43,12 @@ export const Bookmark = ({ id, indentLevel }: BookmarksProps) => {
         isModifiable={isModifiable(bookmark)}
         dropType={dropType}
       >
-        <BookmarkButton component='a' sx={{ pl: getIndent(indentLevel) }}>
+        <BookmarkButton
+          component='a'
+          sx={{ pl: getIndent(indentLevel) }}
+          onClick={(e) => handleClick(e)}
+          onMouseUp={(e) => handleAuxClick(e)}
+        >
           <BookmarkIcon>
             <BookmarkImg alt={''} src={getFaviconUrl(bookmark.url!)} />
           </BookmarkIcon>
@@ -51,4 +57,22 @@ export const Bookmark = ({ id, indentLevel }: BookmarksProps) => {
       </BookmarkContainer>
     </WithContextMenu>
   );
+
+  function handleClick(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
+    if (e.ctrlKey && e.shiftKey) {
+      openInNewTab(bookmark.url!, true);
+    } else if (e.ctrlKey) {
+      openInNewTab(bookmark.url!);
+    } else if (e.shiftKey) {
+      openInNewWindow(bookmark.url!);
+    } else {
+      // TODO - open in current tab
+    }
+  }
+
+  function handleAuxClick(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
+    if (e.button === 1) {
+      openInNewTab(bookmark.url!);
+    }
+  }
 };

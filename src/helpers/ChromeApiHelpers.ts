@@ -56,8 +56,11 @@ export async function openInCurrentTab(url: string): Promise<void> {
   }
 }
 
-export async function openInNewTab(url: string): Promise<void> {
-  await chrome.tabs.create({ url: String(url), active: false });
+export async function openInNewTab(url: string, focus: boolean = false): Promise<void> {
+  const tab = await chrome.tabs.create({ url: String(url), active: false });
+  if (focus && tab.id) {
+    await chrome.tabs.update(tab.id, { selected: true });
+  }
 }
 
 export async function openInNewWindow(url: string): Promise<void> {
