@@ -73,7 +73,7 @@ export const Folder = ({ id, indentLevel, hideDetails = false, forceClose = fals
           </BookmarkButton>
         </BookmarkContainer>
       </WithContextMenu>
-      <Collapse in={open} timeout='auto' unmountOnExit>
+      <Collapse in={open} timeout={150} unmountOnExit>
         <BookmarksList ids={folder.children || []} indentLevel={indentLevel + 1} />
       </Collapse>
     </>
