@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { FlattenedBookmarkTreeNode } from '../../redux/ducks/bookmarks/state';
 import { useAppState } from '../../redux/selectors';
 
@@ -7,7 +8,10 @@ export type DropType = 'bottom' | 'top' | 'bottom-center' | 'top-center' | null;
 
 export function useOpenStatus(id: string): boolean {
   const state = useAppState();
-  const openMap = { ...state.settings.defaultOpenMap, ...state.list.openMap };
+  const openMap = useMemo(() => {
+    return { ...state.settings.defaultOpenMap, ...state.list.openMap };
+  }, [state]);
+
   const folder = state.bookmarks.map[id];
   if (openMap[folder.id] !== undefined) {
     return openMap[folder.id];
