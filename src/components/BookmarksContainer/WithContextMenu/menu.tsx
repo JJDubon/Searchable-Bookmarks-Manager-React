@@ -28,7 +28,7 @@ import { AppDialogs } from '../../../redux/ducks/context/state';
 import { setListItemOpen } from '../../../redux/ducks/list/actions';
 import { setSettings } from '../../../redux/ducks/settings/actions';
 import { useSettings } from '../../../redux/ducks/settings/selectors';
-import { isModifiable } from '../utils';
+import { isModifiable, isRootNode } from '../utils';
 
 interface MenuProps {
   bookmark: FlattenedBookmarkTreeNode | null;
@@ -80,7 +80,12 @@ export const Menu = ({ bookmark }: MenuProps) => {
       </MenuItem>,
     ];
 
-    const openByDefault = !bookmark ? false : defaultOpenMap[bookmark.id];
+    const openByDefault = bookmark
+      ? defaultOpenMap[bookmark.id] === undefined
+        ? isRootNode(bookmark)
+        : defaultOpenMap[bookmark.id]
+      : false;
+
     const folderOptions = [
       <MenuItem key='copy-title' onClick={() => copyToClipboard(bookmark?.title ?? '')}>
         <ListItemIcon>

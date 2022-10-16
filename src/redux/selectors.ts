@@ -9,5 +9,5 @@ export function useAppState() {
 
 export function useAppIsLoading() {
   const state = useAppState();
-  return !!(state?.settings?.loading && state?.bookmarks?.loading);
+  return !!(state?.settings?.loading === true || state?.bookmarks?.loading === true);
 }

@@ -27,17 +27,17 @@ export const BookmarksContainer = () => {
   useOnChangedListener();
   useOnRemovedListener();
 
-  if (loading) {
-    return <></>;
-  }
-
   return (
     <Container>
       <DndProvider backend={HTML5Backend}>
-        <BookmarkDragPreview />
-        <ContextMenu />
-        <Dialogs />
-        <BookmarksList ids={activeNodes} />
+        {!loading && (
+          <>
+            <BookmarkDragPreview />
+            <ContextMenu />
+            <Dialogs />
+            <BookmarksList ids={activeNodes} />
+          </>
+        )}
       </DndProvider>
     </Container>
   );

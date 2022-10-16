@@ -9,12 +9,15 @@ export function useOpenStatus(id: string): boolean {
   const state = useAppState();
   const openMap = { ...state.settings.defaultOpenMap, ...state.list.openMap };
   const folder = state.bookmarks.map[id];
-  const isRootNode = folder.parentId === '0';
   if (openMap[folder.id] !== undefined) {
     return openMap[folder.id];
   } else {
-    return isRootNode;
+    return isRootNode(folder);
   }
+}
+
+export function isRootNode(bookmark: FlattenedBookmarkTreeNode): boolean {
+  return bookmark.parentId === '0';
 }
 
 export function isModifiable(bookmark: FlattenedBookmarkTreeNode): boolean {

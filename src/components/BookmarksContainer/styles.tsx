@@ -2,6 +2,7 @@ import { ListItemButton, ListItemIcon, styled, Theme, TypographyProps } from '@m
 import { BookmarkType, DropType, getDropBehavior } from './utils';
 
 export const Container = styled('div')(({ theme }) => ({
+  boxSizing: 'border-box',
   backgroundColor: theme.backgrounds.offset(1),
   maxWidth: '100%',
   minHeight: '100%',
