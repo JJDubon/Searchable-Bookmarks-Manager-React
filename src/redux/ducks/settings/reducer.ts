@@ -14,7 +14,7 @@ export default function reducer(state: SettingsState = defaultState, action: Set
     case 'SETTINGS_LOAD_SUCCESS':
       return {
         ...state,
-        ...action.payload,
+        ...action.payload.settings,
         loading: false,
       };
     case 'SETTINGS_LOAD_FAILURE':
@@ -25,7 +25,7 @@ export default function reducer(state: SettingsState = defaultState, action: Set
     case 'SETTINGS_SET_SUCCESS':
       return {
         ...state,
-        ...action.payload,
+        ...action.payload.settings,
       };
     default:
       return state;

@@ -25,6 +25,9 @@ import {
 import { FlattenedBookmarkTreeNode } from '../../../redux/ducks/bookmarks/state';
 import { setActiveDialog } from '../../../redux/ducks/context/actions';
 import { AppDialogs } from '../../../redux/ducks/context/state';
+import { setListItemOpen } from '../../../redux/ducks/list/actions';
+import { setSettings } from '../../../redux/ducks/settings/actions';
+import { useSettings } from '../../../redux/ducks/settings/selectors';
 import { isModifiable } from '../utils';
 
 interface MenuProps {
@@ -33,6 +36,7 @@ interface MenuProps {
 
 export const Menu = ({ bookmark }: MenuProps) => {
   const dispatch = useDispatch();
+  const { defaultOpenMap } = useSettings();
   const type = bookmark?.children ? 'folder' : 'bookmark';
   const modifiable = bookmark && isModifiable(bookmark);
   const menuItems = useMemo(() => {
@@ -76,6 +80,7 @@ export const Menu = ({ bookmark }: MenuProps) => {
       </MenuItem>,
     ];
 
+    const openByDefault = !bookmark ? false : defaultOpenMap[bookmark.id];
     const folderOptions = [
       <MenuItem key='copy-title' onClick={() => copyToClipboard(bookmark?.title ?? '')}>
         <ListItemIcon>
@@ -83,11 +88,19 @@ export const Menu = ({ bookmark }: MenuProps) => {
         </ListItemIcon>
         <ListItemText>Copy title</ListItemText>
       </MenuItem>,
-      <MenuItem key='toggle-open-default'>
+      <MenuItem
+        key='toggle-open-default'
+        onClick={() => {
+          const updatedOption = !openByDefault;
+          const updatedMap = { ...defaultOpenMap, [bookmark!.id]: updatedOption };
+          dispatch(setSettings({ defaultOpenMap: updatedMap }));
+          dispatch(setListItemOpen(bookmark!.id, updatedOption));
+        }}
+      >
         <ListItemIcon>
           <FolderOpenIcon fontSize='small' />
         </ListItemIcon>
-        <ListItemText>Toggle open by default</ListItemText>
+        <ListItemText>Toggle {openByDefault ? 'closed' : 'open'} by default</ListItemText>
       </MenuItem>,
       <Divider key='d2' />,
       <MenuItem key='add-bookmark' onClick={() => dispatch(setActiveDialog(AppDialogs.AddBookmark))}>
@@ -134,7 +147,7 @@ export const Menu = ({ bookmark }: MenuProps) => {
       ...(type === 'folder' ? folderOptions : []),
       ...(modifiable ? modifiableOptions : []),
     ];
-  }, [type, modifiable, bookmark, dispatch]);
+  }, [type, modifiable, bookmark, defaultOpenMap, dispatch]);
 
   return <MenuList dense>{menuItems}</MenuList>;
 };

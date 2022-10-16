@@ -7,12 +7,11 @@ export type DropType = 'bottom' | 'top' | 'bottom-center' | 'top-center' | null;
 
 export function useOpenStatus(id: string): boolean {
   const state = useAppState();
-  const { defaultOpenMap } = state.settings;
-  const { openMap } = state.list;
+  const openMap = { ...state.settings.defaultOpenMap, ...state.list.openMap };
   const folder = state.bookmarks.map[id];
   const isRootNode = folder.parentId === '0';
-  if (defaultOpenMap[folder.id] !== undefined || openMap[folder.id] !== undefined) {
-    return defaultOpenMap[folder.id] || openMap[folder.id];
+  if (openMap[folder.id] !== undefined) {
+    return openMap[folder.id];
   } else {
     return isRootNode;
   }
