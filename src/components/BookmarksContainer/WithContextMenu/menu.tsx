@@ -121,7 +121,7 @@ export const Menu = ({ bookmark }: MenuProps) => {
         </ListItemIcon>
         <ListItemText>Edit {type}</ListItemText>
       </MenuItem>,
-      <MenuItem key='delete'>
+      <MenuItem key='delete' onClick={() => dispatch(setActiveDialog(AppDialogs.DeleteBookmark))}>
         <ListItemIcon>
           <DeleteIcon fontSize='small' />
         </ListItemIcon>

@@ -6,6 +6,7 @@ export enum AppDialogs {
   EditBookmark,
   AddFolder,
   EditFolder,
+  DeleteBookmark,
 }
 
 export interface ContextState {

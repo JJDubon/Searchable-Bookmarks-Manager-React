@@ -25,7 +25,7 @@ export const AddBookmarkDialog = ({ open, onClose }: AddBookmarkDialogProps) => 
 
   return (
     <Dialog open={open} onClose={() => handleClose()} fullWidth>
-      <DialogTitle>Add Bookmark</DialogTitle>
+      <DialogTitle>Add bookmark</DialogTitle>
       <DialogContent>
         <TextField
           autoFocus

@@ -27,7 +27,7 @@ export const EditFolderDialog = ({ open, onClose }: EditFolderDialogProps) => {
 
   return (
     <Dialog open={open} onClose={() => handleClose()} fullWidth>
-      <DialogTitle>Edit Folder</DialogTitle>
+      <DialogTitle>Edit folder</DialogTitle>
       <DialogContent>
         <TextField
           autoFocus

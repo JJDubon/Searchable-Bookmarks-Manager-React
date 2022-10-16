@@ -9,7 +9,7 @@ import { useAppIsLoading } from '../../redux/selectors';
 import { BookmarksList } from './bookmark-list';
 import { Dialogs } from './Dialogs';
 import { BookmarkDragPreview } from './drag-preview';
-import { useOnChangedListener, useOnCreatedListener } from './listeners';
+import { useOnChangedListener, useOnCreatedListener, useOnRemovedListener } from './listeners';
 import { Container } from './styles';
 import { ContextMenu } from './WithContextMenu/context-menu';
 
@@ -25,6 +25,7 @@ export const BookmarksContainer = () => {
 
   useOnCreatedListener();
   useOnChangedListener();
+  useOnRemovedListener();
 
   if (loading) {
     return <></>;

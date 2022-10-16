@@ -22,7 +22,7 @@ export const AddFolderDialog = ({ open, onClose }: AddFolderDialogProps) => {
 
   return (
     <Dialog open={open} onClose={() => handleClose()} fullWidth>
-      <DialogTitle>Add Folder</DialogTitle>
+      <DialogTitle>Add folder</DialogTitle>
       <DialogContent>
         <TextField
           autoFocus
