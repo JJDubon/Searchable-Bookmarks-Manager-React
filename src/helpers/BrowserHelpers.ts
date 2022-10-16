@@ -41,3 +41,7 @@ export function cleanUrl(url: string): string {
 
   return url;
 }
+
+export function copyToClipboard(text: string): void {
+  navigator.clipboard.writeText(text);
+}

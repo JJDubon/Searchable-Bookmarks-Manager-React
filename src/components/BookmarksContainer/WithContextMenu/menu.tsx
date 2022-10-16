@@ -15,6 +15,7 @@ import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
+import { copyToClipboard } from '../../../helpers/BrowserHelpers';
 import {
   openInCurrentTab,
   openInNewIncognitoWindow,
@@ -61,13 +62,13 @@ export const Menu = ({ bookmark }: MenuProps) => {
         <ListItemText>Open in new incognito window</ListItemText>
       </MenuItem>,
       <Divider key='d1' />,
-      <MenuItem key='copy-title'>
+      <MenuItem key='copy-title' onClick={() => copyToClipboard(bookmark?.title ?? '')}>
         <ListItemIcon>
           <ContentCopyIcon fontSize='small' />
         </ListItemIcon>
         <ListItemText>Copy title</ListItemText>
       </MenuItem>,
-      <MenuItem key='copy-link'>
+      <MenuItem key='copy-link' onClick={() => copyToClipboard(bookmark?.url ?? '')}>
         <ListItemIcon>
           <AddLinkIcon fontSize='small' />
         </ListItemIcon>
@@ -76,7 +77,7 @@ export const Menu = ({ bookmark }: MenuProps) => {
     ];
 
     const folderOptions = [
-      <MenuItem key='copy-title'>
+      <MenuItem key='copy-title' onClick={() => copyToClipboard(bookmark?.title ?? '')}>
         <ListItemIcon>
           <ContentCopyIcon fontSize='small' />
         </ListItemIcon>
