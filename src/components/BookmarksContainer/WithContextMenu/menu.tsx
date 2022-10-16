@@ -75,7 +75,20 @@ export const Menu = ({ bookmark }: MenuProps) => {
         <ListItemIcon>
           <FolderOpenIcon fontSize='small' />
         </ListItemIcon>
-        <ListItemText>Set open by default</ListItemText>
+        <ListItemText>Toggle open by default</ListItemText>
+      </MenuItem>,
+      <Divider />,
+      <MenuItem>
+        <ListItemIcon>
+          <ContentCopyIcon fontSize='small' />
+        </ListItemIcon>
+        <ListItemText>Add Bookmark</ListItemText>
+      </MenuItem>,
+      <MenuItem>
+        <ListItemIcon>
+          <AddLinkIcon fontSize='small' />
+        </ListItemIcon>
+        <ListItemText>Add Folder</ListItemText>
       </MenuItem>,
     ];
 
