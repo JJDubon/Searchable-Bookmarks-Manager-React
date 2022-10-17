@@ -17,6 +17,8 @@ import { BookmarkTreeNode } from './state';
 function* loadBookmarkSaga({ payload }: ReturnType<typeof loadBookmarks>) {
   try {
     const tree: BookmarkTreeNode[] = payload.root ?? (yield call(getTree));
+    addBookmarksManagerNode(tree);
+
     const map = createBookmarkMap(tree);
     yield put(loadBookmarksSuccess(tree[0]?.children?.map((x) => x.id) || [], map));
   } catch (ex) {
@@ -37,6 +39,8 @@ function* loadSearchResults({ payload }: ReturnType<typeof searchBookmarks>) {
 function* resetBookmarksSaga() {
   try {
     const tree: BookmarkTreeNode[] = yield call(getTree);
+    addBookmarksManagerNode(tree);
+
     const map = createBookmarkMap(tree);
     yield put(resetBookmarksSuccess(tree[0]?.children?.map((x) => x.id) || [], map));
   } catch (ex) {
@@ -48,4 +52,17 @@ export function* bookmarksSagas() {
   yield takeEvery<ReturnType<typeof loadBookmarks>>('BOOKMARKS_LOAD', loadBookmarkSaga);
   yield takeLatest<ReturnType<typeof searchBookmarks>>('BOOKMARKS_SEARCH', loadSearchResults);
   yield takeLatest<ReturnType<typeof resetBookmarks>>('BOOKMARKS_RESET', resetBookmarksSaga);
+}
+
+function addBookmarksManagerNode(root: BookmarkTreeNode[]) {
+  if (root && root[0]) {
+    const rootNode = root[0];
+    rootNode.children?.push({
+      id: '__bookmarks-manager',
+      index: rootNode.children.length,
+      title: 'Bookmarks Manager',
+      url: 'chrome://bookmarks/',
+      unmodifiable: 'managed',
+    });
+  }
 }

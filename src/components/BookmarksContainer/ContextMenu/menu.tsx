@@ -40,6 +40,16 @@ export const Menu = ({ bookmark }: MenuProps) => {
   const type = bookmark?.children ? 'folder' : 'bookmark';
   const modifiable = bookmark && isModifiable(bookmark);
   const menuItems = useMemo(() => {
+    const isChromeUrl = bookmark?.url?.startsWith('chrome://');
+    const incognitoOptions = [
+      <MenuItem key='open-new-i-window' onClick={() => openInNewIncognitoWindow(bookmark!.url!)}>
+        <ListItemIcon>
+          <PreviewIcon fontSize='small' />
+        </ListItemIcon>
+        <ListItemText>Open in new incognito window</ListItemText>
+      </MenuItem>,
+    ];
+
     const bookmarkOptions = [
       <MenuItem key='open-current' onClick={() => openInCurrentTab(bookmark!.url!)}>
         <ListItemIcon>
@@ -59,12 +69,7 @@ export const Menu = ({ bookmark }: MenuProps) => {
         </ListItemIcon>
         <ListItemText>Open in new window</ListItemText>
       </MenuItem>,
-      <MenuItem key='open-new-i-window' onClick={() => openInNewIncognitoWindow(bookmark!.url!)}>
-        <ListItemIcon>
-          <PreviewIcon fontSize='small' />
-        </ListItemIcon>
-        <ListItemText>Open in new incognito window</ListItemText>
-      </MenuItem>,
+      ...(isChromeUrl ? [] : incognitoOptions),
       <Divider key='d1' />,
       <MenuItem key='copy-title' onClick={() => copyToClipboard(bookmark?.title ?? '')}>
         <ListItemIcon>
