@@ -4,7 +4,7 @@ import { openInNewTab, openInNewWindow } from '../../helpers/ChromeApiHelpers';
 import { getIndent } from '../../providers/AppThemeProvider';
 import { useBookmark } from '../../redux/ducks/bookmarks/selectors';
 import { useSettings } from '../../redux/ducks/settings/selectors';
-import { useBookmarkDrag, useBookmarkDrop } from './drag';
+import { useBookmarkDrag, useBookmarkDrop } from './Drag/utils';
 import {
   BookmarkButton,
   BookmarkContainer,

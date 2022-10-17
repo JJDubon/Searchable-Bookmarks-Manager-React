@@ -4,7 +4,7 @@ import { useBookmarksState } from '../../redux/ducks/bookmarks/selectors';
 import { BookmarksList } from './bookmark-list';
 import { ContextMenu } from './ContextMenu/context-menu';
 import { Dialogs } from './Dialogs';
-import { BookmarkDragPreview } from './drag-preview';
+import { BookmarkDragPreview } from './Drag';
 import { KeyboardListener } from './KeyboardListener';
 import {
   useOnChangedListener,

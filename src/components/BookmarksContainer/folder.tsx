@@ -10,7 +10,7 @@ import { useBookmark } from '../../redux/ducks/bookmarks/selectors';
 import { setListItemOpen } from '../../redux/ducks/list/actions';
 import { useSettings } from '../../redux/ducks/settings/selectors';
 import { BookmarksList } from './bookmark-list';
-import { useBookmarkDrag, useBookmarkDrop } from './drag';
+import { useBookmarkDrag, useBookmarkDrop } from './Drag/utils';
 import { BookmarkButton, BookmarkContainer, BookmarkIcon, BookmarkPrimaryTextOverrides } from './styles';
 import { getDropBehavior, isModifiable, useOpenStatus } from './utils';
 import { WithContextMenu } from './ContextMenu';

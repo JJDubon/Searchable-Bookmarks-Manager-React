@@ -1,10 +1,10 @@
 import { RefObject, useEffect, useState } from 'react';
 import { DropTargetMonitor, useDrag, useDrop, XYCoord } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
-import { moveBookmark } from '../../helpers/ChromeApiHelpers';
-import { useBookmark, useBookmarksState } from '../../redux/ducks/bookmarks/selectors';
-import { BookmarkMap, FlattenedBookmarkTreeNode } from '../../redux/ducks/bookmarks/state';
-import { DropType, getDropBehavior, isModifiable, useOpenStatus } from './utils';
+import { moveBookmark } from '../../../helpers/ChromeApiHelpers';
+import { useBookmark, useBookmarksState } from '../../../redux/ducks/bookmarks/selectors';
+import { BookmarkMap, FlattenedBookmarkTreeNode } from '../../../redux/ducks/bookmarks/state';
+import { DropType, getDropBehavior, isModifiable, useOpenStatus } from '../utils';
 
 export const DragTypes = {
   BOOKMARK: 'bookmark',

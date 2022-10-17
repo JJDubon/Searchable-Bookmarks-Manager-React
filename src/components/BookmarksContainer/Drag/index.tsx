@@ -1,7 +1,7 @@
 import { CSSProperties, useMemo } from 'react';
 import { useDragLayer, XYCoord } from 'react-dnd';
-import { FlattenedBookmarkTreeNode } from '../../redux/ducks/bookmarks/state';
-import { BookmarkSwitch } from './bookmark-switch';
+import { FlattenedBookmarkTreeNode } from '../../../redux/ducks/bookmarks/state';
+import { BookmarkSwitch } from '../bookmark-switch';
 
 const layerStyles: CSSProperties = {
   position: 'fixed',
