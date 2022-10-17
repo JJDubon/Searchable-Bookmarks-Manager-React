@@ -16,5 +16,10 @@
     "default_popup": "index.html"
   },
 
+  "background": {
+    "service_worker": "background/index.js",
+    "type": "module"
+  },
+
   "permissions": ["activeTab", "bookmarks", "storage", "favicon"]
 }

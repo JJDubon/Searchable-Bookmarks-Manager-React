@@ -1,7 +1,10 @@
-import { BookmarkMap } from './state';
+import { BookmarkMap, BookmarkTreeNode } from './state';
 
-export function loadBookmarks() {
-  return { type: 'BOOKMARKS_LOAD' as 'BOOKMARKS_LOAD' };
+export function loadBookmarks(root?: BookmarkTreeNode[]) {
+  return {
+    type: 'BOOKMARKS_LOAD' as 'BOOKMARKS_LOAD',
+    payload: { root },
+  };
 }
 
 export function loadBookmarksSuccess(root: string[], map: BookmarkMap) {

@@ -2,8 +2,10 @@ import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import { createBookmarkMap } from '../../../helpers/BookmarkHelpers';
 import { getTree, searchTree } from '../../../helpers/ChromeApiHelpers';
 import {
+  loadBookmarks,
   loadBookmarksFailure,
   loadBookmarksSuccess,
+  resetBookmarks,
   resetBookmarksFailure,
   resetBookmarksSuccess,
   searchBookmarks,
@@ -12,9 +14,9 @@ import {
 } from './actions';
 import { BookmarkTreeNode } from './state';
 
-function* loadBookmarkSaga() {
+function* loadBookmarkSaga({ payload }: ReturnType<typeof loadBookmarks>) {
   try {
-    const tree: BookmarkTreeNode[] = yield call(getTree);
+    const tree: BookmarkTreeNode[] = payload.root ?? (yield call(getTree));
     const map = createBookmarkMap(tree);
     yield put(loadBookmarksSuccess(tree[0]?.children?.map((x) => x.id) || [], map));
   } catch (ex) {
@@ -43,7 +45,7 @@ function* resetBookmarksSaga() {
 }
 
 export function* bookmarksSagas() {
-  yield takeEvery('BOOKMARKS_LOAD', loadBookmarkSaga);
-  yield takeLatest('BOOKMARKS_SEARCH', loadSearchResults);
-  yield takeLatest('BOOKMARKS_RESET', resetBookmarksSaga);
+  yield takeEvery<ReturnType<typeof loadBookmarks>>('BOOKMARKS_LOAD', loadBookmarkSaga);
+  yield takeLatest<ReturnType<typeof searchBookmarks>>('BOOKMARKS_SEARCH', loadSearchResults);
+  yield takeLatest<ReturnType<typeof resetBookmarks>>('BOOKMARKS_RESET', resetBookmarksSaga);
 }

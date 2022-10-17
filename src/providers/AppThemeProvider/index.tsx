@@ -25,7 +25,7 @@ declare module '@mui/material/styles' {
 }
 
 interface AppThemeProviderProps {
-  children?: JSX.Element;
+  children?: JSX.Element | JSX.Element[];
 }
 
 export const getIndent = (factor: number): number => {

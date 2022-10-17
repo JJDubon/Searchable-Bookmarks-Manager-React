@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import App from './App';
 import './index.css';
-import { AppThemeProvider } from './providers/AppThemeProvider';
 import store from './redux';
 import reportWebVitals from './reportWebVitals';
 
@@ -14,9 +13,7 @@ root.render(
   <React.StrictMode>
     <StyledEngineProvider injectFirst>
       <Provider store={store}>
-        <AppThemeProvider>
-          <App />
-        </AppThemeProvider>
+        <App />
       </Provider>
     </StyledEngineProvider>
   </React.StrictMode>

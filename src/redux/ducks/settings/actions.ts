@@ -1,7 +1,10 @@
 import { SettingsState } from './state';
 
-export function loadSettings() {
-  return { type: 'SETTINGS_LOAD' as 'SETTINGS_LOAD' };
+export function loadSettings(settings?: SettingsState) {
+  return {
+    type: 'SETTINGS_LOAD' as 'SETTINGS_LOAD',
+    payload: { settings },
+  };
 }
 
 export function loadSettingsSuccess(settings: SettingsState) {

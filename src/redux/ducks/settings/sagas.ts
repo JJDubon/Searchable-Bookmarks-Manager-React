@@ -1,6 +1,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { getAppSettings, setAppSettings } from '../../../helpers/ChromeApiHelpers';
 import {
+  loadSettings,
   loadSettingsFailure,
   loadSettingsSuccess,
   setSettings,
@@ -9,9 +10,9 @@ import {
 } from './actions';
 import { SettingsState, SettingsStateKeys } from './state';
 
-export function* loadSettingsSaga() {
+export function* loadSettingsSaga({ payload }: ReturnType<typeof loadSettings>) {
   try {
-    const settings: SettingsState = yield call(getAppSettings, SettingsStateKeys);
+    const settings: SettingsState = payload.settings ?? (yield call(getAppSettings, SettingsStateKeys));
     yield put(loadSettingsSuccess(settings));
   } catch (ex) {
     yield put(loadSettingsFailure());
