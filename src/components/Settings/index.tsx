@@ -1,5 +1,15 @@
 import CloseIcon from '@mui/icons-material/Close';
-import { Box, Drawer, FormControl, IconButton, MenuItem, Stack, styled, TextField } from '@mui/material';
+import {
+  Box,
+  Drawer,
+  FormControl,
+  IconButton,
+  MenuItem,
+  PaletteMode,
+  Stack,
+  styled,
+  TextField,
+} from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { setSettings } from '../../redux/ducks/settings/actions';
 import { useSettings } from '../../redux/ducks/settings/selectors';
@@ -18,7 +28,7 @@ interface SettingsDrawerProps {
 export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
   const loading = useAppIsLoading();
   const dispatch = useDispatch();
-  const { fontSize, padding, noWrap } = useSettings();
+  const { palette, fontSize, padding, noWrap } = useSettings();
 
   if (loading) {
     return <></>;
@@ -34,6 +44,22 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
               <CloseIcon />
             </IconButton>
           </SettingsHeader>
+          <FormControl fullWidth>
+            <TextField
+              select
+              id='app-palette'
+              variant='standard'
+              label='Theme'
+              value={palette}
+              onChange={(e) => {
+                const value = e.target.value as PaletteMode;
+                dispatch(setSettings({ palette: value }));
+              }}
+            >
+              <MenuItem value={'light'}>Light (Default)</MenuItem>
+              <MenuItem value={'dark'}>Dark</MenuItem>
+            </TextField>
+          </FormControl>
           <FormControl fullWidth>
             <TextField
               select

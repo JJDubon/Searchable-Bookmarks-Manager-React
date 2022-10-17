@@ -25,7 +25,7 @@ export const BookmarkContainer = styled('div')<BookmarkContainerProps>(
 );
 
 export const BookmarkButton = styled(ListItemButton)(({ theme }) => ({
-  color: theme.bookmarks.fontColor,
+  color: theme.palette.text.primary,
   paddingBottom: theme.bookmarks.adjustablePadding(1),
   paddingTop: '0',
 })) as typeof ListItemButton;

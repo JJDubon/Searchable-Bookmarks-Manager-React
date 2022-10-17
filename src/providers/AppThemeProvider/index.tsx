@@ -35,11 +35,19 @@ export const getIndent = (factor: number): number => {
 export const AppThemeProvider = ({ children }: AppThemeProviderProps) => {
   const settings = useSettings();
   const theme = createTheme({
+    palette: {
+      mode: settings.palette,
+    },
     backgrounds: {
-      offset: (factor) => `rgba(0,0,0,${0.01 * factor})`,
+      offset: (factor) => {
+        if (settings.palette === 'light') {
+          return `rgba(0,0,0,${0.01 * factor})`;
+        } else {
+          return `rgba(18,18,18,${1 - 0.01 * (factor - 1)})`;
+        }
+      },
     },
     bookmarks: {
-      fontColor: 'black',
       padding: settings.padding,
       adjustablePadding: (factor: number) => `calc(${settings.padding} * ${factor})`,
     },

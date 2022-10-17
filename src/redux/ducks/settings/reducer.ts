@@ -3,6 +3,7 @@ import { SettingsState } from './state';
 
 const defaultState: SettingsState = {
   loading: true,
+  palette: 'light',
   fontSize: '14px',
   padding: '2px',
   noWrap: true,
