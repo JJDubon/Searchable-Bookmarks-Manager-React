@@ -13,7 +13,7 @@ import { BookmarksList } from './bookmark-list';
 import { useBookmarkDrag, useBookmarkDrop } from './drag';
 import { BookmarkButton, BookmarkContainer, BookmarkIcon, BookmarkPrimaryTextOverrides } from './styles';
 import { getDropBehavior, isModifiable, useOpenStatus } from './utils';
-import { WithContextMenu } from './WithContextMenu';
+import { WithContextMenu } from './ContextMenu';
 
 interface FolderProps {
   id: string;

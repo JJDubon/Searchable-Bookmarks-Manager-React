@@ -13,7 +13,7 @@ import {
   BookmarkPrimaryTextOverrides,
 } from './styles';
 import { isModifiable } from './utils';
-import { WithContextMenu } from './WithContextMenu';
+import { WithContextMenu } from './ContextMenu';
 
 const getFaviconUrl = (url: string, size: number = 32) => {
   return `chrome-extension://${chrome.runtime.id}/_favicon/?pageUrl=${encodeURIComponent(url)}&size=${size}`;

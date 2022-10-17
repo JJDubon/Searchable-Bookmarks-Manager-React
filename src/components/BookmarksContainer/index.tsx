@@ -7,8 +7,10 @@ import { useBookmarksState } from '../../redux/ducks/bookmarks/selectors';
 import { loadSettings } from '../../redux/ducks/settings/actions';
 import { useAppIsLoading } from '../../redux/selectors';
 import { BookmarksList } from './bookmark-list';
+import { ContextMenu } from './ContextMenu/context-menu';
 import { Dialogs } from './Dialogs';
 import { BookmarkDragPreview } from './drag-preview';
+import { KeyboardListener } from './KeyboardListener';
 import {
   useOnChangedListener,
   useOnCreatedListener,
@@ -17,18 +19,19 @@ import {
   useOnReorderedListener,
 } from './listeners';
 import { Container } from './styles';
-import { ContextMenu } from './WithContextMenu/context-menu';
 
 export const BookmarksContainer = () => {
+  const dispatch = useDispatch();
   const loading = useAppIsLoading();
   const { activeNodes } = useBookmarksState();
 
-  const dispatch = useDispatch();
+  // Initialize the application
   useEffect(() => {
     dispatch(loadSettings());
     dispatch(loadBookmarks());
   }, [dispatch]);
 
+  // Listen for chrome api events
   useOnCreatedListener();
   useOnChangedListener();
   useOnRemovedListener();
@@ -40,6 +43,7 @@ export const BookmarksContainer = () => {
       <DndProvider backend={HTML5Backend}>
         {!loading && (
           <>
+            <KeyboardListener />
             <BookmarkDragPreview />
             <ContextMenu />
             <Dialogs />
