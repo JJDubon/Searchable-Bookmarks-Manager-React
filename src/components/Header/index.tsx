@@ -11,7 +11,7 @@ import { searchBookmarks } from '../../redux/ducks/bookmarks/actions';
 import { useBookmarksState } from '../../redux/ducks/bookmarks/selectors';
 
 const Container = styled('div')(({ theme }) => ({
-  backgroundColor: theme.backgrounds.offset(3),
+  backgroundColor: theme.palette.mode === 'dark' ? theme.backgrounds.offset(12) : theme.backgrounds.offset(3),
   borderBottom: `2px solid ${theme.backgrounds.offset(8)}`,
   display: 'flex',
   height: '100%',

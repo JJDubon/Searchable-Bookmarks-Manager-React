@@ -20,9 +20,9 @@ function App() {
   useEffect(() => {
     chrome.runtime.sendMessage(
       { type: 'SBM_POPUP_OPENED' },
-      (response: { root?: BookmarkTreeNode[]; settings?: SettingsState }) => {
-        dispatch(loadSettings(response.settings));
-        dispatch(loadBookmarks(response.root));
+      (response?: { root?: BookmarkTreeNode[]; settings?: SettingsState }) => {
+        dispatch(loadSettings(response?.settings));
+        dispatch(loadBookmarks(response?.root));
       }
     );
   }, [dispatch]);
