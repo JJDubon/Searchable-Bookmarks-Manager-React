@@ -1,4 +1,8 @@
-import { styled, Typography } from '@mui/material';
+import { Stack, styled, Typography } from '@mui/material';
+
+export const SettingsForm = styled(Stack)(({ theme }) => ({
+  padding: '12px',
+}));
 
 export const SettingsHeader = styled('div')(({ theme }) => ({
   display: 'flex',

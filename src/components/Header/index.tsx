@@ -3,25 +3,11 @@ import SearchOffIcon from '@mui/icons-material/SearchOff';
 import SettingsIcon from '@mui/icons-material/Settings';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
-import { styled } from '@mui/material/styles';
-import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { searchBookmarks } from '../../redux/ducks/bookmarks/actions';
 import { useBookmarksState } from '../../redux/ducks/bookmarks/selectors';
-
-const Container = styled('div')(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? theme.backgrounds.offset(12) : theme.backgrounds.offset(3),
-  borderBottom: `2px solid ${theme.backgrounds.offset(8)}`,
-  display: 'flex',
-  height: '100%',
-  padding: '0 18px',
-}));
-
-const SearchField = styled(TextField)(({ theme }) => ({
-  alignSelf: 'center',
-  width: '100%',
-}));
+import { Container, SearchField } from './styles';
 
 interface HeaderProps {
   showSettings: () => void;

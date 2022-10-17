@@ -1,24 +1,10 @@
 import CloseIcon from '@mui/icons-material/Close';
-import {
-  Box,
-  Drawer,
-  FormControl,
-  IconButton,
-  MenuItem,
-  PaletteMode,
-  Stack,
-  styled,
-  TextField,
-} from '@mui/material';
+import { Box, Drawer, FormControl, IconButton, MenuItem, PaletteMode, TextField } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { setSettings } from '../../redux/ducks/settings/actions';
 import { useSettings } from '../../redux/ducks/settings/selectors';
 import { useAppIsLoading } from '../../redux/selectors';
-import { SettingsHeader, SettingsTitle } from './styles';
-
-const SettingsForm = styled(Stack)(({ theme }) => ({
-  padding: '12px',
-}));
+import { SettingsForm, SettingsHeader, SettingsTitle } from './styles';
 
 interface SettingsDrawerProps {
   open: boolean;
