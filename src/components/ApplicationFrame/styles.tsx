@@ -8,9 +8,3 @@ export const Frame = styled('div')(({ theme }) => ({
   display: 'grid',
   gridTemplateRows: `86px 1fr`,
 }));
-
-export const Header = styled('div')(({ theme }) => ({}));
-
-export const Main = styled('div')(({ theme }) => ({
-  overflow: 'auto',
-}));

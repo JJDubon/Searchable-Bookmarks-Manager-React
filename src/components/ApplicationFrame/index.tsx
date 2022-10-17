@@ -1,4 +1,5 @@
-import { Frame, Header, Main } from './styles';
+import { ScrollableContainer } from './ScrollableContainer';
+import { Frame } from './styles';
 
 export interface ApplicationFrameProps {
   header: JSX.Element;
@@ -8,8 +9,8 @@ export interface ApplicationFrameProps {
 export const ApplicationFrame = ({ header, children }: ApplicationFrameProps) => {
   return (
     <Frame>
-      <Header>{header}</Header>
-      <Main>{children}</Main>
+      <div>{header}</div>
+      <ScrollableContainer>{children}</ScrollableContainer>
     </Frame>
   );
 };
