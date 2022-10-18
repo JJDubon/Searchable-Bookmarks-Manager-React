@@ -29,7 +29,7 @@ interface ActiveHighlightProps {
 }
 
 export const ActiveHighlight = styled('div')<ActiveHighlightProps>(({ theme, active }) => ({
-  backgroundColor: active ? 'gray' : 'transparent',
+  backgroundColor: active ? theme.palette.divider : 'transparent',
 }));
 
 export const BookmarkButton = styled(ListItemButton)(({ theme }) => ({
@@ -77,8 +77,8 @@ function getDragStyles(
     case 'below':
       return { borderBottom: '2px solid gray', paddingTop: '2px' };
     case 'inside':
-      return { backgroundColor: theme.backgrounds.offset(8), padding: '2px 0' };
+      return { padding: '2px 0' };
     default:
-      return { backgroundColor: theme.backgrounds.offset(0), padding: '2px 0' };
+      return { padding: '2px 0' };
   }
 }
