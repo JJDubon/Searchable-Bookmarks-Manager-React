@@ -9,6 +9,7 @@ import { useKeyDown } from '../../helpers/BrowserHelpers';
 import { searchBookmarks } from '../../redux/ducks/bookmarks/actions';
 import { useBookmarksState } from '../../redux/ducks/bookmarks/selectors';
 import { useSettings } from '../../redux/ducks/settings/selectors';
+import { ignoredSearchKeys } from './ignored-keys';
 import { Container, SearchField } from './styles';
 
 interface HeaderProps {
@@ -40,7 +41,14 @@ export const Header = ({ showSettings }: HeaderProps) => {
     [dispatch, queryExists, escapeBehavior]
   );
 
+  const onKeyDown = useCallback((e: KeyboardEvent) => {
+    if (!ignoredSearchKeys.has(e.key)) {
+      ref.current?.focus();
+    }
+  }, []);
+
   useKeyDown('Escape', onEscapePressed);
+  useKeyDown(null, onKeyDown);
 
   return (
     <Container>

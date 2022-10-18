@@ -33,10 +33,10 @@ export const useElementSize = (ref: RefObject<HTMLElement>) => {
   return size;
 };
 
-export function useKeyDown(key: string, cb: (event: KeyboardEvent) => void): void {
+export function useKeyDown(key: string | null, cb: (event: KeyboardEvent) => void): void {
   const callback = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === key) {
+      if (key === null || e.key === key) {
         cb(e);
       }
     },
