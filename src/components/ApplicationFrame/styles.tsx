@@ -6,5 +6,5 @@ export const Frame = styled('div')(({ theme }) => ({
   overflow: 'hidden',
 
   display: 'grid',
-  gridTemplateRows: `86px 1fr`,
+  gridTemplateRows: `68px 1fr`,
 }));

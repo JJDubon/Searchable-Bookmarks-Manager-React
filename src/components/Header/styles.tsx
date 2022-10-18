@@ -5,10 +5,16 @@ export const Container = styled('div')(({ theme }) => ({
   borderBottom: `2px solid ${theme.backgrounds.offset(8)}`,
   display: 'flex',
   height: '100%',
-  padding: '0 18px',
+  padding: '0 6px',
 }));
 
 export const SearchField = styled(TextField)(({ theme }) => ({
   alignSelf: 'center',
   width: '100%',
+  '& > label': {
+    fontSize: '18px',
+  },
+  '& > *': {
+    backgroundColor: 'transparent !important',
+  },
 }));
