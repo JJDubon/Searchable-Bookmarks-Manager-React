@@ -36,6 +36,7 @@ export const BookmarkButton = styled(ListItemButton)(({ theme }) => ({
   color: theme.palette.text.primary,
   paddingBottom: theme.bookmarks.adjustablePadding(1),
   paddingTop: '0',
+  width: '100%',
 })) as typeof ListItemButton;
 
 export const BookmarkIcon = styled(ListItemIcon)(({ theme }) => ({
@@ -44,7 +45,7 @@ export const BookmarkIcon = styled(ListItemIcon)(({ theme }) => ({
 }));
 
 export const BookmarkImg = styled('img')(({ theme }) => ({
-  paddingLeft: '3px',
+  paddingLeft: '4px',
   height: '1.5em',
   width: '1.5em',
 }));

@@ -24,6 +24,8 @@ export function useOpenStatus(id: string): boolean {
   return openMap[id];
 }
 
+// TODO - Turn off the hover effect since it is broken in the browser
+
 // TODO - If there is a search query this needs to work differently
 // TODO - Like if a search result appears twice in the search results both will be highlighted
 // TODO - Don't know what to do about that yet

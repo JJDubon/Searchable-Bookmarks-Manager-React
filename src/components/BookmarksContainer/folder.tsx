@@ -1,19 +1,17 @@
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
-import ExpandLess from '@mui/icons-material/ExpandLess';
 import FolderIcon from '@mui/icons-material/Folder';
-import { Collapse, ListItemText } from '@mui/material';
-import { motion } from 'framer-motion';
-import { useMemo, useRef } from 'react';
+import { Collapse } from '@mui/material';
+import { useCallback, useMemo, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { getIndent } from '../../providers/AppThemeProvider';
 import { useBookmark } from '../../redux/ducks/bookmarks/selectors';
 import { setListItemOpen } from '../../redux/ducks/list/actions';
 import { useSettings } from '../../redux/ducks/settings/selectors';
 import { ActiveBookmarkWrapper } from './active-bookmark-wrapper';
 import { BookmarksList } from './bookmark-list';
+import { BookmarkListItem } from './bookmark-list-item';
 import { WithContextMenu } from './ContextMenu';
 import { useBookmarkDrag, useBookmarkDrop } from './Drag/utils';
-import { BookmarkButton, BookmarkContainer, BookmarkIcon, BookmarkPrimaryTextOverrides } from './styles';
+import { BookmarkPrimaryTextOverrides } from './styles';
 import { getDropBehavior, isModifiable, useOpenStatus } from './utils';
 
 interface FolderProps {
@@ -48,32 +46,34 @@ export const Folder = ({ id, indentLevel, hideDetails = false, forceClose = fals
     }
   }, [dropType, folder, open]);
 
+  const onClick = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement | HTMLDivElement, MouseEvent>) => {
+      if (!forceClose) {
+        dispatch(setListItemOpen(folder.id, !open));
+      }
+    },
+    [dispatch, folder.id, forceClose, open]
+  );
+
   return (
     <>
       <WithContextMenu bookmark={folder}>
         <ActiveBookmarkWrapper id={id}>
-          <BookmarkContainer
-            ref={ref}
-            type={'folder'}
-            isDragging={isDragging}
-            isOpen={open}
-            isModifiable={isModifiable(folder)}
-            dropType={dropType}
-          >
-            <BookmarkButton sx={{ pl: getIndent(indentLevel) }} onClick={() => toggleOpen()}>
-              <BookmarkIcon>{folderIcon}</BookmarkIcon>
-              <ListItemText primary={folder.title} primaryTypographyProps={overrides} />
-              {!hideDetails && (
-                <motion.div
-                  animate={{ rotate: getRotation() }}
-                  transition={{ type: 'ease' }}
-                  style={{ rotate: getRotation() }}
-                >
-                  <ExpandLess style={{ opacity: 0.15 }} />
-                </motion.div>
-              )}
-            </BookmarkButton>
-          </BookmarkContainer>
+          <div ref={ref}>
+            <BookmarkListItem
+              title={folder.title}
+              type={'folder'}
+              indentLevel={indentLevel}
+              isDragging={isDragging}
+              dropType={dropType}
+              isModifiable={isModifiable(folder)}
+              overrides={overrides}
+              isOpen={open}
+              icon={folderIcon}
+              onClick={onClick}
+              hideDetails={hideDetails}
+            />
+          </div>
         </ActiveBookmarkWrapper>
       </WithContextMenu>
       <Collapse in={open} timeout={150} unmountOnExit>
@@ -81,14 +81,4 @@ export const Folder = ({ id, indentLevel, hideDetails = false, forceClose = fals
       </Collapse>
     </>
   );
-
-  function getRotation(): number {
-    return open ? 0 : 180;
-  }
-
-  function toggleOpen(): void {
-    if (!forceClose) {
-      dispatch(setListItemOpen(folder.id, !open));
-    }
-  }
 };
