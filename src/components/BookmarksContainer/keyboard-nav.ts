@@ -25,10 +25,11 @@ export function useKeyboardNavigation() {
   }, []);
 
   const handleKeyboardEv = useRateLimit(
-    10,
+    25,
     useCallback(
       (e: KeyboardEvent) => {
         if (e.key === 'Enter') {
+          // TODO
         } else if (e.key === 'ArrowUp') {
           if (activeIndex === 0) {
             setActiveIndex(linearNodes.length - 1);

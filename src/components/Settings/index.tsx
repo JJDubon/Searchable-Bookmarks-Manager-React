@@ -51,7 +51,7 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
               select
               id='bookmark-size-field'
               variant='standard'
-              label='Bookmark Size'
+              label='Bookmark size'
               value={fontSize}
               onChange={(e) => {
                 const value = e.target.value as string;
@@ -69,7 +69,7 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
               select
               id='bookmark-spacing-field'
               variant='standard'
-              label='Bookmark Spacing'
+              label='Bookmark spacing'
               value={padding}
               onChange={(e) => {
                 const value = e.target.value as string;
@@ -103,7 +103,7 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
               select
               id='bookmark-title-field'
               variant='standard'
-              label='Titles'
+              label='Escape key behavior'
               value={escapeBehavior}
               onChange={(e) => {
                 const value = e.target.value as 'clear' | 'close';
