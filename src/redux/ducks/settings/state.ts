@@ -6,6 +6,7 @@ export const SettingsStateKeys: (keyof SettingsState)[] = [
   'padding',
   'noWrap',
   'defaultOpenMap',
+  'escapeBehavior',
 ];
 
 export interface SettingsState {
@@ -14,5 +15,6 @@ export interface SettingsState {
   fontSize: string;
   padding: string;
   noWrap: boolean;
+  escapeBehavior: 'clear' | 'close';
   defaultOpenMap: { [id: string]: boolean };
 }

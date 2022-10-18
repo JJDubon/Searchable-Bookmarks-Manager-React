@@ -3,10 +3,12 @@ import SearchOffIcon from '@mui/icons-material/SearchOff';
 import SettingsIcon from '@mui/icons-material/Settings';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useKeyDown } from '../../helpers/BrowserHelpers';
 import { searchBookmarks } from '../../redux/ducks/bookmarks/actions';
 import { useBookmarksState } from '../../redux/ducks/bookmarks/selectors';
+import { useSettings } from '../../redux/ducks/settings/selectors';
 import { Container, SearchField } from './styles';
 
 interface HeaderProps {
@@ -18,7 +20,28 @@ export const Header = ({ showSettings }: HeaderProps) => {
   const ref = useRef<HTMLElement>(null);
   const [value, setValue] = useState('');
   const { query } = useBookmarksState();
+  const { escapeBehavior } = useSettings();
   const queryExists = query.length !== 0;
+
+  // Either close the extension or clear the search input when the escape button is clicked
+  const onEscapePressed = useCallback(
+    (e: KeyboardEvent) => {
+      if (escapeBehavior === 'clear') {
+        if (queryExists) {
+          setValue('');
+          dispatch(searchBookmarks(''));
+        }
+
+        ref.current?.focus();
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    },
+    [dispatch, queryExists, escapeBehavior]
+  );
+
+  useKeyDown('Escape', onEscapePressed);
+
   return (
     <Container>
       <SearchField

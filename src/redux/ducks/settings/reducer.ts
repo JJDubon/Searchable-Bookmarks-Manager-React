@@ -8,6 +8,7 @@ const defaultState: SettingsState = {
   padding: '2px',
   noWrap: true,
   defaultOpenMap: {},
+  escapeBehavior: 'clear',
 };
 
 export default function reducer(state: SettingsState = defaultState, action: SettingsActions): SettingsState {

@@ -14,7 +14,7 @@ interface SettingsDrawerProps {
 export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
   const loading = useAppIsLoading();
   const dispatch = useDispatch();
-  const { palette, fontSize, padding, noWrap } = useSettings();
+  const { palette, fontSize, padding, noWrap, escapeBehavior } = useSettings();
 
   if (loading) {
     return <></>;
@@ -96,6 +96,22 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
             >
               <MenuItem value={'true'}>Single Line</MenuItem>
               <MenuItem value={'false'}>Multi line</MenuItem>
+            </TextField>
+          </FormControl>
+          <FormControl fullWidth>
+            <TextField
+              select
+              id='bookmark-title-field'
+              variant='standard'
+              label='Titles'
+              value={escapeBehavior}
+              onChange={(e) => {
+                const value = e.target.value as 'clear' | 'close';
+                dispatch(setSettings({ escapeBehavior: value }));
+              }}
+            >
+              <MenuItem value={'clear'}>Clear Search</MenuItem>
+              <MenuItem value={'close'}>Close Extension</MenuItem>
             </TextField>
           </FormControl>
         </SettingsForm>

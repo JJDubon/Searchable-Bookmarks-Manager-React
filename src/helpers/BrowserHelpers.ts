@@ -1,4 +1,4 @@
-import { RefObject, useCallback, useLayoutEffect, useState } from 'react';
+import { RefObject, useCallback, useEffect, useLayoutEffect, useState } from 'react';
 
 export const useElementSize = (ref: RefObject<HTMLElement>) => {
   const [size, setSize] = useState({ height: 0, width: 0 });
@@ -32,6 +32,22 @@ export const useElementSize = (ref: RefObject<HTMLElement>) => {
 
   return size;
 };
+
+export function useKeyDown(key: string, cb: (event: KeyboardEvent) => void): void {
+  const callback = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === key) {
+        cb(e);
+      }
+    },
+    [cb, key]
+  );
+
+  useEffect(() => {
+    document.body.addEventListener('keydown', callback);
+    return () => document.body.removeEventListener('keydown', callback);
+  }, [callback]);
+}
 
 export function cleanUrl(url: string): string {
   const hasValidHttpOrHttpsHeader = url.indexOf('http://') !== -1 || url.indexOf('https://') !== -1;
