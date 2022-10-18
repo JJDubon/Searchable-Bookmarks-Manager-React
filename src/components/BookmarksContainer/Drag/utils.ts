@@ -49,7 +49,7 @@ export function useBookmarkDrop(
     () => ({
       accept: DragTypes.BOOKMARK,
       canDrop: (dragItem: FlattenedBookmarkTreeNode) => {
-        return dragItem.id === id || !isChildOf(map, dragItem.id, id);
+        return !isChildOf(map, dragItem.id, id);
       },
       hover: (dragItem: FlattenedBookmarkTreeNode, monitor) => {
         if (!ref.current || id === dragItem.id) {
@@ -60,7 +60,7 @@ export function useBookmarkDrop(
         }
       },
       drop: (dragItem: FlattenedBookmarkTreeNode, monitor) => {
-        if (ref.current) {
+        if (ref.current && dragItem.id !== id) {
           const dropItem = map[id];
           const targetFolder = map[dropItem.parentId!];
           const dropIndex = targetFolder.children?.indexOf(dropItem.id);
