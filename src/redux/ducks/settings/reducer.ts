@@ -14,9 +14,10 @@ const defaultState: SettingsState = {
 export default function reducer(state: SettingsState = defaultState, action: SettingsActions): SettingsState {
   switch (action.type) {
     case 'SETTINGS_LOAD_SUCCESS':
+      const initialSettings = action.payload.settings;
       return {
         ...state,
-        ...action.payload.settings,
+        ...initialSettings,
         loading: false,
       };
     case 'SETTINGS_LOAD_FAILURE':
@@ -25,9 +26,10 @@ export default function reducer(state: SettingsState = defaultState, action: Set
         loading: false,
       };
     case 'SETTINGS_SET_SUCCESS':
+      const newSettings = action.payload.settings;
       return {
         ...state,
-        ...action.payload.settings,
+        ...newSettings,
       };
     default:
       return state;

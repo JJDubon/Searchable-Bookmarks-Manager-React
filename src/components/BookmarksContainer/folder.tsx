@@ -9,11 +9,12 @@ import { getIndent } from '../../providers/AppThemeProvider';
 import { useBookmark } from '../../redux/ducks/bookmarks/selectors';
 import { setListItemOpen } from '../../redux/ducks/list/actions';
 import { useSettings } from '../../redux/ducks/settings/selectors';
+import { ActiveBookmarkWrapper } from './active-bookmark-wrapper';
 import { BookmarksList } from './bookmark-list';
+import { WithContextMenu } from './ContextMenu';
 import { useBookmarkDrag, useBookmarkDrop } from './Drag/utils';
 import { BookmarkButton, BookmarkContainer, BookmarkIcon, BookmarkPrimaryTextOverrides } from './styles';
 import { getDropBehavior, isModifiable, useOpenStatus } from './utils';
-import { WithContextMenu } from './ContextMenu';
 
 interface FolderProps {
   id: string;
@@ -50,28 +51,30 @@ export const Folder = ({ id, indentLevel, hideDetails = false, forceClose = fals
   return (
     <>
       <WithContextMenu bookmark={folder}>
-        <BookmarkContainer
-          ref={ref}
-          type={'folder'}
-          isDragging={isDragging}
-          isOpen={open}
-          isModifiable={isModifiable(folder)}
-          dropType={dropType}
-        >
-          <BookmarkButton sx={{ pl: getIndent(indentLevel) }} onClick={() => toggleOpen()}>
-            <BookmarkIcon>{folderIcon}</BookmarkIcon>
-            <ListItemText primary={folder.title} primaryTypographyProps={overrides} />
-            {!hideDetails && (
-              <motion.div
-                animate={{ rotate: getRotation() }}
-                transition={{ type: 'ease' }}
-                style={{ rotate: getRotation() }}
-              >
-                <ExpandLess style={{ opacity: 0.15 }} />
-              </motion.div>
-            )}
-          </BookmarkButton>
-        </BookmarkContainer>
+        <ActiveBookmarkWrapper id={id}>
+          <BookmarkContainer
+            ref={ref}
+            type={'folder'}
+            isDragging={isDragging}
+            isOpen={open}
+            isModifiable={isModifiable(folder)}
+            dropType={dropType}
+          >
+            <BookmarkButton sx={{ pl: getIndent(indentLevel) }} onClick={() => toggleOpen()}>
+              <BookmarkIcon>{folderIcon}</BookmarkIcon>
+              <ListItemText primary={folder.title} primaryTypographyProps={overrides} />
+              {!hideDetails && (
+                <motion.div
+                  animate={{ rotate: getRotation() }}
+                  transition={{ type: 'ease' }}
+                  style={{ rotate: getRotation() }}
+                >
+                  <ExpandLess style={{ opacity: 0.15 }} />
+                </motion.div>
+              )}
+            </BookmarkButton>
+          </BookmarkContainer>
+        </ActiveBookmarkWrapper>
       </WithContextMenu>
       <Collapse in={open} timeout={150} unmountOnExit>
         <BookmarksList ids={folder.children || []} indentLevel={indentLevel + 1} />

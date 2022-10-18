@@ -8,15 +8,17 @@ const defaultState: ListState = {
 export default function reducer(state: ListState = defaultState, action: ListStateActions): ListState {
   switch (action.type) {
     case 'LIST_STATE_SET_SUCCESS':
+      const changes = action.payload.changes;
       return {
         ...state,
-        ...action.payload.changes,
+        ...changes,
       };
     case 'LIST_STATE_SET_OPEN_SUCCESS':
+      const openMap = state.openMap;
       return {
         ...state,
         openMap: {
-          ...state.openMap,
+          ...openMap,
           [action.payload.id]: action.payload.open,
         },
       };

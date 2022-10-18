@@ -11,7 +11,9 @@ export function* setLinearListSaga({ payload }: ReturnType<typeof setLinearList>
 
   activeNodes.forEach((id) => {
     list.push(id);
-    walk(id);
+    if (map[id].children) {
+      walk(id);
+    }
   });
 
   yield put(setLinearListSuccess(list));
@@ -19,14 +21,14 @@ export function* setLinearListSaga({ payload }: ReturnType<typeof setLinearList>
   function walk(nodeId: string) {
     const node = map[nodeId];
     const children = Array(...(node.children ?? []));
-    for (const childId of children) {
+    children.forEach((childId) => {
       list.push(childId);
 
       const child = map[childId];
       if (child.children && openMap[childId]) {
         walk(childId);
       }
-    }
+    });
   }
 }
 

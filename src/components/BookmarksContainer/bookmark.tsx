@@ -4,6 +4,8 @@ import { openInNewTab, openInNewWindow } from '../../helpers/ChromeApiHelpers';
 import { getIndent } from '../../providers/AppThemeProvider';
 import { useBookmark } from '../../redux/ducks/bookmarks/selectors';
 import { useSettings } from '../../redux/ducks/settings/selectors';
+import { ActiveBookmarkWrapper } from './active-bookmark-wrapper';
+import { WithContextMenu } from './ContextMenu';
 import { useBookmarkDrag, useBookmarkDrop } from './Drag/utils';
 import {
   BookmarkButton,
@@ -13,7 +15,6 @@ import {
   BookmarkPrimaryTextOverrides,
 } from './styles';
 import { isModifiable } from './utils';
-import { WithContextMenu } from './ContextMenu';
 
 const getFaviconUrl = (url: string, size: number = 32) => {
   return `chrome-extension://${chrome.runtime.id}/_favicon/?pageUrl=${encodeURIComponent(url)}&size=${size}`;
@@ -36,25 +37,27 @@ export const Bookmark = ({ id, indentLevel }: BookmarksProps) => {
 
   return (
     <WithContextMenu bookmark={bookmark}>
-      <BookmarkContainer
-        ref={ref}
-        type={'bookmark'}
-        isDragging={isDragging}
-        isModifiable={isModifiable(bookmark)}
-        dropType={dropType}
-      >
-        <BookmarkButton
-          component='a'
-          sx={{ pl: getIndent(indentLevel) }}
-          onClick={(e) => handleClick(e)}
-          onMouseUp={(e) => handleAuxClick(e)}
+      <ActiveBookmarkWrapper id={id}>
+        <BookmarkContainer
+          ref={ref}
+          type={'bookmark'}
+          isDragging={isDragging}
+          isModifiable={isModifiable(bookmark)}
+          dropType={dropType}
         >
-          <BookmarkIcon>
-            <BookmarkImg alt={''} src={getFaviconUrl(bookmark.url!)} />
-          </BookmarkIcon>
-          <ListItemText primary={bookmark.title} primaryTypographyProps={overrides} />
-        </BookmarkButton>
-      </BookmarkContainer>
+          <BookmarkButton
+            component='a'
+            sx={{ pl: getIndent(indentLevel) }}
+            onClick={(e) => handleClick(e)}
+            onMouseUp={(e) => handleAuxClick(e)}
+          >
+            <BookmarkIcon>
+              <BookmarkImg alt={''} src={getFaviconUrl(bookmark.url!)} />
+            </BookmarkIcon>
+            <ListItemText primary={bookmark.title} primaryTypographyProps={overrides} />
+          </BookmarkButton>
+        </BookmarkContainer>
+      </ActiveBookmarkWrapper>
     </WithContextMenu>
   );
 

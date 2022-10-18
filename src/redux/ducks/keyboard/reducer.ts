@@ -12,9 +12,10 @@ export default function reducer(
 ): KeyboardState {
   switch (action.type) {
     case 'KEYBOARD_STATE_SET_SUCCESS':
+      const changes = action.payload.changes;
       return {
         ...state,
-        ...action.payload.changes,
+        ...changes,
       };
     case 'KEYBOARD_LINEAR_LIST_SET_SUCCESS':
       return {

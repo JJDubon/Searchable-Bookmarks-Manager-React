@@ -24,6 +24,14 @@ export const BookmarkContainer = styled('div')<BookmarkContainerProps>(
   })
 );
 
+interface ActiveHighlightProps {
+  active: boolean;
+}
+
+export const ActiveHighlight = styled('div')<ActiveHighlightProps>(({ theme, active }) => ({
+  backgroundColor: active ? 'gray' : 'transparent',
+}));
+
 export const BookmarkButton = styled(ListItemButton)(({ theme }) => ({
   color: theme.palette.text.primary,
   paddingBottom: theme.bookmarks.adjustablePadding(1),

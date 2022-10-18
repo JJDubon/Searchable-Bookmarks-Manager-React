@@ -49,6 +49,36 @@ export function useKeyDown(key: string | null, cb: (event: KeyboardEvent) => voi
   }, [callback]);
 }
 
+export function useMouseMove(cb: (event: MouseEvent) => void): void {
+  const callback = useCallback(
+    (e: MouseEvent) => {
+      cb(e);
+    },
+    [cb]
+  );
+
+  useEffect(() => {
+    document.body.addEventListener('mousemove', callback);
+    return () => document.body.removeEventListener('mousemove', callback);
+  }, [callback]);
+}
+
+export function useMouseDown(cb: (event: MouseEvent) => void): void {
+  const callback = useCallback(
+    (e: MouseEvent) => {
+      setTimeout(() => {
+        cb(e);
+      }, 0);
+    },
+    [cb]
+  );
+
+  useEffect(() => {
+    document.body.addEventListener('mousedown', callback);
+    return () => document.body.removeEventListener('mousedown', callback);
+  }, [callback]);
+}
+
 export function cleanUrl(url: string): string {
   const hasValidHttpOrHttpsHeader = url.indexOf('http://') !== -1 || url.indexOf('https://') !== -1;
   if (!hasValidHttpOrHttpsHeader) {
@@ -60,4 +90,19 @@ export function cleanUrl(url: string): string {
 
 export function copyToClipboard(text: string): void {
   navigator.clipboard.writeText(text);
+}
+
+export function scrollIntoView(element: HTMLElement): void {
+  let targetTop = element.getBoundingClientRect().top;
+  let targetBottom = element.getBoundingClientRect().bottom;
+
+  // Scroll down to the target.
+  if (targetTop >= 0 && targetBottom >= window.innerHeight) {
+    element.scrollIntoView(false);
+  }
+
+  // Scroll up to the target.
+  else if (targetTop - 80 < 0) {
+    element.scrollIntoView(true);
+  }
 }

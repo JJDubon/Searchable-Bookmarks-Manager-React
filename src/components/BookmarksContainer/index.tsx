@@ -5,7 +5,7 @@ import { BookmarksList } from './bookmark-list';
 import { ContextMenu } from './ContextMenu/context-menu';
 import { Dialogs } from './Dialogs';
 import { BookmarkDragPreview } from './Drag';
-import { KeyboardListener } from './KeyboardListener';
+import { useKeyboardNavigation } from './keyboard-nav';
 import {
   useOnChangedListener,
   useOnCreatedListener,
@@ -25,10 +25,12 @@ export const BookmarksContainer = () => {
   useOnMovedListener();
   useOnReorderedListener();
 
+  // Listen to keyboard navigation events
+  useKeyboardNavigation();
+
   return (
     <Container>
       <DndProvider backend={HTML5Backend}>
-        <KeyboardListener />
         <BookmarkDragPreview />
         <ContextMenu />
         <Dialogs />

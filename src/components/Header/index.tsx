@@ -35,7 +35,6 @@ export const Header = ({ showSettings }: HeaderProps) => {
 
         ref.current?.focus();
         e.preventDefault();
-        e.stopPropagation();
       }
     },
     [dispatch, queryExists, escapeBehavior]
