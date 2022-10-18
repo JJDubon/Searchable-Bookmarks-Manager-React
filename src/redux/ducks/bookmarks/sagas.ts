@@ -20,7 +20,8 @@ function* loadBookmarkSaga({ payload }: ReturnType<typeof loadBookmarks>) {
     addBookmarksManagerNode(tree);
 
     const map = createBookmarkMap(tree);
-    yield put(loadBookmarksSuccess(tree[0]?.children?.map((x) => x.id) || [], map));
+    const rootNodes = tree[0]?.children?.map((x) => x.id) || [];
+    yield put(loadBookmarksSuccess(rootNodes, map));
   } catch (ex) {
     yield put(loadBookmarksFailure());
   }
@@ -41,8 +42,9 @@ function* resetBookmarksSaga() {
     const tree: BookmarkTreeNode[] = yield call(getTree);
     addBookmarksManagerNode(tree);
 
+    const rootNodes = tree[0]?.children?.map((x) => x.id) || [];
     const map = createBookmarkMap(tree);
-    yield put(resetBookmarksSuccess(tree[0]?.children?.map((x) => x.id) || [], map));
+    yield put(resetBookmarksSuccess(rootNodes, map));
   } catch (ex) {
     yield put(resetBookmarksFailure());
   }

@@ -1,23 +1,38 @@
 import { useMemo } from 'react';
+import { createOpenMap, toLinearList } from '../../helpers/BookmarkHelpers';
+import { useBookmarksState } from '../../redux/ducks/bookmarks/selectors';
 import { FlattenedBookmarkTreeNode } from '../../redux/ducks/bookmarks/state';
-import { useAppState } from '../../redux/selectors';
+import { useListState } from '../../redux/ducks/list/selectors';
+import { OpenMap } from '../../redux/ducks/list/state';
+import { useSettings } from '../../redux/ducks/settings/selectors';
 
 export type BookmarkType = 'folder' | 'bookmark';
 
 export type DropType = 'bottom' | 'top' | 'bottom-center' | 'top-center' | null;
 
-export function useOpenStatus(id: string): boolean {
-  const state = useAppState();
-  const openMap = useMemo(() => {
-    return { ...state.settings.defaultOpenMap, ...state.list.openMap };
-  }, [state]);
+export function useOpenMap(): OpenMap {
+  const { defaultOpenMap } = useSettings();
+  const { openMap } = useListState();
+  const { activeNodes } = useBookmarksState();
+  return useMemo(() => {
+    return createOpenMap(defaultOpenMap, openMap, activeNodes);
+  }, [activeNodes, defaultOpenMap, openMap]);
+}
 
-  const folder = state.bookmarks.map[id];
-  if (openMap[folder.id] !== undefined) {
-    return openMap[folder.id];
-  } else {
-    return isRootNode(folder);
-  }
+export function useOpenStatus(id: string): boolean {
+  const openMap = useOpenMap();
+  return openMap[id];
+}
+
+// TODO - If there is a search query this needs to work differently
+// TODO - Like if a search result appears twice in the search results both will be highlighted
+// TODO - Don't know what to do about that yet
+export function useLinearBookmarkList(): string[] {
+  const { activeNodes, map } = useBookmarksState();
+  const openMap = useOpenMap();
+  return useMemo(() => {
+    return toLinearList(activeNodes, map, openMap);
+  }, [activeNodes, map, openMap]);
 }
 
 export function isRootNode(bookmark: FlattenedBookmarkTreeNode): boolean {

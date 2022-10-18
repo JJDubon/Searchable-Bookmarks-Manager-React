@@ -1,4 +1,5 @@
 import { PaletteMode } from '@mui/material';
+import { OpenMap } from '../list/state';
 
 export const SettingsStateKeys: (keyof SettingsState)[] = [
   'palette',
@@ -16,5 +17,5 @@ export interface SettingsState {
   padding: string;
   noWrap: boolean;
   escapeBehavior: 'clear' | 'close';
-  defaultOpenMap: { [id: string]: boolean };
+  defaultOpenMap: OpenMap;
 }

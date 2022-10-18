@@ -33,21 +33,46 @@ export const useElementSize = (ref: RefObject<HTMLElement>) => {
   return size;
 };
 
-export function useKeyDown(key: string | null, callback: (event: KeyboardEvent) => void): void {
+export function useKeyDown(key: string | null, cb: (event: KeyboardEvent) => void): void {
+  const callback = useCallback(
+    (e: KeyboardEvent) => {
+      if (key === null || e.key === key) {
+        cb(e);
+      }
+    },
+    [cb, key]
+  );
+
   useEffect(() => {
     document.body.addEventListener('keydown', callback);
     return () => document.body.removeEventListener('keydown', callback);
   }, [callback]);
 }
 
-export function useMouseMove(callback: (event: MouseEvent) => void): void {
+export function useMouseMove(cb: (event: MouseEvent) => void): void {
+  const callback = useCallback(
+    (e: MouseEvent) => {
+      cb(e);
+    },
+    [cb]
+  );
+
   useEffect(() => {
     document.body.addEventListener('mousemove', callback);
     return () => document.body.removeEventListener('mousemove', callback);
   }, [callback]);
 }
 
-export function useMouseDown(callback: (event: MouseEvent) => void): void {
+export function useMouseDown(cb: (event: MouseEvent) => void): void {
+  const callback = useCallback(
+    (e: MouseEvent) => {
+      setTimeout(() => {
+        cb(e);
+      }, 0);
+    },
+    [cb]
+  );
+
   useEffect(() => {
     document.body.addEventListener('mousedown', callback);
     return () => document.body.removeEventListener('mousedown', callback);

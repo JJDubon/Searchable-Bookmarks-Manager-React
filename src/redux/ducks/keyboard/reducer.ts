@@ -3,7 +3,6 @@ import { KeyboardState } from './state';
 
 const defaultState: KeyboardState = {
   activeNode: null,
-  linearNodes: [],
 };
 
 export default function reducer(
@@ -16,11 +15,6 @@ export default function reducer(
       return {
         ...state,
         ...changes,
-      };
-    case 'KEYBOARD_LINEAR_LIST_SET_SUCCESS':
-      return {
-        ...state,
-        linearNodes: action.payload.list,
       };
     default:
       return state;
