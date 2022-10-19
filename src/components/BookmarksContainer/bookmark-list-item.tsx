@@ -1,4 +1,4 @@
-import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 import { ListItemText, TypographyProps } from '@mui/material';
 import { motion } from 'framer-motion';
 import React, { useMemo } from 'react';
@@ -60,7 +60,7 @@ const BookmarkListItemComponent = ({
         {...componentProps}
       >
         <BookmarkIcon>
-          {src && <BookmarkImg alt={''} src={getFaviconUrl(src)} />}
+          {src && <BookmarkImg alt={''} src={getFaviconUrl(src)} loading='lazy' />}
           {icon}
         </BookmarkIcon>
         <ListItemText primary={title} primaryTypographyProps={overrides} />
@@ -70,7 +70,7 @@ const BookmarkListItemComponent = ({
             transition={{ type: 'ease' }}
             style={{ rotate: getRotation() }}
           >
-            <ExpandLess style={{ opacity: 0.15 }} />
+            <ExpandMore style={{ opacity: 0.15 }} />
           </motion.div>
         )}
       </BookmarkButton>
