@@ -46,7 +46,7 @@ export const EditFolderDialog = ({ open, onClose }: EditFolderDialogProps) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={() => handleClose()}>Cancel</Button>
-        <Button onClick={() => handleEdit()}>Edit</Button>
+        <Button onClick={() => handleEdit()}>Save folder</Button>
       </DialogActions>
     </Dialog>
   );

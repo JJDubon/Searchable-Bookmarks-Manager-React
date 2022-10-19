@@ -41,7 +41,7 @@ export const AddFolderDialog = ({ open, onClose }: AddFolderDialogProps) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={() => handleClose()}>Cancel</Button>
-        <Button onClick={() => handleAdd()}>Add</Button>
+        <Button onClick={() => handleAdd()}>Add folder</Button>
       </DialogActions>
     </Dialog>
   );

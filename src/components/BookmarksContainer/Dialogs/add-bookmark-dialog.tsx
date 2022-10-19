@@ -56,7 +56,7 @@ export const AddBookmarkDialog = ({ open, onClose }: AddBookmarkDialogProps) => 
       </DialogContent>
       <DialogActions>
         <Button onClick={() => handleClose()}>Cancel</Button>
-        <Button onClick={() => handleAdd()}>Add</Button>
+        <Button onClick={() => handleAdd()}>Add bookmark</Button>
       </DialogActions>
     </Dialog>
   );

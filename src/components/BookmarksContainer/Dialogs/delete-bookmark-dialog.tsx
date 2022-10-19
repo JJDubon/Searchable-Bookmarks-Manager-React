@@ -29,7 +29,7 @@ export const DeleteBookmarkDialog = ({ open, onClose }: DeleteBookmarkDialogProp
       </DialogContent>
       <DialogActions>
         <Button onClick={() => handleClose()}>Cancel</Button>
-        <Button onClick={() => handleRemove()}>Delete</Button>
+        <Button onClick={() => handleRemove()}>Delete {type}</Button>
       </DialogActions>
     </Dialog>
   );

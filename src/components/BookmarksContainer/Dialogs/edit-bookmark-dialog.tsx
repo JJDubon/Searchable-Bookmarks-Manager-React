@@ -62,7 +62,7 @@ export const EditBookmarkDialog = ({ open, onClose }: EditBookmarkDialogProps) =
       </DialogContent>
       <DialogActions>
         <Button onClick={() => handleClose()}>Cancel</Button>
-        <Button onClick={() => handleEdit()}>Edit</Button>
+        <Button onClick={() => handleEdit()}>Save bookmark</Button>
       </DialogActions>
     </Dialog>
   );
