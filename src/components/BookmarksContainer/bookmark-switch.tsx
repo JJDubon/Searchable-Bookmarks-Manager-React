@@ -16,6 +16,10 @@ export const BookmarkSwitch = ({
   forceClose = false,
 }: BookmarkSwitchProps) => {
   const bookmark = useBookmark(id);
+  if (!bookmark) {
+    return <></>;
+  }
+
   if (bookmark.children) {
     return (
       <Folder key={id} id={id} indentLevel={indentLevel} hideDetails={hideDetails} forceClose={forceClose} />

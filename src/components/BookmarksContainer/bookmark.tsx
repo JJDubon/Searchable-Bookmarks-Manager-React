@@ -9,10 +9,6 @@ import { useBookmarkDrag, useBookmarkDrop } from './Drag/utils';
 import { BookmarkPrimaryTextOverrides } from './styles';
 import { isModifiable } from './utils';
 
-const getFaviconUrl = (url: string, size: number = 32) => {
-  return `chrome-extension://${chrome.runtime.id}/_favicon/?pageUrl=${encodeURIComponent(url)}&size=${size}`;
-};
-
 interface BookmarksProps {
   id: string;
   indentLevel: number;
@@ -64,7 +60,7 @@ export const Bookmark = ({ id, indentLevel }: BookmarksProps) => {
             dropType={dropType}
             isModifiable={isModifiable(bookmark)}
             overrides={overrides}
-            src={getFaviconUrl(bookmark.url!)}
+            src={bookmark.url!}
             onClick={onClick}
             onMouseUp={onMouseUp}
             hideDetails

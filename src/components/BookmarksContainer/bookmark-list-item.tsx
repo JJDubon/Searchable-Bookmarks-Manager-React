@@ -6,6 +6,10 @@ import { getIndent } from '../../providers/AppThemeProvider';
 import { BookmarkButton, BookmarkContainer, BookmarkIcon, BookmarkImg } from './styles';
 import { BookmarkType, DropType } from './utils';
 
+const getFaviconUrl = (url: string, size: number = 32) => {
+  return `chrome-extension://${chrome.runtime.id}/_favicon/?pageUrl=${encodeURIComponent(url)}&size=${size}`;
+};
+
 interface FolderProps {
   title: string;
   type: BookmarkType;
@@ -56,7 +60,7 @@ const BookmarkListItemComponent = ({
         {...componentProps}
       >
         <BookmarkIcon>
-          {src && <BookmarkImg alt={''} src={src} />}
+          {src && <BookmarkImg alt={''} src={getFaviconUrl(src)} />}
           {icon}
         </BookmarkIcon>
         <ListItemText primary={title} primaryTypographyProps={overrides} />
