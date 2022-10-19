@@ -1,6 +1,7 @@
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import FolderIcon from '@mui/icons-material/Folder';
-import { Collapse } from '@mui/material';
+import TabUnselectedIcon from '@mui/icons-material/TabUnselected';
+import { Collapse, List } from '@mui/material';
 import { useCallback, useMemo, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useBookmark } from '../../redux/ducks/bookmarks/selectors';
@@ -46,14 +47,11 @@ export const Folder = ({ id, indentLevel, hideDetails = false, forceClose = fals
     }
   }, [dropType, folder, open]);
 
-  const onClick = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement | HTMLDivElement, MouseEvent>) => {
-      if (!forceClose) {
-        dispatch(setListItemOpen(folder.id, !open));
-      }
-    },
-    [dispatch, folder.id, forceClose, open]
-  );
+  const onClick = useCallback(() => {
+    if (!forceClose) {
+      dispatch(setListItemOpen(folder.id, !open));
+    }
+  }, [dispatch, folder.id, forceClose, open]);
 
   return (
     <>
@@ -77,7 +75,26 @@ export const Folder = ({ id, indentLevel, hideDetails = false, forceClose = fals
         </ActiveBookmarkWrapper>
       </WithContextMenu>
       <Collapse in={open} timeout={150} unmountOnExit>
-        <BookmarksList ids={folder.children || []} indentLevel={indentLevel + 1} />
+        {folder.children && folder.children.length !== 0 && (
+          <BookmarksList ids={folder.children || []} indentLevel={indentLevel + 1} />
+        )}
+        {(!folder.children || folder.children.length === 0) && (
+          <List disablePadding>
+            <BookmarkListItem
+              title='Empty Folder'
+              type='bookmark'
+              icon={<TabUnselectedIcon />}
+              indentLevel={indentLevel + 1}
+              isDragging={false}
+              dropType={null}
+              isModifiable={false}
+              overrides={overrides}
+              onClick={() => {}}
+              disabled
+              hideDetails
+            />
+          </List>
+        )}
       </Collapse>
     </>
   );

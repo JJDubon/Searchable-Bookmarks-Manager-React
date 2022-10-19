@@ -20,6 +20,7 @@ interface FolderProps {
   src?: string;
   isOpen?: boolean;
   hideDetails?: boolean;
+  disabled?: boolean;
 }
 
 const BookmarkListItemComponent = ({
@@ -34,6 +35,7 @@ const BookmarkListItemComponent = ({
   src,
   isOpen,
   hideDetails = false,
+  disabled = false,
   onClick,
   onMouseUp,
 }: FolderProps) => {
@@ -50,6 +52,7 @@ const BookmarkListItemComponent = ({
         sx={{ pl: getIndent(indentLevel) }}
         onClick={onClick}
         onMouseUp={onMouseUp}
+        disabled={disabled}
         {...componentProps}
       >
         <BookmarkIcon>

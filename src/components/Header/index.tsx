@@ -8,6 +8,8 @@ import { useDispatch } from 'react-redux';
 import { useKeyDown } from '../../helpers/BrowserHelpers';
 import { searchBookmarks } from '../../redux/ducks/bookmarks/actions';
 import { useBookmarksState } from '../../redux/ducks/bookmarks/selectors';
+import { useContextState } from '../../redux/ducks/context/selectors';
+import { AppDialogs } from '../../redux/ducks/context/state';
 import { useSettings } from '../../redux/ducks/settings/selectors';
 import { ignoredSearchKeys } from './ignored-keys';
 import { Container, SearchField } from './styles';
@@ -22,11 +24,16 @@ export const Header = ({ showSettings }: HeaderProps) => {
   const [value, setValue] = useState('');
   const { query } = useBookmarksState();
   const { escapeBehavior } = useSettings();
+  const { activeDialog } = useContextState();
   const queryExists = query.length !== 0;
 
   // Either close the extension or clear the search input when the escape button is clicked
   const onEscapePressed = useCallback(
     (e: KeyboardEvent) => {
+      if (activeDialog !== AppDialogs.None) {
+        return;
+      }
+
       if (escapeBehavior === 'clear') {
         if (queryExists) {
           setValue('');
@@ -37,14 +44,21 @@ export const Header = ({ showSettings }: HeaderProps) => {
         e.preventDefault();
       }
     },
-    [dispatch, queryExists, escapeBehavior]
+    [activeDialog, escapeBehavior, queryExists, dispatch]
   );
 
-  const onKeyDown = useCallback((e: KeyboardEvent) => {
-    if (!ignoredSearchKeys.has(e.key)) {
-      ref.current?.focus();
-    }
-  }, []);
+  const onKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (activeDialog !== AppDialogs.None) {
+        return;
+      }
+
+      if (!ignoredSearchKeys.has(e.key)) {
+        ref.current?.focus();
+      }
+    },
+    [activeDialog]
+  );
 
   useKeyDown('Escape', onEscapePressed);
   useKeyDown(null, onKeyDown);
