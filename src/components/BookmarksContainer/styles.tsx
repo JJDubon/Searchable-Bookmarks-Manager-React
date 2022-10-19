@@ -6,7 +6,7 @@ export const Container = styled('div')(({ theme }) => ({
   backgroundColor: theme.backgrounds.offset(1),
   maxWidth: '100%',
   minHeight: '100%',
-  padding: '8px 0',
+  padding: '0',
 }));
 
 interface BookmarkContainerProps {
