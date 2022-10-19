@@ -6,7 +6,7 @@ export const Container = styled('div')(({ theme }) => ({
   boxSizing: 'border-box',
   display: 'flex',
   height: '100%',
-  padding: '0 6px',
+  padding: '0 0 0 6px',
 }));
 
 export const SearchField = styled(TextField)(({ theme }) => ({
