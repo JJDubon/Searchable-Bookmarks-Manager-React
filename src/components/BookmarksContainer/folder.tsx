@@ -6,14 +6,12 @@ import { useCallback, useMemo, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useBookmark } from '../../redux/ducks/bookmarks/selectors';
 import { setListItemOpen } from '../../redux/ducks/list/actions';
-import { useSettings } from '../../redux/ducks/settings/selectors';
 import { ActiveBookmarkWrapper } from './active-bookmark-wrapper';
 import { BookmarksList } from './bookmark-list';
 import { BookmarkListItem } from './bookmark-list-item';
 import { WithContextMenu } from './ContextMenu';
 import { useBookmarkDrag, useBookmarkDrop } from './Drag/utils';
-import { BookmarkPrimaryTextOverrides } from './styles';
-import { getDropBehavior, isModifiable, useOpenStatus } from './utils';
+import { getDropBehavior, isModifiable, useListItemOverrides, useOpenStatus } from './utils';
 
 interface FolderProps {
   id: string;
@@ -28,15 +26,11 @@ export const Folder = ({ id, indentLevel, hideDetails = false, forceClose = fals
   const folder = useBookmark(id);
   const { isDragging } = useBookmarkDrag(id, ref);
   const { dropType } = useBookmarkDrop(id, ref);
-  const { fontSize, noWrap } = useSettings();
+  const overrides = useListItemOverrides();
   let open = useOpenStatus(id);
   if (forceClose) {
     open = false;
   }
-
-  const overrides = useMemo(() => {
-    return BookmarkPrimaryTextOverrides(fontSize, noWrap);
-  }, [fontSize, noWrap]);
 
   const folderIcon = useMemo(() => {
     const dropBehavior = getDropBehavior('folder', isModifiable(folder), open, dropType);
@@ -49,7 +43,7 @@ export const Folder = ({ id, indentLevel, hideDetails = false, forceClose = fals
 
   const onClick = useCallback(() => {
     if (!forceClose) {
-      dispatch(setListItemOpen(folder.id, !open));
+      dispatch(setListItemOpen({ id: folder.id, open: !open }));
     }
   }, [dispatch, folder.id, forceClose, open]);
 

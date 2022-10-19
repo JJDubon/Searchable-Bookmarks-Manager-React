@@ -85,7 +85,7 @@ export const AddBookmarkDialog = ({ open, onClose }: AddBookmarkDialogProps) => 
         createBookmark(title, bookmark!.children!.length ?? 0, bookmark!.id, url);
       }
 
-      dispatch(setListItemOpen(bookmark!.id, true));
+      dispatch(setListItemOpen({ id: bookmark!.id, open: true }));
       handleClose();
     }
   }

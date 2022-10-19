@@ -25,7 +25,7 @@ export const WithContextMenu = ({ bookmark, children }: WithContextMenuProps) =>
     <div
       onContextMenu={(e) => {
         e.preventDefault();
-        dispatch(setContextMenuOpen(bookmark, e.pageX, e.pageY));
+        dispatch(setContextMenuOpen({ bookmark, x: e.pageX, y: e.pageY }));
       }}
     >
       {children}

@@ -57,7 +57,7 @@ export const AddFolderDialog = ({ open, onClose }: AddFolderDialogProps) => {
       setError('Please provide a bookmark name');
     } else {
       createBookmark(title, bookmark!.children!.length ?? 0, bookmark!.id);
-      dispatch(setListItemOpen(bookmark!.id, true));
+      dispatch(setListItemOpen({ id: bookmark!.id, open: true }));
       handleClose();
     }
   }

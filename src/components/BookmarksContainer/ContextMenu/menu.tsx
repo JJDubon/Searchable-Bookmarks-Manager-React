@@ -103,8 +103,8 @@ export const Menu = ({ bookmark }: MenuProps) => {
         onClick={() => {
           const updatedOption = !openByDefault;
           const updatedMap = { ...defaultOpenMap, [bookmark!.id]: updatedOption };
-          dispatch(setSettings({ defaultOpenMap: updatedMap }));
-          dispatch(setListItemOpen(bookmark!.id, updatedOption));
+          dispatch(setSettings({ settings: { defaultOpenMap: updatedMap } }));
+          dispatch(setListItemOpen({ id: bookmark!.id, open: updatedOption }));
         }}
       >
         <ListItemIcon>
@@ -113,13 +113,16 @@ export const Menu = ({ bookmark }: MenuProps) => {
         <ListItemText>Set {openByDefault ? 'closed' : 'open'} by default</ListItemText>
       </MenuItem>,
       <Divider key='d2' />,
-      <MenuItem key='add-bookmark' onClick={() => dispatch(setActiveDialog(AppDialogs.AddBookmark))}>
+      <MenuItem
+        key='add-bookmark'
+        onClick={() => dispatch(setActiveDialog({ dialog: AppDialogs.AddBookmark }))}
+      >
         <ListItemIcon>
           <ContentCopyIcon fontSize='small' />
         </ListItemIcon>
         <ListItemText>Add Bookmark</ListItemText>
       </MenuItem>,
-      <MenuItem key='add-folder' onClick={() => dispatch(setActiveDialog(AppDialogs.AddFolder))}>
+      <MenuItem key='add-folder' onClick={() => dispatch(setActiveDialog({ dialog: AppDialogs.AddFolder }))}>
         <ListItemIcon>
           <CreateNewFolderIcon fontSize='small' />
         </ListItemIcon>
@@ -133,9 +136,9 @@ export const Menu = ({ bookmark }: MenuProps) => {
         key='edit'
         onClick={() => {
           if (type === 'folder') {
-            dispatch(setActiveDialog(AppDialogs.EditFolder));
+            dispatch(setActiveDialog({ dialog: AppDialogs.EditFolder }));
           } else {
-            dispatch(setActiveDialog(AppDialogs.EditBookmark));
+            dispatch(setActiveDialog({ dialog: AppDialogs.EditBookmark }));
           }
         }}
       >
@@ -144,7 +147,7 @@ export const Menu = ({ bookmark }: MenuProps) => {
         </ListItemIcon>
         <ListItemText>Edit {type}</ListItemText>
       </MenuItem>,
-      <MenuItem key='delete' onClick={() => dispatch(setActiveDialog(AppDialogs.DeleteBookmark))}>
+      <MenuItem key='delete' onClick={() => dispatch(setActiveDialog({ dialog: AppDialogs.DeleteBookmark }))}>
         <ListItemIcon>
           <DeleteIcon fontSize='small' />
         </ListItemIcon>

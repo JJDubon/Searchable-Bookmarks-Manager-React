@@ -1,7 +1,8 @@
-import { ContextStateActions } from './actions';
+import { createReducer } from '@reduxjs/toolkit';
+import { setActiveDialogSuccess, setContextMenuCloseSuccess, setContextMenuOpenSuccess } from './actions';
 import { AppDialogs, ContextState } from './state';
 
-const defaultState: ContextState = {
+const initialState: ContextState = {
   open: false,
   bookmark: null,
   x: 0,
@@ -9,30 +10,28 @@ const defaultState: ContextState = {
   activeDialog: AppDialogs.None,
 };
 
-export default function reducer(
-  state: ContextState = defaultState,
-  action: ContextStateActions
-): ContextState {
-  switch (action.type) {
-    case 'CONTEXT_MENU_OPEN_SUCCESS':
-      return {
-        ...state,
-        open: true,
-        x: action.payload.x,
-        y: action.payload.y,
-        bookmark: action.payload.bookmark,
-      };
-    case 'CONTEXT_MENU_CLOSE_SUCCESS':
-      return {
-        ...state,
-        open: false,
-      };
-    case 'CONTEXT_SET_ACTIVE_DIALOG_SUCCESS':
-      return {
-        ...state,
-        activeDialog: action.payload.dialog,
-      };
-    default:
-      return state;
-  }
-}
+export const contextReducer = createReducer(initialState, (builder) => {
+  builder.addCase(setContextMenuOpenSuccess, (state, action) => {
+    return {
+      ...state,
+      open: true,
+      x: action.payload.x,
+      y: action.payload.y,
+      bookmark: action.payload.bookmark,
+    };
+  });
+
+  builder.addCase(setContextMenuCloseSuccess, (state, action) => {
+    return {
+      ...state,
+      open: false,
+    };
+  });
+
+  builder.addCase(setActiveDialogSuccess, (state, action) => {
+    return {
+      ...state,
+      activeDialog: action.payload.dialog,
+    };
+  });
+});

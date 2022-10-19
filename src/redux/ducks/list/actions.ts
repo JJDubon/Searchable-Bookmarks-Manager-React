@@ -1,35 +1,12 @@
+import { createAction } from '@reduxjs/toolkit';
 import { ListState } from './state';
 
-export function setListState(changes: Partial<ListState>) {
-  return {
-    type: 'LIST_STATE_SET' as 'LIST_STATE_SET',
-    payload: { changes },
-  };
-}
+export const setListState = createAction<{ changes: Partial<ListState> }>('LIST_STATE_SET');
 
-export function setListStateSuccess(changes: Partial<ListState>) {
-  return {
-    type: 'LIST_STATE_SET_SUCCESS' as 'LIST_STATE_SET_SUCCESS',
-    payload: { changes },
-  };
-}
+export const setListStateSuccess = createAction<{ changes: Partial<ListState> }>('LIST_STATE_SET_SUCCESS');
 
-export function setListItemOpen(id: string, open: boolean) {
-  return {
-    type: 'LIST_STATE_SET_OPEN' as 'LIST_STATE_SET_OPEN',
-    payload: { id, open },
-  };
-}
+export const setListItemOpen = createAction<{ id: string; open: boolean }>('LIST_STATE_SET_OPEN');
 
-export function setListItemOpenSuccess(id: string, open: boolean) {
-  return {
-    type: 'LIST_STATE_SET_OPEN_SUCCESS' as 'LIST_STATE_SET_OPEN_SUCCESS',
-    payload: { id, open },
-  };
-}
-
-export type ListStateActions =
-  | ReturnType<typeof setListState>
-  | ReturnType<typeof setListStateSuccess>
-  | ReturnType<typeof setListState>
-  | ReturnType<typeof setListItemOpenSuccess>;
+export const setListItemOpenSuccess = createAction<{ id: string; open: boolean }>(
+  'LIST_STATE_SET_OPEN_SUCCESS'
+);

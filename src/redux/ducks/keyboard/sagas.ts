@@ -2,7 +2,7 @@ import { put, takeEvery } from 'redux-saga/effects';
 import { setKeyboardState, setKeyboardStateSuccess } from './actions';
 
 export function* setKeyboardStateSaga({ payload }: ReturnType<typeof setKeyboardState>) {
-  yield put(setKeyboardStateSuccess(payload.changes));
+  yield put(setKeyboardStateSuccess({ changes: payload.changes }));
 }
 
 export function* keyboardStateSagas() {

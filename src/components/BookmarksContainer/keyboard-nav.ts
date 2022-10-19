@@ -31,7 +31,7 @@ export function useKeyboardNavigation() {
             const bookmark = map[linearBookmarkList[activeIndex]];
             const isOpen = openMap[bookmark.id];
             if (bookmark.children) {
-              dispatch(setListItemOpen(bookmark.id, !isOpen));
+              dispatch(setListItemOpen({ id: bookmark.id, open: !isOpen }));
             } else {
               openInCurrentTab(bookmark.url!);
             }
@@ -72,7 +72,8 @@ export function useKeyboardNavigation() {
   );
 
   useEffect(() => {
-    dispatch(setKeyboardState({ activeNode: activeIndex === null ? null : linearBookmarkList[activeIndex] }));
+    const changes = { activeNode: activeIndex === null ? null : linearBookmarkList[activeIndex] };
+    dispatch(setKeyboardState({ changes }));
   }, [dispatch, activeIndex, activeNodes, map, openMap, linearBookmarkList]);
 
   useKeyDown(null, onKeyDown);

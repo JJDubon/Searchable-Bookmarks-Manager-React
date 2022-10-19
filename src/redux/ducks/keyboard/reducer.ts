@@ -1,22 +1,17 @@
-import { KeyboardStateActions } from './actions';
+import { createReducer } from '@reduxjs/toolkit';
+import { setKeyboardStateSuccess } from './actions';
 import { KeyboardState } from './state';
 
-const defaultState: KeyboardState = {
+const initialState: KeyboardState = {
   activeNode: null,
 };
 
-export default function reducer(
-  state: KeyboardState = defaultState,
-  action: KeyboardStateActions
-): KeyboardState {
-  switch (action.type) {
-    case 'KEYBOARD_STATE_SET_SUCCESS':
-      const changes = action.payload.changes;
-      return {
-        ...state,
-        ...changes,
-      };
-    default:
-      return state;
-  }
-}
+export const keyboardReducer = createReducer(initialState, (builder) => {
+  builder.addCase(setKeyboardStateSuccess, (state, action) => {
+    const changes = action.payload.changes;
+    return {
+      ...state,
+      ...changes,
+    };
+  });
+});

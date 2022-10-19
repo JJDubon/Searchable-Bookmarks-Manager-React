@@ -5,11 +5,11 @@ import {
   setContextMenuClose,
   setContextMenuCloseSuccess,
   setContextMenuOpen,
-  setContextMenuOpenSuccess
+  setContextMenuOpenSuccess,
 } from './actions';
 
 export function* openContextMenuSaga({ payload }: ReturnType<typeof setContextMenuOpen>) {
-  yield put(setContextMenuOpenSuccess(payload.bookmark, payload.x, payload.y));
+  yield put(setContextMenuOpenSuccess({ bookmark: payload.bookmark, x: payload.x, y: payload.y }));
 }
 
 export function* closeContextMenuSaga() {
@@ -17,7 +17,7 @@ export function* closeContextMenuSaga() {
 }
 
 export function* openAppDialogSaga({ payload }: ReturnType<typeof setActiveDialog>) {
-  yield put(setActiveDialogSuccess(payload.dialog));
+  yield put(setActiveDialogSuccess({ dialog: payload.dialog }));
 }
 
 export function* contextStateSagas() {

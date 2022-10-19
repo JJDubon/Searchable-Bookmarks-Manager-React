@@ -21,8 +21,8 @@ function App() {
     chrome.runtime.sendMessage(
       { type: 'SBM_POPUP_OPENED' },
       (response?: { root?: BookmarkTreeNode[]; settings?: SettingsState }) => {
-        dispatch(loadSettings(response?.settings));
-        dispatch(loadBookmarks(response?.root));
+        dispatch(loadSettings({ settings: response?.settings }));
+        dispatch(loadBookmarks({ root: response?.root }));
       }
     );
   }, [dispatch]);

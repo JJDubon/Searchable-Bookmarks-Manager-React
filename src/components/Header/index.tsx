@@ -37,7 +37,7 @@ export const Header = ({ showSettings }: HeaderProps) => {
       if (escapeBehavior === 'clear') {
         if (queryExists) {
           setValue('');
-          dispatch(searchBookmarks(''));
+          dispatch(searchBookmarks({ query: '' }));
         }
 
         ref.current?.focus();
@@ -91,16 +91,16 @@ export const Header = ({ showSettings }: HeaderProps) => {
 
   function runQuery(value: string) {
     setValue(value ?? '');
-    dispatch(searchBookmarks(value ?? ''));
+    dispatch(searchBookmarks({ query: value ?? '' }));
   }
 
   function onSearchIconClick() {
     ref.current?.focus();
     if (queryExists) {
       setValue('');
-      dispatch(searchBookmarks(''));
+      dispatch(searchBookmarks({ query: '' }));
     } else {
-      dispatch(searchBookmarks(query));
+      dispatch(searchBookmarks({ query }));
     }
   }
 };

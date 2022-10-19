@@ -1,13 +1,11 @@
-import { useCallback, useMemo, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import { openInNewTab, openInNewWindow } from '../../helpers/ChromeApiHelpers';
 import { useBookmark } from '../../redux/ducks/bookmarks/selectors';
-import { useSettings } from '../../redux/ducks/settings/selectors';
 import { ActiveBookmarkWrapper } from './active-bookmark-wrapper';
 import { BookmarkListItem } from './bookmark-list-item';
 import { WithContextMenu } from './ContextMenu';
 import { useBookmarkDrag, useBookmarkDrop } from './Drag/utils';
-import { BookmarkPrimaryTextOverrides } from './styles';
-import { isModifiable } from './utils';
+import { isModifiable, useListItemOverrides } from './utils';
 
 interface BookmarksProps {
   id: string;
@@ -19,10 +17,7 @@ export const Bookmark = ({ id, indentLevel }: BookmarksProps) => {
   const bookmark = useBookmark(id);
   const { isDragging } = useBookmarkDrag(id, ref);
   const { dropType } = useBookmarkDrop(id, ref);
-  const { fontSize, noWrap } = useSettings();
-  const overrides = useMemo(() => {
-    return BookmarkPrimaryTextOverrides(fontSize, noWrap);
-  }, [fontSize, noWrap]);
+  const overrides = useListItemOverrides();
 
   const onClick = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement | HTMLDivElement, MouseEvent>) => {

@@ -13,7 +13,7 @@ import { SettingsState, SettingsStateKeys } from './state';
 export function* loadSettingsSaga({ payload }: ReturnType<typeof loadSettings>) {
   try {
     const settings: SettingsState = payload.settings ?? (yield call(getAppSettings, SettingsStateKeys));
-    yield put(loadSettingsSuccess(settings));
+    yield put(loadSettingsSuccess({ settings }));
   } catch (ex) {
     yield put(loadSettingsFailure());
   }
@@ -22,7 +22,7 @@ export function* loadSettingsSaga({ payload }: ReturnType<typeof loadSettings>) 
 export function* setSettingsSaga({ payload }: ReturnType<typeof setSettings>) {
   try {
     yield call(() => setAppSettings(payload.settings));
-    yield put(setSettingsSuccess(payload.settings));
+    yield put(setSettingsSuccess({ settings: payload.settings }));
   } catch (ex) {
     yield put(setSettingsFailure());
   }

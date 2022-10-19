@@ -24,6 +24,6 @@ export const Dialogs = () => {
   );
 
   function close() {
-    dispatch(setActiveDialog(AppDialogs.None));
+    dispatch(setActiveDialog({ dialog: AppDialogs.None }));
   }
 };

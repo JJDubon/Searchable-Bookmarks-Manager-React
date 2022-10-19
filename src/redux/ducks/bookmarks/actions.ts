@@ -1,65 +1,26 @@
+import { createAction } from '@reduxjs/toolkit';
 import { BookmarkMap, BookmarkTreeNode } from './state';
 
-export function loadBookmarks(root?: BookmarkTreeNode[]) {
-  return {
-    type: 'BOOKMARKS_LOAD' as 'BOOKMARKS_LOAD',
-    payload: { root },
-  };
-}
+export const loadBookmarks = createAction<{ root?: BookmarkTreeNode[] }>('BOOKMARKS_LOAD');
 
-export function loadBookmarksSuccess(root: string[], map: BookmarkMap) {
-  return {
-    type: 'BOOKMARKS_LOAD_SUCCESS' as 'BOOKMARKS_LOAD_SUCCESS',
-    payload: { root, map },
-  };
-}
+export const loadBookmarksSuccess = createAction<{ root: string[]; map: BookmarkMap }>(
+  'BOOKMARKS_LOAD_SUCCESS'
+);
 
-export function loadBookmarksFailure() {
-  return { type: 'BOOKMARKS_LOAD_FAILURE' as 'BOOKMARKS_LOAD_FAILURE' };
-}
+export const loadBookmarksFailure = createAction('BOOKMARKS_LOAD_FAILURE');
 
-export function searchBookmarks(query: string) {
-  return {
-    type: 'BOOKMARKS_SEARCH' as 'BOOKMARKS_SEARCH',
-    payload: { query },
-  };
-}
+export const searchBookmarks = createAction<{ query: string }>('BOOKMARKS_SEARCH');
 
-export function searchBookmarksSuccess(query: string, results: string[]) {
-  return {
-    type: 'BOOKMARKS_SEARCH_SUCCESS' as 'BOOKMARKS_SEARCH_SUCCESS',
-    payload: { query, results },
-  };
-}
+export const searchBookmarksSuccess = createAction<{ query: string; results: string[] }>(
+  'BOOKMARKS_SEARCH_SUCCESS'
+);
 
-export function searchBookmarksFailure() {
-  return { type: 'BOOKMARKS_SEARCH_FAILURE' as 'BOOKMARKS_SEARCH_FAILURE' };
-}
+export const searchBookmarksFailure = createAction('BOOKMARKS_SEARCH_FAILURE');
 
-export function resetBookmarks() {
-  return {
-    type: 'BOOKMARKS_RESET' as 'BOOKMARKS_RESET',
-  };
-}
+export const resetBookmarks = createAction('BOOKMARKS_RESET');
 
-export function resetBookmarksSuccess(root: string[], map: BookmarkMap) {
-  return {
-    type: 'BOOKMARKS_RESET_SUCCESS' as 'BOOKMARKS_RESET_SUCCESS',
-    payload: { root, map },
-  };
-}
+export const resetBookmarksSuccess = createAction<{ root: string[]; map: BookmarkMap }>(
+  'BOOKMARKS_RESET_SUCCESS'
+);
 
-export function resetBookmarksFailure() {
-  return { type: 'BOOKMARKS_RESET_FAILURE' as 'BOOKMARKS_RESET_FAILURE' };
-}
-
-export type BookmarksActions =
-  | ReturnType<typeof loadBookmarks>
-  | ReturnType<typeof loadBookmarksSuccess>
-  | ReturnType<typeof loadBookmarksFailure>
-  | ReturnType<typeof searchBookmarks>
-  | ReturnType<typeof searchBookmarksSuccess>
-  | ReturnType<typeof searchBookmarksFailure>
-  | ReturnType<typeof resetBookmarks>
-  | ReturnType<typeof resetBookmarksSuccess>
-  | ReturnType<typeof resetBookmarksFailure>;
+export const resetBookmarksFailure = createAction('BOOKMARKS_RESET_FAILURE');

@@ -39,7 +39,7 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
               value={palette}
               onChange={(e) => {
                 const value = e.target.value as PaletteMode;
-                dispatch(setSettings({ palette: value }));
+                dispatch(setSettings({ settings: { palette: value } }));
               }}
             >
               <MenuItem value={'light'}>Light (Default)</MenuItem>
@@ -55,7 +55,7 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
               value={fontSize}
               onChange={(e) => {
                 const value = e.target.value as string;
-                dispatch(setSettings({ fontSize: value }));
+                dispatch(setSettings({ settings: { fontSize: value } }));
               }}
             >
               <MenuItem value={'14px'}>Small (Default)</MenuItem>
@@ -73,7 +73,7 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
               value={padding}
               onChange={(e) => {
                 const value = e.target.value as string;
-                dispatch(setSettings({ padding: value }));
+                dispatch(setSettings({ settings: { padding: value } }));
               }}
             >
               <MenuItem value={'0px'}>Small (Default)</MenuItem>
@@ -91,7 +91,7 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
               value={noWrap}
               onChange={(e) => {
                 const value = e.target.value as string;
-                dispatch(setSettings({ noWrap: value === 'true' }));
+                dispatch(setSettings({ settings: { noWrap: value === 'true' } }));
               }}
             >
               <MenuItem value={'true'}>Single Line</MenuItem>
@@ -107,7 +107,7 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
               value={escapeBehavior}
               onChange={(e) => {
                 const value = e.target.value as 'clear' | 'close';
-                dispatch(setSettings({ escapeBehavior: value }));
+                dispatch(setSettings({ settings: { escapeBehavior: value } }));
               }}
             >
               <MenuItem value={'clear'}>Clear Search</MenuItem>
