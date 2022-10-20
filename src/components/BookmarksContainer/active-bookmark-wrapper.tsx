@@ -10,16 +10,16 @@ interface ActiveBookmarkWrapperProps {
 
 export const ActiveBookmarkWrapper = ({ path, children }: ActiveBookmarkWrapperProps) => {
   const ref = useRef<HTMLDivElement>(null);
-  const { activeNode } = useKeyboardState();
+  const { activePath } = useKeyboardState();
 
   useEffect(() => {
-    if (path === activeNode && ref.current) {
+    if (path === activePath && ref.current) {
       scrollIntoView(ref.current);
     }
-  }, [path, activeNode]);
+  }, [path, activePath]);
 
   return (
-    <ActiveHighlight ref={ref} active={activeNode === path}>
+    <ActiveHighlight ref={ref} active={activePath === path}>
       {children}
     </ActiveHighlight>
   );

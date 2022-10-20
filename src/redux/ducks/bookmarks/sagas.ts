@@ -1,4 +1,4 @@
-import { call, put, select, take, takeEvery, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
 import { createBookmarkMap, createOpenMap, toLinearList } from '../../../helpers/BookmarkHelpers';
 import { getTree, searchTree } from '../../../helpers/ChromeApiHelpers';
 import { State } from '../../state';
@@ -61,7 +61,6 @@ function* resetBookmarksSaga() {
 
 function* setBookmarksOpenSaga({ payload }: ReturnType<typeof setBookmarkOpen>) {
   yield put(setBookmarkOpenSuccess(payload));
-  yield take('BOOKMARKS_SET_OPEN_SUCCESS');
   yield put(bookmarksUpdated({}));
 }
 

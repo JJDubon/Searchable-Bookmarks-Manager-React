@@ -66,7 +66,7 @@ export function toLinearList(nodes: string[], map: BookmarkMap, openMap: OpenMap
     list.push(path);
 
     const bookmark = map[nodeId];
-    if (bookmark.children && openMap[bookmark.id]) {
+    if (bookmark.children && openMap[path]) {
       bookmark.children.forEach((childId, index) => {
         walk(childId, `${path}[${index}]`);
       });

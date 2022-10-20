@@ -3,7 +3,7 @@ import { setKeyboardStateSuccess } from './actions';
 import { KeyboardState } from './state';
 
 const initialState: KeyboardState = {
-  activeNode: null,
+  activePath: null,
   linearList: [],
 };
 

@@ -1,4 +1,4 @@
 export interface KeyboardState {
-  activeNode: string | null;
+  activePath: string | null;
   linearList: string[];
 }
