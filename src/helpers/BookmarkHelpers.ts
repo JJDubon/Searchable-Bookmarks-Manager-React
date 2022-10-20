@@ -39,7 +39,7 @@ export function createOpenMap(
     path = `${path}/${nodeId}`;
 
     const bookmark = map[nodeId];
-    if (bookmark.children) {
+    if (bookmark && bookmark.children) {
       const isOpen =
         previousMap[path] ||
         (defaultOpenMap && defaultOpenMap[nodeId] !== undefined && defaultOpenMap[nodeId]);
@@ -66,7 +66,7 @@ export function toLinearList(nodes: string[], map: BookmarkMap, openMap: OpenMap
     list.push(path);
 
     const bookmark = map[nodeId];
-    if (bookmark.children && openMap[path]) {
+    if (bookmark && bookmark.children && openMap[path]) {
       bookmark.children.forEach((childId, index) => {
         walk(childId, `${path}[${index}]`);
       });

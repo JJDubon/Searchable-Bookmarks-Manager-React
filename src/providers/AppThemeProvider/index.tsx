@@ -29,7 +29,7 @@ interface AppThemeProviderProps {
 }
 
 export const getIndent = (factor: number): number => {
-  return 0.8 * factor;
+  return 0.6 * factor;
 };
 
 export const AppThemeProvider = ({ children }: AppThemeProviderProps) => {

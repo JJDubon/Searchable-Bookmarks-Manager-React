@@ -22,14 +22,15 @@ interface FolderProps {
 }
 
 export const Folder = ({ id, indentLevel, path, hideDetails = false, forceClose = false }: FolderProps) => {
+  path = `${path}/${id}`;
+
   const dispatch = useDispatch();
   const ref = useRef<HTMLDivElement>(null);
   const folder = useBookmark(id);
-  const { isDragging } = useBookmarkDrag(id, ref);
-  const { dropType } = useBookmarkDrop(id, ref);
+  const { isDragging } = useBookmarkDrag(id, path, ref);
+  const { dropType } = useBookmarkDrop(id, path, ref);
   const overrides = useListItemOverrides();
 
-  path = `${path}/${id}`;
   let open = useOpenStatus(path);
   if (forceClose) {
     open = false;

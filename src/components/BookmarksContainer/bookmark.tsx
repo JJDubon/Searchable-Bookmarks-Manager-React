@@ -14,13 +14,13 @@ interface BookmarksProps {
 }
 
 export const Bookmark = ({ id, path, indentLevel }: BookmarksProps) => {
+  path = `${path}/${id}`;
+
   const ref = useRef<HTMLDivElement>(null);
   const bookmark = useBookmark(id);
-  const { isDragging } = useBookmarkDrag(id, ref);
-  const { dropType } = useBookmarkDrop(id, ref);
+  const { isDragging } = useBookmarkDrag(id, path, ref);
+  const { dropType } = useBookmarkDrop(id, path, ref);
   const overrides = useListItemOverrides();
-
-  path = `${path}/${id}`;
 
   const onClick = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement | HTMLDivElement, MouseEvent>) => {

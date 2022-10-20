@@ -1,17 +1,25 @@
 import { RefObject, useEffect, useState } from 'react';
 import { DropTargetMonitor, useDrag, useDrop, XYCoord } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
+import { useDispatch } from 'react-redux';
 import { moveBookmark } from '../../../helpers/ChromeApiHelpers';
+import { setBookmarkOpen } from '../../../redux/ducks/bookmarks/actions';
 import { useBookmark, useBookmarksState } from '../../../redux/ducks/bookmarks/selectors';
 import { BookmarkMap, FlattenedBookmarkTreeNode } from '../../../redux/ducks/bookmarks/state';
-import { DropType, getDropBehavior, isModifiable, useOpenStatus } from '../utils';
+import { DropType, getDropBehavior, isModifiable, useOpenMap } from '../utils';
 
 export const DragTypes = {
   BOOKMARK: 'bookmark',
 };
 
+export interface DragItem {
+  bookmark: FlattenedBookmarkTreeNode;
+  path: string;
+}
+
 export function useBookmarkDrag(
   id: string,
+  path: string,
   ref: RefObject<HTMLDivElement>
 ): {
   isDragging: boolean;
@@ -21,7 +29,7 @@ export function useBookmarkDrag(
   const [{ isDragging }, drag, preview] = useDrag(() => ({
     type: DragTypes.BOOKMARK,
     canDrag: () => isModifiable(bookmark) && query.trim().length === 0,
-    item: () => bookmark,
+    item: () => ({ bookmark, path }),
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
@@ -37,29 +45,32 @@ export function useBookmarkDrag(
 
 export function useBookmarkDrop(
   id: string,
+  path: string,
   ref: RefObject<HTMLDivElement>
 ): {
   isOver: boolean;
   dropType: DropType;
 } {
-  const open = useOpenStatus(id);
+  const dispatch = useDispatch();
   const { map } = useBookmarksState();
+  const openMap = useOpenMap();
+  const open = openMap[path];
   const [dropType, setDropType] = useState<DropType>(null);
   const [{ isOver }, drop] = useDrop(
     () => ({
       accept: DragTypes.BOOKMARK,
-      canDrop: (dragItem: FlattenedBookmarkTreeNode) => {
-        return !isChildOf(map, dragItem.id, id);
+      canDrop: ({ bookmark }: DragItem) => {
+        return !isChildOf(map, bookmark.id, id);
       },
-      hover: (dragItem: FlattenedBookmarkTreeNode, monitor) => {
-        if (!ref.current || id === dragItem.id) {
+      hover: ({ bookmark }: DragItem, monitor) => {
+        if (!ref.current || id === bookmark.id) {
           setDropType(null);
         } else {
           const dropType = calculateDropType(ref.current, monitor);
           setDropType(dropType);
         }
       },
-      drop: (dragItem: FlattenedBookmarkTreeNode, monitor) => {
+      drop: ({ bookmark: dragItem, path: dragItemPath }: DragItem, monitor) => {
         if (ref.current && dragItem.id !== id) {
           const dropItem = map[id];
           const targetFolder = map[dropItem.parentId!];
@@ -71,6 +82,10 @@ export function useBookmarkDrop(
             open,
             dropType
           );
+
+          if (openMap[dragItemPath]) {
+            dispatch(setBookmarkOpen({ path: dragItemPath, open: false }));
+          }
 
           switch (behavior) {
             case 'above':

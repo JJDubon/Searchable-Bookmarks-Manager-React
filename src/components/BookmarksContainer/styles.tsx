@@ -35,7 +35,7 @@ export const ActiveHighlight = styled('div')<ActiveHighlightProps>(({ theme, act
 export const BookmarkButton = styled(ListItemButton)(({ theme }) => ({
   color: theme.palette.text.primary,
   paddingBottom: theme.bookmarks.adjustablePadding(1),
-  paddingTop: '0',
+  paddingTop: theme.bookmarks.adjustablePadding(1),
   width: '100%',
 })) as typeof ListItemButton;
 
