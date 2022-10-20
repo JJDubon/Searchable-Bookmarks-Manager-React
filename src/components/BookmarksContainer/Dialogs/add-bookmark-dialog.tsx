@@ -1,8 +1,10 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import * as validUrl from 'valid-url';
 import { cleanUrl } from '../../../helpers/BrowserHelpers';
 import { createBookmark } from '../../../helpers/ChromeApiHelpers';
+import { setBookmarkOpen } from '../../../redux/ducks/bookmarks/actions';
 import { useContextState } from '../../../redux/ducks/context/selectors';
 import { DialogErrorText } from './styles';
 
@@ -12,7 +14,8 @@ interface AddBookmarkDialogProps {
 }
 
 export const AddBookmarkDialog = ({ open, onClose }: AddBookmarkDialogProps) => {
-  const { bookmark } = useContextState();
+  const dispatch = useDispatch();
+  const { path, bookmark } = useContextState();
   const [error, setError] = useState('');
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
@@ -82,7 +85,7 @@ export const AddBookmarkDialog = ({ open, onClose }: AddBookmarkDialogProps) => 
         createBookmark(title, bookmark!.children!.length ?? 0, bookmark!.id, url);
       }
 
-      // TODO - Force open
+      dispatch(setBookmarkOpen({ path, open: true }));
       handleClose();
     }
   }

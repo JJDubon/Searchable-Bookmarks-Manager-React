@@ -2,11 +2,15 @@ import { createAction } from '@reduxjs/toolkit';
 import { FlattenedBookmarkTreeNode } from '../bookmarks/state';
 import { AppDialogs } from './state';
 
-export const setContextMenuOpen = createAction<{ bookmark: FlattenedBookmarkTreeNode; x: number; y: number }>(
-  'CONTEXT_MENU_OPEN'
-);
+export const setContextMenuOpen = createAction<{
+  path: string;
+  bookmark: FlattenedBookmarkTreeNode;
+  x: number;
+  y: number;
+}>('CONTEXT_MENU_OPEN');
 
 export const setContextMenuOpenSuccess = createAction<{
+  path: string;
   bookmark: FlattenedBookmarkTreeNode;
   x: number;
   y: number;

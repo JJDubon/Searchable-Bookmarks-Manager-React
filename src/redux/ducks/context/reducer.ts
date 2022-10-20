@@ -4,6 +4,7 @@ import { AppDialogs, ContextState } from './state';
 
 const initialState: ContextState = {
   open: false,
+  path: '',
   bookmark: null,
   x: 0,
   y: 0,
@@ -15,9 +16,10 @@ export const contextReducer = createReducer(initialState, (builder) => {
     return {
       ...state,
       open: true,
+      path: action.payload.path,
+      bookmark: action.payload.bookmark,
       x: action.payload.x,
       y: action.payload.y,
-      bookmark: action.payload.bookmark,
     };
   });
 

@@ -11,6 +11,7 @@ export enum AppDialogs {
 
 export interface ContextState {
   open: boolean;
+  path: string;
   bookmark: FlattenedBookmarkTreeNode | null;
   x: number;
   y: number;

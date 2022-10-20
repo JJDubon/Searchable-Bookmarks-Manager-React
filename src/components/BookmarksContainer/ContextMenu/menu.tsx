@@ -22,6 +22,7 @@ import {
   openInNewTab,
   openInNewWindow,
 } from '../../../helpers/ChromeApiHelpers';
+import { setBookmarkOpen } from '../../../redux/ducks/bookmarks/actions';
 import { FlattenedBookmarkTreeNode } from '../../../redux/ducks/bookmarks/state';
 import { setActiveDialog } from '../../../redux/ducks/context/actions';
 import { AppDialogs } from '../../../redux/ducks/context/state';
@@ -30,10 +31,11 @@ import { useSettings } from '../../../redux/ducks/settings/selectors';
 import { isModifiable, isRootNode } from '../utils';
 
 interface MenuProps {
+  path: string;
   bookmark: FlattenedBookmarkTreeNode | null;
 }
 
-export const Menu = ({ bookmark }: MenuProps) => {
+export const Menu = ({ path, bookmark }: MenuProps) => {
   const dispatch = useDispatch();
   const { defaultOpenMap } = useSettings();
   const type = bookmark?.children ? 'folder' : 'bookmark';
@@ -103,7 +105,7 @@ export const Menu = ({ bookmark }: MenuProps) => {
           const updatedOption = !openByDefault;
           const updatedMap = { ...defaultOpenMap, [bookmark!.id]: updatedOption };
           dispatch(setSettings({ settings: { defaultOpenMap: updatedMap } }));
-          // TODO - Force opened/closed
+          dispatch(setBookmarkOpen({ path, open: updatedMap[bookmark!.id] }));
         }}
       >
         <ListItemIcon>
@@ -159,7 +161,7 @@ export const Menu = ({ bookmark }: MenuProps) => {
       ...(type === 'folder' ? folderOptions : []),
       ...(modifiable ? modifiableOptions : []),
     ];
-  }, [type, modifiable, bookmark, defaultOpenMap, dispatch]);
+  }, [bookmark, defaultOpenMap, type, modifiable, dispatch, path]);
 
   return <MenuList dense>{menuItems}</MenuList>;
 };

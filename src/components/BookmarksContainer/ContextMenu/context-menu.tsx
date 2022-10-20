@@ -8,7 +8,7 @@ import { ContextMenuContainer } from './styles';
 export const ContextMenu = () => {
   const ref = useRef(null);
   const dimensions = useElementSize(ref);
-  const { open, bookmark, x, y } = useContextState();
+  const { open, path, bookmark, x, y } = useContextState();
   const [delayOpen, setDelayOpen] = useState(false);
 
   // Small hack to avoid the element popping/snapping
@@ -30,7 +30,7 @@ export const ContextMenu = () => {
       sx={{ zIndex: 'tooltip', width: 300, maxWidth: '100%' }}
       onContextMenu={(e) => e.preventDefault()}
     >
-      <Menu bookmark={bookmark} />
+      <Menu path={path} bookmark={bookmark} />
     </ContextMenuContainer>,
     document.body
   );

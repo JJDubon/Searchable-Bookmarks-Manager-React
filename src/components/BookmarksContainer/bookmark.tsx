@@ -47,7 +47,7 @@ export const Bookmark = ({ id, path, indentLevel }: BookmarksProps) => {
   );
 
   return (
-    <WithContextMenu bookmark={bookmark}>
+    <WithContextMenu path={path} bookmark={bookmark}>
       <ActiveBookmarkWrapper path={path}>
         <div ref={ref}>
           <BookmarkListItem

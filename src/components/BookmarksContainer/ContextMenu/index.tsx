@@ -4,11 +4,12 @@ import { FlattenedBookmarkTreeNode } from '../../../redux/ducks/bookmarks/state'
 import { setContextMenuClose, setContextMenuOpen } from '../../../redux/ducks/context/actions';
 
 interface WithContextMenuProps {
+  path: string;
   bookmark: FlattenedBookmarkTreeNode;
   children: JSX.Element;
 }
 
-export const WithContextMenu = ({ bookmark, children }: WithContextMenuProps) => {
+export const WithContextMenu = ({ path, bookmark, children }: WithContextMenuProps) => {
   const dispatch = useDispatch();
   const closeFn = useCallback(() => {
     dispatch(setContextMenuClose());
@@ -25,7 +26,7 @@ export const WithContextMenu = ({ bookmark, children }: WithContextMenuProps) =>
     <div
       onContextMenu={(e) => {
         e.preventDefault();
-        dispatch(setContextMenuOpen({ bookmark, x: e.pageX, y: e.pageY }));
+        dispatch(setContextMenuOpen({ path, bookmark, x: e.pageX, y: e.pageY }));
       }}
     >
       {children}

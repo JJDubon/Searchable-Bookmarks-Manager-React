@@ -9,7 +9,9 @@ import {
 } from './actions';
 
 export function* openContextMenuSaga({ payload }: ReturnType<typeof setContextMenuOpen>) {
-  yield put(setContextMenuOpenSuccess({ bookmark: payload.bookmark, x: payload.x, y: payload.y }));
+  yield put(
+    setContextMenuOpenSuccess({ path: payload.path, bookmark: payload.bookmark, x: payload.x, y: payload.y })
+  );
 }
 
 export function* closeContextMenuSaga() {
