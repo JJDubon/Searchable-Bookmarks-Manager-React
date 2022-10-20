@@ -29,7 +29,16 @@ function* loadBookmarkSaga({ payload }: ReturnType<typeof loadBookmarks>) {
     const map = createBookmarkMap(tree);
     const rootNodes = tree[0]?.children?.map((x) => x.id) || [];
     yield put(loadBookmarksSuccess({ root: rootNodes, map }));
-    yield put(bookmarksUpdated({ defaultOpenMap }));
+
+    // Unless otherwise set, root nodes should be open by default
+    const openMap = { ...defaultOpenMap };
+    rootNodes.forEach((nodeId) => {
+      if (openMap[nodeId] === undefined) {
+        openMap[nodeId] = true;
+      }
+    });
+
+    yield put(bookmarksUpdated({ defaultOpenMap: openMap }));
   } catch (ex) {
     yield put(loadBookmarksFailure());
   }
