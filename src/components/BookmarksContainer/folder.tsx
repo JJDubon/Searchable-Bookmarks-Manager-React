@@ -53,7 +53,7 @@ export const Folder = ({ id, indentLevel, path, hideDetails = false, forceClose 
   return (
     <>
       <WithContextMenu bookmark={folder}>
-        <ActiveBookmarkWrapper id={id} path={path}>
+        <ActiveBookmarkWrapper path={path}>
           <div ref={ref}>
             <BookmarkListItem
               title={folder.title}

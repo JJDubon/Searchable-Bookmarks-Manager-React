@@ -4,12 +4,11 @@ import { useKeyboardState } from '../../redux/ducks/keyboard/selectors';
 import { ActiveHighlight } from './styles';
 
 interface ActiveBookmarkWrapperProps {
-  id: string;
   path: string;
   children: JSX.Element | JSX.Element[];
 }
 
-export const ActiveBookmarkWrapper = ({ id, path, children }: ActiveBookmarkWrapperProps) => {
+export const ActiveBookmarkWrapper = ({ path, children }: ActiveBookmarkWrapperProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const { activeNode } = useKeyboardState();
 
