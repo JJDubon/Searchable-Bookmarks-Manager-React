@@ -25,9 +25,7 @@ export const resetBookmarksSuccess = createAction<{ root: string[]; map: Bookmar
 
 export const resetBookmarksFailure = createAction('BOOKMARKS_RESET_FAILURE');
 
-export const bookmarksUpdated = createAction<{ previousQuery: string; defaultOpenMap?: OpenMap }>(
-  'BOOKMARKS_UPDATED'
-);
+export const bookmarksUpdated = createAction<{ defaultOpenMap?: OpenMap }>('BOOKMARKS_UPDATED');
 
 export const bookmarksUpdatedSuccess = createAction<{ openMap: OpenMap; searchResultsOpenMap: OpenMap }>(
   'BOOKMARKS_UPDATED_SUCCESS'

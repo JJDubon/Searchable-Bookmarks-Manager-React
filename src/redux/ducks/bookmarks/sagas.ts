@@ -1,4 +1,4 @@
-import { call, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
+import { call, put, select, take, takeEvery, takeLatest } from 'redux-saga/effects';
 import { createBookmarkMap, createOpenMap, toLinearList } from '../../../helpers/BookmarkHelpers';
 import { getTree, searchTree } from '../../../helpers/ChromeApiHelpers';
 import { State } from '../../state';
@@ -29,7 +29,7 @@ function* loadBookmarkSaga({ payload }: ReturnType<typeof loadBookmarks>) {
     const map = createBookmarkMap(tree);
     const rootNodes = tree[0]?.children?.map((x) => x.id) || [];
     yield put(loadBookmarksSuccess({ root: rootNodes, map }));
-    yield put(bookmarksUpdated({ previousQuery: '', defaultOpenMap }));
+    yield put(bookmarksUpdated({ defaultOpenMap }));
   } catch (ex) {
     yield put(loadBookmarksFailure());
   }
@@ -37,11 +37,10 @@ function* loadBookmarkSaga({ payload }: ReturnType<typeof loadBookmarks>) {
 
 function* loadSearchResults({ payload }: ReturnType<typeof searchBookmarks>) {
   try {
-    const previousQuery = ((yield select()) as State).bookmarks.query;
     const nodes: BookmarkTreeNode[] = yield call(searchTree, payload.query);
     const ids = nodes.map((node) => node.id);
     yield put(searchBookmarksSuccess({ query: payload.query, results: ids }));
-    yield put(bookmarksUpdated({ previousQuery }));
+    yield put(bookmarksUpdated({}));
   } catch (ex) {
     yield put(searchBookmarksFailure());
   }
@@ -61,15 +60,15 @@ function* resetBookmarksSaga() {
 }
 
 function* setBookmarksOpenSaga({ payload }: ReturnType<typeof setBookmarkOpen>) {
-  const previousQuery = ((yield select()) as State).bookmarks.query;
   yield put(setBookmarkOpenSuccess(payload));
-  yield put(bookmarksUpdated({ previousQuery: previousQuery }));
+  yield take('BOOKMARKS_SET_OPEN_SUCCESS');
+  yield put(bookmarksUpdated({}));
 }
 
 function* bookmarksUpdatedSaga({ payload }: ReturnType<typeof bookmarksUpdated>) {
   const state = (yield select()) as State;
   const { activeNodes, map, query, openMap, searchResultsOpenMap } = state.bookmarks;
-  if (query && query.length !== 0 && query !== payload.previousQuery) {
+  if (query && query.length !== 0) {
     let newSearchResultsOpenMap = createOpenMap(activeNodes, map, searchResultsOpenMap);
     yield put(
       bookmarksUpdatedSuccess({
