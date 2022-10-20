@@ -4,6 +4,7 @@ import { Folder } from './folder';
 
 interface BookmarkSwitchProps {
   id: string;
+  path: string;
   indentLevel?: number;
   hideDetails?: boolean;
   forceClose?: boolean;
@@ -11,6 +12,7 @@ interface BookmarkSwitchProps {
 
 export const BookmarkSwitch = ({
   id,
+  path,
   indentLevel = 0,
   hideDetails = false,
   forceClose = false,
@@ -19,12 +21,17 @@ export const BookmarkSwitch = ({
   if (!bookmark) {
     return <></>;
   }
-
   if (bookmark.children) {
     return (
-      <Folder key={id} id={id} indentLevel={indentLevel} hideDetails={hideDetails} forceClose={forceClose} />
+      <Folder
+        id={id}
+        path={path}
+        indentLevel={indentLevel}
+        hideDetails={hideDetails}
+        forceClose={forceClose}
+      />
     );
   } else {
-    return <Bookmark key={id} id={id} indentLevel={indentLevel} />;
+    return <Bookmark id={id} path={path} indentLevel={indentLevel} />;
   }
 };

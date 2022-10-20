@@ -9,15 +9,18 @@ import { isModifiable, useListItemOverrides } from './utils';
 
 interface BookmarksProps {
   id: string;
+  path: string;
   indentLevel: number;
 }
 
-export const Bookmark = ({ id, indentLevel }: BookmarksProps) => {
+export const Bookmark = ({ id, path, indentLevel }: BookmarksProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const bookmark = useBookmark(id);
   const { isDragging } = useBookmarkDrag(id, ref);
   const { dropType } = useBookmarkDrop(id, ref);
   const overrides = useListItemOverrides();
+
+  path = `${path}/${id}`;
 
   const onClick = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement | HTMLDivElement, MouseEvent>) => {
@@ -45,7 +48,7 @@ export const Bookmark = ({ id, indentLevel }: BookmarksProps) => {
 
   return (
     <WithContextMenu bookmark={bookmark}>
-      <ActiveBookmarkWrapper id={id}>
+      <ActiveBookmarkWrapper id={id} path={path}>
         <div ref={ref}>
           <BookmarkListItem
             title={bookmark.title}

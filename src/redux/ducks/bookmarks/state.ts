@@ -8,6 +8,10 @@ export interface BookmarkMap {
   [id: string]: FlattenedBookmarkTreeNode;
 }
 
+export interface OpenMap {
+  [path: string]: boolean;
+}
+
 export interface BookmarksState {
   loading: boolean;
   root: string[];
@@ -15,4 +19,6 @@ export interface BookmarksState {
   activeNodes: string[];
   map: BookmarkMap;
   query: string;
+  openMap: OpenMap;
+  searchResultsOpenMap: OpenMap;
 }

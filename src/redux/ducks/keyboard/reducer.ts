@@ -4,6 +4,7 @@ import { KeyboardState } from './state';
 
 const initialState: KeyboardState = {
   activeNode: null,
+  linearList: [],
 };
 
 export const keyboardReducer = createReducer(initialState, (builder) => {

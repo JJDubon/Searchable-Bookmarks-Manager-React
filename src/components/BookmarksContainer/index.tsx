@@ -34,7 +34,7 @@ export const BookmarksContainer = () => {
         <BookmarkDragPreview />
         <ContextMenu />
         <Dialogs />
-        <BookmarksList ids={activeNodes} />
+        <BookmarksList ids={activeNodes} path='/root' />
       </DndProvider>
     </Container>
   );

@@ -1,9 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { createBookmark } from '../../../helpers/ChromeApiHelpers';
 import { useContextState } from '../../../redux/ducks/context/selectors';
-import { setListItemOpen } from '../../../redux/ducks/list/actions';
 import { DialogErrorText } from './styles';
 
 interface AddFolderDialogProps {
@@ -12,7 +10,6 @@ interface AddFolderDialogProps {
 }
 
 export const AddFolderDialog = ({ open, onClose }: AddFolderDialogProps) => {
-  const dispatch = useDispatch();
   const { bookmark } = useContextState();
   const [error, setError] = useState('');
   const [title, setTitle] = useState('');
@@ -57,7 +54,7 @@ export const AddFolderDialog = ({ open, onClose }: AddFolderDialogProps) => {
       setError('Please provide a bookmark name');
     } else {
       createBookmark(title, bookmark!.children!.length ?? 0, bookmark!.id);
-      dispatch(setListItemOpen({ id: bookmark!.id, open: true }));
+      // TODO - Force open
       handleClose();
     }
   }

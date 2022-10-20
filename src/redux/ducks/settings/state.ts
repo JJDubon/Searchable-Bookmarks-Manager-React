@@ -1,5 +1,5 @@
 import { PaletteMode } from '@mui/material';
-import { OpenMap } from '../list/state';
+import { OpenMap } from '../bookmarks/state';
 
 export const SettingsStateKeys: (keyof SettingsState)[] = [
   'palette',

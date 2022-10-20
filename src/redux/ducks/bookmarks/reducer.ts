@@ -1,10 +1,12 @@
 import { createReducer } from '@reduxjs/toolkit';
 import {
+  bookmarksUpdatedSuccess,
   loadBookmarksFailure,
   loadBookmarksSuccess,
   resetBookmarksSuccess,
   searchBookmarksFailure,
   searchBookmarksSuccess,
+  setBookmarkOpenSuccess,
 } from './actions';
 import { BookmarksState } from './state';
 
@@ -15,6 +17,8 @@ const initialState: BookmarksState = {
   activeNodes: [],
   map: {},
   query: '',
+  openMap: {},
+  searchResultsOpenMap: {},
 };
 
 export const bookmarksReducer = createReducer(initialState, (builder) => {
@@ -62,5 +66,33 @@ export const bookmarksReducer = createReducer(initialState, (builder) => {
       rootNodes: action.payload.root,
       map: action.payload.map,
     };
+  });
+
+  builder.addCase(bookmarksUpdatedSuccess, (state, action) => {
+    return {
+      ...state,
+      openMap: action.payload.openMap,
+      searchResultsOpenMap: action.payload.searchResultsOpenMap,
+    };
+  });
+
+  builder.addCase(setBookmarkOpenSuccess, (state, action) => {
+    if (state.query && state.query.length !== 0) {
+      return {
+        ...state,
+        searchResultsOpenMap: {
+          ...state.searchResultsOpenMap,
+          [action.payload.path]: action.payload.open,
+        },
+      };
+    } else {
+      return {
+        ...state,
+        openMap: {
+          ...state.openMap,
+          [action.payload.path]: action.payload.open,
+        },
+      };
+    }
   });
 });

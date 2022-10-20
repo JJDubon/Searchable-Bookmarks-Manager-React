@@ -25,7 +25,6 @@ import {
 import { FlattenedBookmarkTreeNode } from '../../../redux/ducks/bookmarks/state';
 import { setActiveDialog } from '../../../redux/ducks/context/actions';
 import { AppDialogs } from '../../../redux/ducks/context/state';
-import { setListItemOpen } from '../../../redux/ducks/list/actions';
 import { setSettings } from '../../../redux/ducks/settings/actions';
 import { useSettings } from '../../../redux/ducks/settings/selectors';
 import { isModifiable, isRootNode } from '../utils';
@@ -104,7 +103,7 @@ export const Menu = ({ bookmark }: MenuProps) => {
           const updatedOption = !openByDefault;
           const updatedMap = { ...defaultOpenMap, [bookmark!.id]: updatedOption };
           dispatch(setSettings({ settings: { defaultOpenMap: updatedMap } }));
-          dispatch(setListItemOpen({ id: bookmark!.id, open: updatedOption }));
+          // TODO - Force opened/closed
         }}
       >
         <ListItemIcon>

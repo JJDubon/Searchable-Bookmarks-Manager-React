@@ -4,8 +4,8 @@ import TabUnselectedIcon from '@mui/icons-material/TabUnselected';
 import { Collapse, List } from '@mui/material';
 import { useCallback, useMemo, useRef } from 'react';
 import { useDispatch } from 'react-redux';
+import { setBookmarkOpen } from '../../redux/ducks/bookmarks/actions';
 import { useBookmark } from '../../redux/ducks/bookmarks/selectors';
-import { setListItemOpen } from '../../redux/ducks/list/actions';
 import { ActiveBookmarkWrapper } from './active-bookmark-wrapper';
 import { BookmarksList } from './bookmark-list';
 import { BookmarkListItem } from './bookmark-list-item';
@@ -15,19 +15,22 @@ import { getDropBehavior, isModifiable, useListItemOverrides, useOpenStatus } fr
 
 interface FolderProps {
   id: string;
+  path: string;
   indentLevel: number;
   hideDetails?: boolean;
   forceClose?: boolean;
 }
 
-export const Folder = ({ id, indentLevel, hideDetails = false, forceClose = false }: FolderProps) => {
+export const Folder = ({ id, indentLevel, path, hideDetails = false, forceClose = false }: FolderProps) => {
   const dispatch = useDispatch();
   const ref = useRef<HTMLDivElement>(null);
   const folder = useBookmark(id);
   const { isDragging } = useBookmarkDrag(id, ref);
   const { dropType } = useBookmarkDrop(id, ref);
   const overrides = useListItemOverrides();
-  let open = useOpenStatus(id);
+
+  path = `${path}/${id}`;
+  let open = useOpenStatus(path);
   if (forceClose) {
     open = false;
   }
@@ -43,14 +46,14 @@ export const Folder = ({ id, indentLevel, hideDetails = false, forceClose = fals
 
   const onClick = useCallback(() => {
     if (!forceClose) {
-      dispatch(setListItemOpen({ id: folder.id, open: !open }));
+      dispatch(setBookmarkOpen({ path: path, open: !open }));
     }
-  }, [dispatch, folder.id, forceClose, open]);
+  }, [dispatch, forceClose, open, path]);
 
   return (
     <>
       <WithContextMenu bookmark={folder}>
-        <ActiveBookmarkWrapper id={id}>
+        <ActiveBookmarkWrapper id={id} path={path}>
           <div ref={ref}>
             <BookmarkListItem
               title={folder.title}
@@ -70,7 +73,7 @@ export const Folder = ({ id, indentLevel, hideDetails = false, forceClose = fals
       </WithContextMenu>
       <Collapse in={open} timeout={150} unmountOnExit>
         {folder.children && folder.children.length !== 0 && (
-          <BookmarksList ids={folder.children || []} indentLevel={indentLevel + 1} />
+          <BookmarksList ids={folder.children || []} path={path} indentLevel={indentLevel + 1} />
         )}
         {(!folder.children || folder.children.length === 0) && (
           <List disablePadding>

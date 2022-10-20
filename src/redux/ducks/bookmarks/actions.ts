@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { BookmarkMap, BookmarkTreeNode } from './state';
+import { BookmarkMap, BookmarkTreeNode, OpenMap } from './state';
 
 export const loadBookmarks = createAction<{ root?: BookmarkTreeNode[] }>('BOOKMARKS_LOAD');
 
@@ -24,3 +24,17 @@ export const resetBookmarksSuccess = createAction<{ root: string[]; map: Bookmar
 );
 
 export const resetBookmarksFailure = createAction('BOOKMARKS_RESET_FAILURE');
+
+export const bookmarksUpdated = createAction<{ previousQuery: string; defaultOpenMap?: OpenMap }>(
+  'BOOKMARKS_UPDATED'
+);
+
+export const bookmarksUpdatedSuccess = createAction<{ openMap: OpenMap; searchResultsOpenMap: OpenMap }>(
+  'BOOKMARKS_UPDATED_SUCCESS'
+);
+
+export const setBookmarkOpen = createAction<{ path: string; open: boolean }>('BOOKMARKS_SET_OPEN');
+
+export const setBookmarkOpenSuccess = createAction<{ path: string; open: boolean }>(
+  'BOOKMARKS_SET_OPEN_SUCCESS'
+);

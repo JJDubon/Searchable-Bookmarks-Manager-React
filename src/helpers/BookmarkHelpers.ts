@@ -1,5 +1,4 @@
-import { BookmarkTreeNode, BookmarkMap } from '../redux/ducks/bookmarks/state';
-import { OpenMap } from '../redux/ducks/list/state';
+import { BookmarkMap, BookmarkTreeNode, OpenMap } from '../redux/ducks/bookmarks/state';
 
 export function traverseTree(nodes: BookmarkTreeNode[], callback: (node: BookmarkTreeNode) => void): void {
   nodes.forEach((node) => {
@@ -22,32 +21,55 @@ export function createBookmarkMap(rootNodes: BookmarkTreeNode[]): BookmarkMap {
   return map;
 }
 
-export function createOpenMap(defaultOpenMap: OpenMap, openMap: OpenMap, activeNodes: string[]) {
-  const result: OpenMap = { ...defaultOpenMap, ...openMap };
-  activeNodes.forEach((nodeId) => {
-    if (result[nodeId] === undefined) {
-      result[nodeId] = true;
-    }
+export function createOpenMap(
+  nodes: string[],
+  map: BookmarkMap,
+  previousMap: OpenMap,
+  defaultOpenMap?: OpenMap
+): OpenMap {
+  const openMap: OpenMap = {};
+
+  nodes.forEach((id, index) => {
+    walk(id, `/root[${index}]`);
   });
 
-  return result;
+  return openMap;
+
+  function walk(nodeId: string, path: string) {
+    path = `${path}/${nodeId}`;
+
+    const bookmark = map[nodeId];
+    if (bookmark.children) {
+      const isOpen =
+        previousMap[path] ||
+        (defaultOpenMap && defaultOpenMap[nodeId] !== undefined && defaultOpenMap[nodeId]);
+      openMap[path] = !!isOpen;
+
+      bookmark.children.forEach((childId, index) => {
+        walk(childId, `${path}[${index}]`);
+      });
+    }
+  }
 }
 
-export function toLinearList(activeNodes: string[], map: BookmarkMap, openMap: OpenMap) {
+export function toLinearList(nodes: string[], map: BookmarkMap, openMap: OpenMap): string[] {
   const list: string[] = [];
 
-  activeNodes.forEach((id) => {
-    walk(id);
+  nodes.forEach((id, index) => {
+    walk(id, `/root[${index}]`);
   });
 
   return list;
 
-  function walk(nodeId: string) {
-    list.push(nodeId);
+  function walk(nodeId: string, path: string) {
+    path = `${path}/${nodeId}`;
+    list.push(path);
 
     const bookmark = map[nodeId];
     if (bookmark.children && openMap[bookmark.id]) {
-      bookmark.children.forEach((childId) => walk(childId));
+      bookmark.children.forEach((childId, index) => {
+        walk(childId, `${path}[${index}]`);
+      });
     }
   }
 }
