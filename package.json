@@ -16,6 +16,7 @@
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "framer-motion": "^7.5.3",
+    "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
@@ -56,6 +57,7 @@
   "devDependencies": {
     "@craco/craco": "^6.4.5",
     "@types/chrome": "^0.0.197",
+    "@types/lodash": "^4.14.186",
     "@types/styled-components": "^5.1.26",
     "@types/valid-url": "^1.0.3",
     "copy-webpack-plugin": "^11.0.0",

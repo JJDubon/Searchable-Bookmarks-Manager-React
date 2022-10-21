@@ -1,8 +1,10 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import * as validUrl from 'valid-url';
 import { cleanUrl } from '../../../helpers/BrowserHelpers';
 import { editBookmark } from '../../../helpers/ChromeApiHelpers';
+import { addAction } from '../../../redux/ducks/action-stack/actions';
 import { useContextState } from '../../../redux/ducks/context/selectors';
 import { DialogErrorText } from './styles';
 
@@ -12,6 +14,7 @@ interface EditBookmarkDialogProps {
 }
 
 export const EditBookmarkDialog = ({ open, onClose }: EditBookmarkDialogProps) => {
+  const dispatch = useDispatch();
   const { bookmark } = useContextState();
   const [error, setError] = useState('');
   const [title, setTitle] = useState('');
@@ -85,13 +88,26 @@ export const EditBookmarkDialog = ({ open, onClose }: EditBookmarkDialogProps) =
     } else if (!(urlValid || cleanedUrlValid)) {
       setError('Please provide a valid url');
     } else {
-      if (!urlValid) {
-        editBookmark(bookmark!.id, title, cleanedUrl);
-        handleClose();
-      } else {
-        editBookmark(bookmark!.id, title, url);
-        handleClose();
-      }
+      const bookmarkUrl = urlValid ? url : cleanedUrl;
+      editBookmark(bookmark!.id, title, bookmarkUrl).then((result) => {
+        if (bookmark) {
+          dispatch(
+            addAction({
+              action: {
+                type: 'Change',
+                bookmark: {
+                  ...result,
+                  children: undefined,
+                },
+                previousBookmark: bookmark,
+              },
+              showSnackbar: true,
+            })
+          );
+        }
+      });
+
+      handleClose();
     }
   }
 };

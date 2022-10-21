@@ -1,4 +1,5 @@
 import { all, call, put, take, takeLatest } from 'redux-saga/effects';
+import { actionStackSagas } from './ducks/action-stack/sagas';
 import { startApp } from './ducks/actions';
 import { loadBookmarks } from './ducks/bookmarks/actions';
 import { bookmarksSagas } from './ducks/bookmarks/sagas';
@@ -18,6 +19,7 @@ export function* defaultSaga() {
     contextStateSagas(),
     keyboardStateSagas(),
     initializationSaga(),
+    actionStackSagas(),
   ]);
 }
 

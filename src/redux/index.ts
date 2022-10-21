@@ -1,6 +1,7 @@
 import { applyMiddleware, createStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 import createSagaMiddleware from 'redux-saga';
+import { actionStackReducer } from './ducks/action-stack/reducer';
 import { bookmarksReducer } from './ducks/bookmarks/reducer';
 import { contextReducer } from './ducks/context/reducer';
 import { keyboardReducer } from './ducks/keyboard/reducer';
@@ -26,6 +27,7 @@ const store = createStore(
     settings: settingsReducer,
     context: contextReducer,
     keyboard: keyboardReducer,
+    actionStack: actionStackReducer,
   }),
   applyMiddleware(sagaMiddleware, logger)
 );

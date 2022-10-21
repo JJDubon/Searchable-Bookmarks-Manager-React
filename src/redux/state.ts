@@ -1,3 +1,4 @@
+import { ActionStackState } from './ducks/action-stack/state';
 import { BookmarksState } from './ducks/bookmarks/state';
 import { ContextState } from './ducks/context/state';
 import { KeyboardState } from './ducks/keyboard/state';
@@ -8,4 +9,5 @@ export interface State {
   settings: SettingsState;
   context: ContextState;
   keyboard: KeyboardState;
+  actionStack: ActionStackState;
 }

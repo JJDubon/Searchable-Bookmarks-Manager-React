@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import * as validUrl from 'valid-url';
 import { cleanUrl } from '../../../helpers/BrowserHelpers';
 import { createBookmark } from '../../../helpers/ChromeApiHelpers';
+import { addAction } from '../../../redux/ducks/action-stack/actions';
 import { setBookmarkOpen } from '../../../redux/ducks/bookmarks/actions';
 import { useContextState } from '../../../redux/ducks/context/selectors';
 import { DialogErrorText } from './styles';
@@ -79,11 +80,27 @@ export const AddBookmarkDialog = ({ open, onClose }: AddBookmarkDialogProps) => 
     } else if (!(urlValid || cleanedUrlValid)) {
       setError('Please provide a valid url');
     } else {
+      let createPromise;
       if (!urlValid) {
-        createBookmark(title, bookmark!.children!.length ?? 0, bookmark!.id, cleanedUrl);
+        createPromise = createBookmark(title, bookmark!.children!.length ?? 0, bookmark!.id, cleanedUrl);
       } else {
-        createBookmark(title, bookmark!.children!.length ?? 0, bookmark!.id, url);
+        createPromise = createBookmark(title, bookmark!.children!.length ?? 0, bookmark!.id, url);
       }
+
+      createPromise.then((result) => {
+        dispatch(
+          addAction({
+            action: {
+              type: 'Add',
+              bookmark: {
+                ...result,
+                children: undefined,
+              },
+            },
+            showSnackbar: true,
+          })
+        );
+      });
 
       dispatch(setBookmarkOpen({ path, open: true }));
       handleClose();

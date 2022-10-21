@@ -1,6 +1,7 @@
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useBookmarksState } from '../../redux/ducks/bookmarks/selectors';
+import { ActionSnackbar } from './action-snackbar';
 import { BookmarksList } from './bookmark-list';
 import { ContextMenu } from './ContextMenu/context-menu';
 import { Dialogs } from './Dialogs';
@@ -31,6 +32,7 @@ export const BookmarksContainer = () => {
   return (
     <Container>
       <DndProvider backend={HTML5Backend}>
+        <ActionSnackbar />
         <BookmarkDragPreview />
         <ContextMenu />
         <Dialogs />

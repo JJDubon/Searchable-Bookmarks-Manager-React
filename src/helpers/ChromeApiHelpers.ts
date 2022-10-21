@@ -26,27 +26,27 @@ export async function setAppSettings(settings: Partial<SettingsState>): Promise<
 
 export async function createBookmark(title: string, index: number, parentId: string, url?: string) {
   const instance = getChromeInstance();
-  await instance.bookmarks.create({ title, index, parentId, url });
+  return await instance.bookmarks.create({ title, index, parentId, url });
 }
 
 export async function editBookmark(id: string, title: string, url?: string) {
   const instance = getChromeInstance();
-  await instance.bookmarks.update(id, { title, url });
+  return await instance.bookmarks.update(id, { title, url });
 }
 
 export async function moveBookmark(id: string, parentId: string, index: number) {
   const instance = getChromeInstance();
-  await instance.bookmarks.move(id, { parentId, index });
+  return await instance.bookmarks.move(id, { parentId, index });
 }
 
 export async function removeBookmark(id: string) {
   const instance = getChromeInstance();
-  await instance.bookmarks.remove(id);
+  return await instance.bookmarks.remove(id);
 }
 
 export async function removeFolder(id: string) {
   const instance = getChromeInstance();
-  await instance.bookmarks.removeTree(id);
+  return await instance.bookmarks.removeTree(id);
 }
 
 export async function openInCurrentTab(url: string): Promise<void> {
