@@ -54,9 +54,9 @@ export function useKeyboardNavigation() {
             setActiveIndex((activeIndex ?? -1) + 1);
           }
         } else if (e.key === 'z' && e.ctrlKey && query.length === 0) {
-          const acton = stack[stack.length - 1];
-          if (acton) {
-            inverseAction(acton, dispatch);
+          const action = stack[stack.length - 1];
+          if (action) {
+            inverseAction(action, dispatch);
             dispatch(popAction());
           }
         } else {

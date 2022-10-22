@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { BookmarkAction } from './store';
+import { BookmarkAction, BookmarkTreeNode } from './store';
 
 export const pushAction = createAction<{ action: BookmarkAction; showSnackbar?: boolean }>(
   'ACTION_STACK_PUSH'
@@ -17,8 +17,8 @@ export const clearCurrentAction = createAction('ACTION_STACK_CURRENT_CLEAR');
 
 export const clearCurrentActionSuccess = createAction('ACTION_STACK_CURRENT_CLEAR_SUCCESS');
 
-export const mapActionStackItem = createAction<{ id: string; oldId: string }>('ACTION_STACK_MAP');
+export const mapActionStackItem = createAction<{ id: string; newNode: BookmarkTreeNode }>('ACTION_STACK_MAP');
 
-export const mapActionStackItemSuccess = createAction<{ id: string; oldId: string }>(
+export const mapActionStackItemSuccess = createAction<{ id: string; newNode: BookmarkTreeNode }>(
   'ACTION_STACK_MAP_SUCCESS'
 );

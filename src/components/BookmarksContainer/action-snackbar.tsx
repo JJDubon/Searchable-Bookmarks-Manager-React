@@ -17,11 +17,15 @@ export const inverseAction = (action: BookmarkAction, dispatch: Dispatch<AnyActi
       break;
     case 'Delete':
       createBookmark(bookmark.title, bookmark.index!, bookmark.parentId!, bookmark.url).then((newNode) => {
-        dispatch(mapActionStackItem({ id: newNode.id, oldId: bookmark.id }));
+        dispatch(mapActionStackItem({ id: bookmark.id, newNode }));
       });
       break;
     case 'Move':
-      moveBookmark(bookmark.id, action.previousBookmark.parentId!, action.previousBookmark.index!);
+      moveBookmark(bookmark.id, action.previousBookmark.parentId!, action.previousBookmark.index!).then(
+        (newNode) => {
+          dispatch(mapActionStackItem({ id: bookmark.id, newNode }));
+        }
+      );
       break;
     case 'Change':
       editBookmark(bookmark.id, action.previousBookmark.title, action.previousBookmark.url);

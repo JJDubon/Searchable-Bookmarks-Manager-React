@@ -3,6 +3,7 @@ import { DropTargetMonitor, useDrag, useDrop, XYCoord } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import { useDispatch } from 'react-redux';
 import { moveBookmark } from '../../../helpers/ChromeApiHelpers';
+import { pushAction } from '../../../redux/ducks/action-stack/actions';
 import { setBookmarkOpen } from '../../../redux/ducks/bookmarks/actions';
 import { useBookmark, useBookmarksStore } from '../../../redux/ducks/bookmarks/selectors';
 import { BookmarkMap, FlattenedBookmarkTreeNode } from '../../../redux/ducks/bookmarks/store';
@@ -26,14 +27,17 @@ export function useBookmarkDrag(
 } {
   const bookmark = useBookmark(id);
   const { query } = useBookmarksStore();
-  const [{ isDragging }, drag, preview] = useDrag(() => ({
-    type: DragTypes.BOOKMARK,
-    canDrag: () => isModifiable(bookmark) && query.trim().length === 0,
-    item: () => ({ bookmark, path }),
-    collect: (monitor) => ({
-      isDragging: !!monitor.isDragging(),
+  const [{ isDragging }, drag, preview] = useDrag(
+    () => ({
+      type: DragTypes.BOOKMARK,
+      canDrag: () => isModifiable(bookmark) && query.trim().length === 0,
+      item: () => ({ bookmark, path }),
+      collect: (monitor) => ({
+        isDragging: !!monitor.isDragging(),
+      }),
     }),
-  }));
+    [id, path, ref.current]
+  );
 
   useEffect(() => {
     preview(getEmptyImage(), { captureDraggingState: true });
@@ -87,16 +91,40 @@ export function useBookmarkDrop(
             dispatch(setBookmarkOpen({ path: dragItemPath, open: false }));
           }
 
+          let newParentId;
+          let newIndex;
           switch (behavior) {
             case 'above':
-              moveBookmark(dragItem.id, targetFolder.id, dropIndex!);
+              newParentId = targetFolder.id;
+              newIndex = dropIndex!;
               break;
             case 'below':
-              moveBookmark(dragItem.id, targetFolder.id, dropIndex! + 1);
+              newParentId = targetFolder.id;
+              newIndex = dropIndex! + 1;
               break;
             case 'inside':
-              moveBookmark(dragItem.id, dropItem.id, 0);
+              newParentId = dropItem.id;
+              newIndex = 0;
               break;
+          }
+
+          let previousBookmarkIndexAdjustment = 0;
+          if (newParentId === dragItem.parentId && newIndex !== undefined && newIndex < dragItem.index!) {
+            previousBookmarkIndexAdjustment = 1;
+          }
+
+          if (newParentId !== undefined && newIndex !== undefined) {
+            moveBookmark(dragItem.id, newParentId, newIndex);
+            dispatch(
+              pushAction({
+                showSnackbar: false,
+                action: {
+                  type: 'Move',
+                  previousBookmark: { ...dragItem, index: dragItem.index! + previousBookmarkIndexAdjustment },
+                  bookmark: { ...dragItem, parentId: newParentId, index: newIndex },
+                },
+              })
+            );
           }
         }
       },
@@ -104,7 +132,7 @@ export function useBookmarkDrop(
         isOver: !!monitor.isOver(),
       }),
     }),
-    [id, map, open]
+    [id, map, path, open]
   );
 
   drop(ref);
