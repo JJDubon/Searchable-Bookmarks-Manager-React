@@ -63,6 +63,7 @@ function* resetBookmarksSaga() {
     const rootNodes = tree[0]?.children?.map((x) => x.id) || [];
     const map = createBookmarkMap(tree);
     yield put(resetBookmarksSuccess({ root: rootNodes, map }));
+    yield put(bookmarksUpdated({}));
   } catch (ex) {
     yield put(resetBookmarksFailure());
   }

@@ -56,7 +56,7 @@ export function useKeyboardNavigation() {
         } else if (e.key === 'z' && e.ctrlKey && query.length === 0) {
           const acton = stack[stack.length - 1];
           if (acton) {
-            inverseAction(acton);
+            inverseAction(acton, dispatch);
             dispatch(popAction());
           }
         } else {

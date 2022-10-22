@@ -16,3 +16,9 @@ export const popActionSuccess = createAction('ACTION_STACK_POP_SUCCESS');
 export const clearCurrentAction = createAction('ACTION_STACK_CURRENT_CLEAR');
 
 export const clearCurrentActionSuccess = createAction('ACTION_STACK_CURRENT_CLEAR_SUCCESS');
+
+export const mapActionStackItem = createAction<{ id: string; oldId: string }>('ACTION_STACK_MAP');
+
+export const mapActionStackItemSuccess = createAction<{ id: string; oldId: string }>(
+  'ACTION_STACK_MAP_SUCCESS'
+);
