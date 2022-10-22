@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { FlattenedBookmarkTreeNode } from '../../../redux/ducks/bookmarks/state';
+import { FlattenedBookmarkTreeNode } from '../../../redux/ducks/bookmarks/store';
 import { setContextMenuClose, setContextMenuOpen } from '../../../redux/ducks/context/actions';
 
 interface WithContextMenuProps {

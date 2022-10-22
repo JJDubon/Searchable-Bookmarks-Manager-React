@@ -1,4 +1,4 @@
-import { FlattenedBookmarkTreeNode } from '../bookmarks/state';
+import { FlattenedBookmarkTreeNode } from '../bookmarks/store';
 
 export enum AppDialogs {
   None,
@@ -9,7 +9,7 @@ export enum AppDialogs {
   DeleteBookmark,
 }
 
-export interface ContextState {
+export interface ContextStore {
   open: boolean;
   path: string;
   bookmark: FlattenedBookmarkTreeNode | null;

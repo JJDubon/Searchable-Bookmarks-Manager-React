@@ -7,10 +7,10 @@ import { useCallback, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useKeyDown } from '../../helpers/BrowserHelpers';
 import { searchBookmarks } from '../../redux/ducks/bookmarks/actions';
-import { useBookmarksState } from '../../redux/ducks/bookmarks/selectors';
-import { useContextState } from '../../redux/ducks/context/selectors';
-import { AppDialogs } from '../../redux/ducks/context/state';
-import { useSettings } from '../../redux/ducks/settings/selectors';
+import { useBookmarksStore } from '../../redux/ducks/bookmarks/selectors';
+import { useContextStore } from '../../redux/ducks/context/selectors';
+import { AppDialogs } from '../../redux/ducks/context/store';
+import { useSettingsStore } from '../../redux/ducks/settings/selectors';
 import { ignoredSearchKeys } from './ignored-keys';
 import { Container, SearchField } from './styles';
 
@@ -22,9 +22,9 @@ export const Header = ({ showSettings }: HeaderProps) => {
   const dispatch = useDispatch();
   const ref = useRef<HTMLElement>(null);
   const [value, setValue] = useState('');
-  const { query } = useBookmarksState();
-  const { escapeBehavior } = useSettings();
-  const { activeDialog } = useContextState();
+  const { query } = useBookmarksStore();
+  const { escapeBehavior } = useSettingsStore();
+  const { activeDialog } = useContextStore();
   const queryExists = query.length !== 0;
 
   // Either close the extension or clear the search input when the escape button is clicked

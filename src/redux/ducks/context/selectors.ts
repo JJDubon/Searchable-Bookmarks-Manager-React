@@ -1,8 +1,8 @@
 import { useSelector } from 'react-redux';
-import { State } from '../../state';
+import { Store } from '../../store';
 
-export function useContextState() {
-  return useSelector((state: State) => {
-    return state.context;
+export function useContextStore() {
+  return useSelector((store: Store) => {
+    return store.context;
   });
 }

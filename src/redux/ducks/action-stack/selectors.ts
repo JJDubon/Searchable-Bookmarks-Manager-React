@@ -1,8 +1,8 @@
 import { useSelector } from 'react-redux';
-import { State } from '../../state';
+import { Store } from '../../store';
 
-export function useActionStackState() {
-  return useSelector((state: State) => {
-    return state.actionStack;
+export function useActionStackStore() {
+  return useSelector((store: Store) => {
+    return store.actionStack;
   });
 }

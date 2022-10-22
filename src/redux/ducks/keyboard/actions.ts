@@ -1,8 +1,8 @@
 import { createAction } from '@reduxjs/toolkit';
-import { KeyboardState } from './state';
+import { KeyboardStore } from './store';
 
-export const setKeyboardState = createAction<{ changes: Partial<KeyboardState> }>('KEYBOARD_STATE_SET');
+export const setKeyboardStore = createAction<{ changes: Partial<KeyboardStore> }>('KEYBOARD_STORE_SET');
 
-export const setKeyboardStateSuccess = createAction<{ changes: Partial<KeyboardState> }>(
-  'KEYBOARD_STATE_SET_SUCCESS'
+export const setKeyboardStoreSuccess = createAction<{ changes: Partial<KeyboardStore> }>(
+  'KEYBOARD_STORE_SET_SUCCESS'
 );

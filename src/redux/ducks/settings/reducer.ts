@@ -1,8 +1,8 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { loadSettingsFailure, loadSettingsSuccess, setSettingsSuccess } from './actions';
-import { SettingsState } from './state';
+import { SettingsStore } from './store';
 
-const initialState: SettingsState = {
+const initialStore: SettingsStore = {
   loading: true,
   palette: 'light',
   fontSize: '14px',
@@ -12,27 +12,24 @@ const initialState: SettingsState = {
   escapeBehavior: 'clear',
 };
 
-export const settingsReducer = createReducer(initialState, (builder) => {
-  builder.addCase(loadSettingsSuccess, (state, action) => {
+export const settingsReducer = createReducer(initialStore, (builder) => {
+  builder.addCase(loadSettingsSuccess, (store, action) => {
     const initialSettings = action.payload.settings;
     return {
-      ...state,
+      ...store,
       ...initialSettings,
       loading: false,
     };
   });
 
-  builder.addCase(loadSettingsFailure, (state, action) => {
-    return {
-      ...state,
-      loading: false,
-    };
+  builder.addCase(loadSettingsFailure, (store, action) => {
+    store.loading = false;
   });
 
-  builder.addCase(setSettingsSuccess, (state, action) => {
+  builder.addCase(setSettingsSuccess, (store, action) => {
     const newSettings = action.payload.settings;
     return {
-      ...state,
+      ...store,
       ...newSettings,
     };
   });

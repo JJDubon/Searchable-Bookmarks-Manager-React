@@ -1,8 +1,8 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { removeBookmark, removeFolder } from '../../../helpers/ChromeApiHelpers';
-import { addAction } from '../../../redux/ducks/action-stack/actions';
-import { useContextState } from '../../../redux/ducks/context/selectors';
+import { pushAction } from '../../../redux/ducks/action-stack/actions';
+import { useContextStore } from '../../../redux/ducks/context/selectors';
 import { BookmarkTitle, DialogContentTitleText } from './styles';
 
 interface DeleteBookmarkDialogProps {
@@ -12,7 +12,7 @@ interface DeleteBookmarkDialogProps {
 
 export const DeleteBookmarkDialog = ({ open, onClose }: DeleteBookmarkDialogProps) => {
   const dispatch = useDispatch();
-  const { bookmark } = useContextState();
+  const { bookmark } = useContextStore();
   if (!bookmark) {
     return <></>;
   }
@@ -52,7 +52,7 @@ export const DeleteBookmarkDialog = ({ open, onClose }: DeleteBookmarkDialogProp
     removePromise.then(() => {
       if (bookmark) {
         dispatch(
-          addAction({
+          pushAction({
             action: {
               type: 'Delete',
               bookmark,

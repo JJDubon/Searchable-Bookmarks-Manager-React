@@ -1,5 +1,5 @@
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useSettings } from '../../redux/ducks/settings/selectors';
+import { useSettingsStore } from '../../redux/ducks/settings/selectors';
 
 declare module '@mui/material/styles' {
   interface Theme {
@@ -33,7 +33,7 @@ export const getIndent = (factor: number): number => {
 };
 
 export const AppThemeProvider = ({ children }: AppThemeProviderProps) => {
-  const settings = useSettings();
+  const settings = useSettingsStore();
   const theme = createTheme({
     palette: {
       mode: settings.palette,

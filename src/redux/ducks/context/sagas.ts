@@ -23,7 +23,7 @@ export function* openAppDialogSaga({ payload }: ReturnType<typeof setActiveDialo
   yield put(setContextMenuClose());
 }
 
-export function* contextStateSagas() {
+export function* contextSagas() {
   yield takeEvery<ReturnType<typeof setContextMenuOpen>>('CONTEXT_MENU_OPEN', openContextMenuSaga);
   yield takeEvery<ReturnType<typeof setContextMenuClose>>('CONTEXT_MENU_CLOSE', closeContextMenuSaga);
   yield takeEvery<ReturnType<typeof setActiveDialog>>('CONTEXT_SET_ACTIVE_DIALOG', openAppDialogSaga);

@@ -1,13 +1,12 @@
 import { useSelector } from 'react-redux';
-import { State } from './state';
+import { Store } from './store';
 
-export function useAppState() {
-  return useSelector((state: State) => {
-    return state;
+export function useAppStore() {
+  return useSelector((store: Store) => {
+    return store;
   });
 }
-
 export function useAppIsLoading() {
-  const state = useAppState();
-  return !!(state?.settings?.loading === true || state?.bookmarks?.loading === true);
+  const store = useAppStore();
+  return !!(store?.settings?.loading === true || store?.bookmarks?.loading === true);
 }

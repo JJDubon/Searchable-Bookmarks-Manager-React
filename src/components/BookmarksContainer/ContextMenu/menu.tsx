@@ -23,11 +23,11 @@ import {
   openInNewWindow,
 } from '../../../helpers/ChromeApiHelpers';
 import { setBookmarkOpen } from '../../../redux/ducks/bookmarks/actions';
-import { FlattenedBookmarkTreeNode } from '../../../redux/ducks/bookmarks/state';
+import { FlattenedBookmarkTreeNode } from '../../../redux/ducks/bookmarks/store';
 import { setActiveDialog } from '../../../redux/ducks/context/actions';
-import { AppDialogs } from '../../../redux/ducks/context/state';
+import { AppDialogs } from '../../../redux/ducks/context/store';
 import { setSettings } from '../../../redux/ducks/settings/actions';
-import { useSettings } from '../../../redux/ducks/settings/selectors';
+import { useSettingsStore } from '../../../redux/ducks/settings/selectors';
 import { isModifiable, isRootNode } from '../utils';
 
 interface MenuProps {
@@ -37,7 +37,7 @@ interface MenuProps {
 
 export const Menu = ({ path, bookmark }: MenuProps) => {
   const dispatch = useDispatch();
-  const { defaultOpenMap } = useSettings();
+  const { defaultOpenMap } = useSettingsStore();
   const type = bookmark?.children ? 'folder' : 'bookmark';
   const modifiable = bookmark && isModifiable(bookmark);
   const menuItems = useMemo(() => {

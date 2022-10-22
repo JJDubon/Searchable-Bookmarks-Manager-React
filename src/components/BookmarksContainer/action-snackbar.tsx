@@ -5,8 +5,8 @@ import React, { useCallback, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { createBookmark, editBookmark, moveBookmark, removeBookmark } from '../../helpers/ChromeApiHelpers';
 import { clearCurrentAction, popAction } from '../../redux/ducks/action-stack/actions';
-import { useActionStackState } from '../../redux/ducks/action-stack/selectors';
-import { BookmarkAction } from '../../redux/ducks/action-stack/state';
+import { useActionStackStore } from '../../redux/ducks/action-stack/selectors';
+import { BookmarkAction } from '../../redux/ducks/action-stack/store';
 
 export const inverseAction = (action: BookmarkAction) => {
   const bookmark = action.bookmark;
@@ -30,7 +30,7 @@ export const inverseAction = (action: BookmarkAction) => {
 
 export const ActionSnackbar = () => {
   const dispatch = useDispatch();
-  const { currentAction, stack } = useActionStackState();
+  const { currentAction, stack } = useActionStackStore();
 
   const handleClose = useCallback(() => {
     dispatch(clearCurrentAction());

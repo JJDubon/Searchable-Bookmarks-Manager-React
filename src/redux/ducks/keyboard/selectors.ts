@@ -1,8 +1,8 @@
 import { useSelector } from 'react-redux';
-import { State } from '../../state';
+import { Store } from '../../store';
 
-export function useKeyboardState() {
-  return useSelector((state: State) => {
-    return state.keyboard;
+export function useKeyboardStore() {
+  return useSelector((store: Store) => {
+    return store.keyboard;
   });
 }

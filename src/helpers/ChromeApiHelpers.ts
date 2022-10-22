@@ -1,5 +1,5 @@
-import { BookmarkTreeNode } from '../redux/ducks/bookmarks/state';
-import { SettingsState } from '../redux/ducks/settings/state';
+import { BookmarkTreeNode } from '../redux/ducks/bookmarks/store';
+import { SettingsStore } from '../redux/ducks/settings/store';
 
 export function getChromeInstance(): typeof chrome {
   const browserInstance = window.chrome || (window as any)['browser'];
@@ -16,11 +16,11 @@ export async function searchTree(query: string): Promise<BookmarkTreeNode[]> {
   return instance.bookmarks.search(query);
 }
 
-export async function getAppSettings(keys: (keyof SettingsState)[]): Promise<Partial<SettingsState>> {
+export async function getAppSettings(keys: (keyof SettingsStore)[]): Promise<Partial<SettingsStore>> {
   return chrome.storage.local.get(keys);
 }
 
-export async function setAppSettings(settings: Partial<SettingsState>): Promise<void> {
+export async function setAppSettings(settings: Partial<SettingsStore>): Promise<void> {
   return chrome.storage.local.set(settings);
 }
 

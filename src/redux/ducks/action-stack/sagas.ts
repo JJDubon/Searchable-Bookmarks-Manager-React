@@ -1,15 +1,15 @@
 import { put, takeEvery } from 'redux-saga/effects';
 import {
-  addAction,
-  addActionSuccess,
+  pushAction,
+  pushActionSuccess,
   clearCurrentAction,
   clearCurrentActionSuccess,
   popAction,
   popActionSuccess,
 } from './actions';
 
-function* addActionSaga({ payload }: ReturnType<typeof addAction>) {
-  yield put(addActionSuccess({ action: payload.action, showSnackbar: payload.showSnackbar }));
+function* pushActionSaga({ payload }: ReturnType<typeof pushAction>) {
+  yield put(pushActionSuccess({ action: payload.action, showSnackbar: payload.showSnackbar }));
 }
 
 function* popActionSaga({ payload }: ReturnType<typeof popAction>) {
@@ -21,7 +21,7 @@ function* clearCurrentActionSaga({ payload }: ReturnType<typeof clearCurrentActi
 }
 
 export function* actionStackSagas() {
-  yield takeEvery<ReturnType<typeof addAction>>('ACTION_STACK_ADD', addActionSaga);
+  yield takeEvery<ReturnType<typeof pushAction>>('ACTION_STACK_PUSH', pushActionSaga);
   yield takeEvery<ReturnType<typeof popAction>>('ACTION_STACK_POP', popActionSaga);
   yield takeEvery<ReturnType<typeof clearCurrentAction>>(
     'ACTION_STACK_CURRENT_CLEAR',

@@ -2,8 +2,8 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } 
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { editBookmark } from '../../../helpers/ChromeApiHelpers';
-import { addAction } from '../../../redux/ducks/action-stack/actions';
-import { useContextState } from '../../../redux/ducks/context/selectors';
+import { pushAction } from '../../../redux/ducks/action-stack/actions';
+import { useContextStore } from '../../../redux/ducks/context/selectors';
 import { DialogErrorText } from './styles';
 
 interface EditFolderDialogProps {
@@ -13,7 +13,7 @@ interface EditFolderDialogProps {
 
 export const EditFolderDialog = ({ open, onClose }: EditFolderDialogProps) => {
   const dispatch = useDispatch();
-  const { bookmark } = useContextState();
+  const { bookmark } = useContextStore();
   const [error, setError] = useState('');
   const [title, setTitle] = useState('');
 
@@ -67,7 +67,7 @@ export const EditFolderDialog = ({ open, onClose }: EditFolderDialogProps) => {
       editBookmark(bookmark!.id, title).then((result) => {
         if (bookmark) {
           dispatch(
-            addAction({
+            pushAction({
               action: {
                 type: 'Change',
                 bookmark: {

@@ -2,9 +2,9 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } 
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createBookmark } from '../../../helpers/ChromeApiHelpers';
-import { addAction } from '../../../redux/ducks/action-stack/actions';
+import { pushAction } from '../../../redux/ducks/action-stack/actions';
 import { setBookmarkOpen } from '../../../redux/ducks/bookmarks/actions';
-import { useContextState } from '../../../redux/ducks/context/selectors';
+import { useContextStore } from '../../../redux/ducks/context/selectors';
 import { DialogErrorText } from './styles';
 
 interface AddFolderDialogProps {
@@ -14,7 +14,7 @@ interface AddFolderDialogProps {
 
 export const AddFolderDialog = ({ open, onClose }: AddFolderDialogProps) => {
   const dispatch = useDispatch();
-  const { path, bookmark } = useContextState();
+  const { path, bookmark } = useContextStore();
   const [error, setError] = useState('');
   const [title, setTitle] = useState('');
   if (!bookmark) {
@@ -59,7 +59,7 @@ export const AddFolderDialog = ({ open, onClose }: AddFolderDialogProps) => {
     } else {
       createBookmark(title, bookmark!.children!.length ?? 0, bookmark!.id).then((result) => {
         dispatch(
-          addAction({
+          pushAction({
             action: {
               type: 'Add',
               bookmark: {

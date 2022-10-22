@@ -1,12 +1,12 @@
 import { useSelector } from 'react-redux';
-import { State } from '../../state';
+import { Store } from '../../store';
 
-export function useBookmarksState() {
-  return useSelector((state: State) => {
-    return state.bookmarks;
+export function useBookmarksStore() {
+  return useSelector((store: Store) => {
+    return store.bookmarks;
   });
 }
 
 export function useBookmark(id: string) {
-  return useBookmarksState().map[id];
+  return useBookmarksStore().map[id];
 }

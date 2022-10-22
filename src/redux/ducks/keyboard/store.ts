@@ -1,4 +1,4 @@
-export interface KeyboardState {
+export interface KeyboardStore {
   activePath: string | null;
   linearList: string[];
 }

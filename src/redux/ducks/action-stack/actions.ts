@@ -1,10 +1,12 @@
 import { createAction } from '@reduxjs/toolkit';
-import { BookmarkAction } from './state';
+import { BookmarkAction } from './store';
 
-export const addAction = createAction<{ action: BookmarkAction; showSnackbar?: boolean }>('ACTION_STACK_ADD');
+export const pushAction = createAction<{ action: BookmarkAction; showSnackbar?: boolean }>(
+  'ACTION_STACK_PUSH'
+);
 
-export const addActionSuccess = createAction<{ action: BookmarkAction; showSnackbar?: boolean }>(
-  'ACTION_STACK_ADD_SUCCESS'
+export const pushActionSuccess = createAction<{ action: BookmarkAction; showSnackbar?: boolean }>(
+  'ACTION_STACK_PUSH_SUCCESS'
 );
 
 export const popAction = createAction('ACTION_STACK_POP');

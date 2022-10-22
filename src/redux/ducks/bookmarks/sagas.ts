@@ -1,8 +1,8 @@
 import { call, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
 import { createBookmarkMap, createOpenMap, toLinearList } from '../../../helpers/BookmarkHelpers';
 import { getTree, searchTree } from '../../../helpers/ChromeApiHelpers';
-import { State } from '../../state';
-import { setKeyboardState } from '../keyboard/actions';
+import { Store } from '../../store';
+import { setKeyboardStore } from '../keyboard/actions';
 import {
   bookmarksUpdated,
   bookmarksUpdatedSuccess,
@@ -18,11 +18,11 @@ import {
   setBookmarkOpen,
   setBookmarkOpenSuccess,
 } from './actions';
-import { BookmarkTreeNode } from './state';
+import { BookmarkTreeNode } from './store';
 
 function* loadBookmarkSaga({ payload }: ReturnType<typeof loadBookmarks>) {
   try {
-    const defaultOpenMap = ((yield select()) as State).settings.defaultOpenMap;
+    const defaultOpenMap = ((yield select()) as Store).settings.defaultOpenMap;
     const tree: BookmarkTreeNode[] = payload.root ?? (yield call(getTree));
     addBookmarksManagerNode(tree);
 
@@ -74,8 +74,8 @@ function* setBookmarksOpenSaga({ payload }: ReturnType<typeof setBookmarkOpen>) 
 }
 
 function* bookmarksUpdatedSaga({ payload }: ReturnType<typeof bookmarksUpdated>) {
-  const state = (yield select()) as State;
-  const { activeNodes, map, query, openMap, searchResultsOpenMap } = state.bookmarks;
+  const store = (yield select()) as Store;
+  const { activeNodes, map, query, openMap, searchResultsOpenMap } = store.bookmarks;
   if (query && query.length !== 0) {
     let newSearchResultsOpenMap = createOpenMap(activeNodes, map, searchResultsOpenMap);
     yield put(
@@ -85,7 +85,7 @@ function* bookmarksUpdatedSaga({ payload }: ReturnType<typeof bookmarksUpdated>)
       })
     );
     yield put(
-      setKeyboardState({ changes: { linearList: toLinearList(activeNodes, map, newSearchResultsOpenMap) } })
+      setKeyboardStore({ changes: { linearList: toLinearList(activeNodes, map, newSearchResultsOpenMap) } })
     );
   } else {
     let newOpenMap = createOpenMap(activeNodes, map, openMap, payload.defaultOpenMap);
@@ -95,7 +95,7 @@ function* bookmarksUpdatedSaga({ payload }: ReturnType<typeof bookmarksUpdated>)
         searchResultsOpenMap: {},
       })
     );
-    yield put(setKeyboardState({ changes: { linearList: toLinearList(activeNodes, map, newOpenMap) } }));
+    yield put(setKeyboardStore({ changes: { linearList: toLinearList(activeNodes, map, newOpenMap) } }));
   }
 }
 

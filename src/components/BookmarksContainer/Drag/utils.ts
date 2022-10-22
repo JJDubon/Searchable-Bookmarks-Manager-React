@@ -4,8 +4,8 @@ import { getEmptyImage } from 'react-dnd-html5-backend';
 import { useDispatch } from 'react-redux';
 import { moveBookmark } from '../../../helpers/ChromeApiHelpers';
 import { setBookmarkOpen } from '../../../redux/ducks/bookmarks/actions';
-import { useBookmark, useBookmarksState } from '../../../redux/ducks/bookmarks/selectors';
-import { BookmarkMap, FlattenedBookmarkTreeNode } from '../../../redux/ducks/bookmarks/state';
+import { useBookmark, useBookmarksStore } from '../../../redux/ducks/bookmarks/selectors';
+import { BookmarkMap, FlattenedBookmarkTreeNode } from '../../../redux/ducks/bookmarks/store';
 import { DropType, getDropBehavior, isModifiable, useOpenMap } from '../utils';
 
 export const DragTypes = {
@@ -25,7 +25,7 @@ export function useBookmarkDrag(
   isDragging: boolean;
 } {
   const bookmark = useBookmark(id);
-  const { query } = useBookmarksState();
+  const { query } = useBookmarksStore();
   const [{ isDragging }, drag, preview] = useDrag(() => ({
     type: DragTypes.BOOKMARK,
     canDrag: () => isModifiable(bookmark) && query.trim().length === 0,
@@ -52,7 +52,7 @@ export function useBookmarkDrop(
   dropType: DropType;
 } {
   const dispatch = useDispatch();
-  const { map } = useBookmarksState();
+  const { map } = useBookmarksStore();
   const openMap = useOpenMap();
   const open = openMap[path];
   const [dropType, setDropType] = useState<DropType>(null);

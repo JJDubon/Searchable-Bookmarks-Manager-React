@@ -12,9 +12,8 @@ export interface OpenMap {
   [path: string]: boolean;
 }
 
-export interface BookmarksState {
+export interface BookmarksStore {
   loading: boolean;
-  root: string[];
   rootNodes: string[];
   activeNodes: string[];
   map: BookmarkMap;

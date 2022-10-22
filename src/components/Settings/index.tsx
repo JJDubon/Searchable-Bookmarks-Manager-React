@@ -2,7 +2,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Box, Drawer, FormControl, IconButton, MenuItem, PaletteMode, TextField } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { setSettings } from '../../redux/ducks/settings/actions';
-import { useSettings } from '../../redux/ducks/settings/selectors';
+import { useSettingsStore } from '../../redux/ducks/settings/selectors';
 import { useAppIsLoading } from '../../redux/selectors';
 import { SettingsForm, SettingsHeader, SettingsTitle } from './styles';
 
@@ -14,7 +14,7 @@ interface SettingsDrawerProps {
 export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
   const loading = useAppIsLoading();
   const dispatch = useDispatch();
-  const { palette, fontSize, padding, noWrap, escapeBehavior } = useSettings();
+  const { palette, fontSize, padding, noWrap, escapeBehavior } = useSettingsStore();
 
   if (loading) {
     return <></>;

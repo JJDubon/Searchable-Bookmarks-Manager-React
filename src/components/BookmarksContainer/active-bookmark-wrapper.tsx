@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { scrollIntoView } from '../../helpers/BrowserHelpers';
-import { useKeyboardState } from '../../redux/ducks/keyboard/selectors';
+import { useKeyboardStore } from '../../redux/ducks/keyboard/selectors';
 import { ActiveHighlight } from './styles';
 
 interface ActiveBookmarkWrapperProps {
@@ -10,7 +10,7 @@ interface ActiveBookmarkWrapperProps {
 
 export const ActiveBookmarkWrapper = ({ path, children }: ActiveBookmarkWrapperProps) => {
   const ref = useRef<HTMLDivElement>(null);
-  const { activePath } = useKeyboardState();
+  const { activePath } = useKeyboardStore();
 
   useEffect(() => {
     if (path === activePath && ref.current) {

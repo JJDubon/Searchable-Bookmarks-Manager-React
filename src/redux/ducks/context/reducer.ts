@@ -1,8 +1,8 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { setActiveDialogSuccess, setContextMenuCloseSuccess, setContextMenuOpenSuccess } from './actions';
-import { AppDialogs, ContextState } from './state';
+import { AppDialogs, ContextStore } from './store';
 
-const initialState: ContextState = {
+const initialStore: ContextStore = {
   open: false,
   path: '',
   bookmark: null,
@@ -11,29 +11,20 @@ const initialState: ContextState = {
   activeDialog: AppDialogs.None,
 };
 
-export const contextReducer = createReducer(initialState, (builder) => {
-  builder.addCase(setContextMenuOpenSuccess, (state, action) => {
-    return {
-      ...state,
-      open: true,
-      path: action.payload.path,
-      bookmark: action.payload.bookmark,
-      x: action.payload.x,
-      y: action.payload.y,
-    };
+export const contextReducer = createReducer(initialStore, (builder) => {
+  builder.addCase(setContextMenuOpenSuccess, (store, action) => {
+    store.open = true;
+    store.path = action.payload.path;
+    store.bookmark = action.payload.bookmark;
+    store.x = action.payload.x;
+    store.y = action.payload.y;
   });
 
-  builder.addCase(setContextMenuCloseSuccess, (state, action) => {
-    return {
-      ...state,
-      open: false,
-    };
+  builder.addCase(setContextMenuCloseSuccess, (store, action) => {
+    store.open = false;
   });
 
-  builder.addCase(setActiveDialogSuccess, (state, action) => {
-    return {
-      ...state,
-      activeDialog: action.payload.dialog,
-    };
+  builder.addCase(setActiveDialogSuccess, (store, action) => {
+    store.activeDialog = action.payload.dialog;
   });
 });

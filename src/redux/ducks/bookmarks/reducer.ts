@@ -8,11 +8,10 @@ import {
   searchBookmarksSuccess,
   setBookmarkOpenSuccess,
 } from './actions';
-import { BookmarksState } from './state';
+import { BookmarksStore } from './store';
 
-const initialState: BookmarksState = {
+const initialStore: BookmarksStore = {
   loading: true,
-  root: [],
   rootNodes: [],
   activeNodes: [],
   map: {},
@@ -21,78 +20,46 @@ const initialState: BookmarksState = {
   searchResultsOpenMap: {},
 };
 
-export const bookmarksReducer = createReducer(initialState, (builder) => {
-  builder.addCase(loadBookmarksSuccess, (state, action) => {
-    return {
-      ...state,
-      loading: false,
-      root: action.payload.root,
-      rootNodes: action.payload.root,
-      activeNodes: action.payload.root,
-      map: action.payload.map,
-    };
+export const bookmarksReducer = createReducer(initialStore, (builder) => {
+  builder.addCase(loadBookmarksSuccess, (store, action) => {
+    store.loading = false;
+    store.rootNodes = action.payload.root;
+    store.activeNodes = action.payload.root;
+    store.map = action.payload.map;
   });
 
-  builder.addCase(loadBookmarksFailure, (state, action) => {
-    return {
-      ...state,
-      loading: false,
-      root: [],
-      activeNodes: [],
-      map: {},
-    };
+  builder.addCase(loadBookmarksFailure, (store, action) => {
+    store.loading = false;
+    store.rootNodes = [];
+    store.activeNodes = [];
+    store.map = {};
   });
 
-  builder.addCase(searchBookmarksSuccess, (state, action) => {
+  builder.addCase(searchBookmarksSuccess, (store, action) => {
     const queryExists = action.payload.query && action.payload.query.length !== 0;
-    return {
-      ...state,
-      query: action.payload.query,
-      activeNodes: queryExists ? action.payload.results : state.rootNodes,
-    };
+    store.query = action.payload.query;
+    store.activeNodes = queryExists ? action.payload.results : store.rootNodes;
   });
 
-  builder.addCase(searchBookmarksFailure, (state, action) => {
-    return {
-      ...state,
-      activeNodes: state.rootNodes,
-    };
+  builder.addCase(searchBookmarksFailure, (store, action) => {
+    store.activeNodes = store.rootNodes;
   });
 
-  builder.addCase(resetBookmarksSuccess, (state, action) => {
-    return {
-      ...state,
-      root: action.payload.root,
-      rootNodes: action.payload.root,
-      map: action.payload.map,
-    };
+  builder.addCase(resetBookmarksSuccess, (store, action) => {
+    store.rootNodes = action.payload.root;
+    store.map = action.payload.map;
   });
 
-  builder.addCase(bookmarksUpdatedSuccess, (state, action) => {
-    return {
-      ...state,
-      openMap: action.payload.openMap,
-      searchResultsOpenMap: action.payload.searchResultsOpenMap,
-    };
+  builder.addCase(bookmarksUpdatedSuccess, (store, action) => {
+    store.openMap = action.payload.openMap;
+    store.searchResultsOpenMap = action.payload.searchResultsOpenMap;
   });
 
-  builder.addCase(setBookmarkOpenSuccess, (state, action) => {
-    if (state.query && state.query.length !== 0) {
-      return {
-        ...state,
-        searchResultsOpenMap: {
-          ...state.searchResultsOpenMap,
-          [action.payload.path]: action.payload.open,
-        },
-      };
+  builder.addCase(setBookmarkOpenSuccess, (store, action) => {
+    if (store.query && store.query.length !== 0) {
+      store.searchResultsOpenMap[action.payload.path] = action.payload.open;
     } else {
-      return {
-        ...state,
-        openMap: {
-          ...state.openMap,
-          [action.payload.path]: action.payload.open,
-        },
-      };
+      store.openMap[action.payload.path] = action.payload.open;
     }
   });
 });

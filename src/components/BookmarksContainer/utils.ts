@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import { useBookmarksState } from '../../redux/ducks/bookmarks/selectors';
-import { FlattenedBookmarkTreeNode, OpenMap } from '../../redux/ducks/bookmarks/state';
-import { useSettings } from '../../redux/ducks/settings/selectors';
+import { useBookmarksStore } from '../../redux/ducks/bookmarks/selectors';
+import { FlattenedBookmarkTreeNode, OpenMap } from '../../redux/ducks/bookmarks/store';
+import { useSettingsStore } from '../../redux/ducks/settings/selectors';
 import { BookmarkPrimaryTextOverrides } from './styles';
 
 export type BookmarkType = 'folder' | 'bookmark';
@@ -9,7 +9,7 @@ export type BookmarkType = 'folder' | 'bookmark';
 export type DropType = 'bottom' | 'top' | 'bottom-center' | 'top-center' | null;
 
 export function useOpenMap(): OpenMap {
-  const { query, openMap, searchResultsOpenMap } = useBookmarksState();
+  const { query, openMap, searchResultsOpenMap } = useBookmarksStore();
   if (query) {
     return searchResultsOpenMap;
   } else {
@@ -23,7 +23,7 @@ export function useOpenStatus(path: string): boolean {
 }
 
 export function useListItemOverrides() {
-  const { fontSize, noWrap } = useSettings();
+  const { fontSize, noWrap } = useSettingsStore();
   return useMemo(() => {
     return BookmarkPrimaryTextOverrides(fontSize, noWrap);
   }, [fontSize, noWrap]);

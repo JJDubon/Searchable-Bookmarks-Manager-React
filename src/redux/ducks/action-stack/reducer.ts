@@ -1,24 +1,24 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { addActionSuccess, clearCurrentActionSuccess, popActionSuccess } from './actions';
-import { ActionStackState } from './state';
+import { pushActionSuccess, clearCurrentActionSuccess, popActionSuccess } from './actions';
+import { ActionStackStore } from './store';
 
-const initialState: ActionStackState = {
+const initialStore: ActionStackStore = {
   stack: [],
   currentAction: null,
 };
 
-export const actionStackReducer = createReducer(initialState, (builder) => {
-  builder.addCase(addActionSuccess, (state, action) => {
-    state.stack.push(action.payload.action);
-    state.currentAction = action.payload.showSnackbar ? action.payload.action : null;
-    return state;
+export const actionStackReducer = createReducer(initialStore, (builder) => {
+  builder.addCase(pushActionSuccess, (store, action) => {
+    store.stack.push(action.payload.action);
+    store.currentAction = action.payload.showSnackbar ? action.payload.action : null;
+    return store;
   });
 
-  builder.addCase(popActionSuccess, (state, action) => {
-    state.stack.pop();
+  builder.addCase(popActionSuccess, (store, action) => {
+    store.stack.pop();
   });
 
-  builder.addCase(clearCurrentActionSuccess, (state, action) => {
-    state.currentAction = null;
+  builder.addCase(clearCurrentActionSuccess, (store, action) => {
+    store.currentAction = null;
   });
 });

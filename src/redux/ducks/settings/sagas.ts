@@ -8,11 +8,11 @@ import {
   setSettingsFailure,
   setSettingsSuccess,
 } from './actions';
-import { SettingsState, SettingsStateKeys } from './state';
+import { SettingsStore, SettingsStoreKeys } from './store';
 
 export function* loadSettingsSaga({ payload }: ReturnType<typeof loadSettings>) {
   try {
-    const settings: SettingsState = payload.settings ?? (yield call(getAppSettings, SettingsStateKeys));
+    const settings: SettingsStore = payload.settings ?? (yield call(getAppSettings, SettingsStoreKeys));
     yield put(loadSettingsSuccess({ settings }));
   } catch (ex) {
     yield put(loadSettingsFailure());

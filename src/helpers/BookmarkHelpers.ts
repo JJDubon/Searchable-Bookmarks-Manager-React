@@ -1,4 +1,4 @@
-import { BookmarkMap, BookmarkTreeNode, OpenMap } from '../redux/ducks/bookmarks/state';
+import { BookmarkMap, BookmarkTreeNode, OpenMap } from '../redux/ducks/bookmarks/store';
 
 export function traverseTree(nodes: BookmarkTreeNode[], callback: (node: BookmarkTreeNode) => void): void {
   nodes.forEach((node) => {

@@ -1,4 +1,4 @@
-import { FlattenedBookmarkTreeNode } from '../bookmarks/state';
+import { FlattenedBookmarkTreeNode } from '../bookmarks/store';
 
 export type BookmarkTreeNode = chrome.bookmarks.BookmarkTreeNode;
 
@@ -30,7 +30,7 @@ export type BookmarkAction =
   | BookmarkMoveAction
   | BookmarkChangeAction;
 
-export interface ActionStackState {
+export interface ActionStackStore {
   stack: BookmarkAction[];
   currentAction: BookmarkAction | null;
 }

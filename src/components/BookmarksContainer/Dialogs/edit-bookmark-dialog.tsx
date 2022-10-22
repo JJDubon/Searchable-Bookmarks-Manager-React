@@ -4,8 +4,8 @@ import { useDispatch } from 'react-redux';
 import * as validUrl from 'valid-url';
 import { cleanUrl } from '../../../helpers/BrowserHelpers';
 import { editBookmark } from '../../../helpers/ChromeApiHelpers';
-import { addAction } from '../../../redux/ducks/action-stack/actions';
-import { useContextState } from '../../../redux/ducks/context/selectors';
+import { pushAction } from '../../../redux/ducks/action-stack/actions';
+import { useContextStore } from '../../../redux/ducks/context/selectors';
 import { DialogErrorText } from './styles';
 
 interface EditBookmarkDialogProps {
@@ -15,7 +15,7 @@ interface EditBookmarkDialogProps {
 
 export const EditBookmarkDialog = ({ open, onClose }: EditBookmarkDialogProps) => {
   const dispatch = useDispatch();
-  const { bookmark } = useContextState();
+  const { bookmark } = useContextStore();
   const [error, setError] = useState('');
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
@@ -92,7 +92,7 @@ export const EditBookmarkDialog = ({ open, onClose }: EditBookmarkDialogProps) =
       editBookmark(bookmark!.id, title, bookmarkUrl).then((result) => {
         if (bookmark) {
           dispatch(
-            addAction({
+            pushAction({
               action: {
                 type: 'Change',
                 bookmark: {

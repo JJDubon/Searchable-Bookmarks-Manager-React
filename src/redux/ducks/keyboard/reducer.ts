@@ -1,17 +1,17 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setKeyboardStateSuccess } from './actions';
-import { KeyboardState } from './state';
+import { setKeyboardStoreSuccess } from './actions';
+import { KeyboardStore } from './store';
 
-const initialState: KeyboardState = {
+const initialStore: KeyboardStore = {
   activePath: null,
   linearList: [],
 };
 
-export const keyboardReducer = createReducer(initialState, (builder) => {
-  builder.addCase(setKeyboardStateSuccess, (state, action) => {
+export const keyboardReducer = createReducer(initialStore, (builder) => {
+  builder.addCase(setKeyboardStoreSuccess, (store, action) => {
     const changes = action.payload.changes;
     return {
-      ...state,
+      ...store,
       ...changes,
     };
   });

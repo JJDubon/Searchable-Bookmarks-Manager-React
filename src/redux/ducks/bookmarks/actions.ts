@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { BookmarkMap, BookmarkTreeNode, OpenMap } from './state';
+import { BookmarkMap, BookmarkTreeNode, OpenMap } from './store';
 
 export const loadBookmarks = createAction<{ root?: BookmarkTreeNode[] }>('BOOKMARKS_LOAD');
 

@@ -3,21 +3,21 @@ import { actionStackSagas } from './ducks/action-stack/sagas';
 import { startApp } from './ducks/actions';
 import { loadBookmarks } from './ducks/bookmarks/actions';
 import { bookmarksSagas } from './ducks/bookmarks/sagas';
-import { BookmarkTreeNode } from './ducks/bookmarks/state';
-import { contextStateSagas } from './ducks/context/sagas';
-import { keyboardStateSagas } from './ducks/keyboard/sagas';
+import { BookmarkTreeNode } from './ducks/bookmarks/store';
+import { contextSagas } from './ducks/context/sagas';
+import { keyboardSagas } from './ducks/keyboard/sagas';
 import { loadSettings } from './ducks/settings/actions';
 import { settingsSagas } from './ducks/settings/sagas';
-import { SettingsState } from './ducks/settings/state';
+import { SettingsStore } from './ducks/settings/store';
 
-type PopupOpenedResponse = { root?: BookmarkTreeNode[]; settings?: SettingsState };
+type PopupOpenedResponse = { root?: BookmarkTreeNode[]; settings?: SettingsStore };
 
 export function* defaultSaga() {
   yield all([
     settingsSagas(),
     bookmarksSagas(),
-    contextStateSagas(),
-    keyboardStateSagas(),
+    contextSagas(),
+    keyboardSagas(),
     initializationSaga(),
     actionStackSagas(),
   ]);
