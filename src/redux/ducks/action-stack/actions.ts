@@ -11,6 +11,6 @@ export const popAction = createAction('ACTION_STACK_POP');
 
 export const popActionSuccess = createAction('ACTION_STACK_POP_SUCCESS');
 
-export const clearStackAction = createAction('ACTION_STACK_CLEAR');
+export const clearCurrentAction = createAction('ACTION_STACK_CURRENT_CLEAR');
 
-export const clearStackActionSuccess = createAction('ACTION_STACK_CLEAR_SUCCESS');
+export const clearCurrentActionSuccess = createAction('ACTION_STACK_CURRENT_CLEAR_SUCCESS');

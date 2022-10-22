@@ -20,6 +20,7 @@ export function* closeContextMenuSaga() {
 
 export function* openAppDialogSaga({ payload }: ReturnType<typeof setActiveDialog>) {
   yield put(setActiveDialogSuccess({ dialog: payload.dialog }));
+  yield put(setContextMenuClose());
 }
 
 export function* contextStateSagas() {

@@ -3,17 +3,21 @@ import { useDispatch } from 'react-redux';
 import { useKeyDown, useMouseDown, useMouseMove } from '../../helpers/BrowserHelpers';
 import { useRateLimit } from '../../helpers/CallbackHelpers';
 import { openInCurrentTab } from '../../helpers/ChromeApiHelpers';
+import { popAction } from '../../redux/ducks/action-stack/actions';
+import { useActionStackState } from '../../redux/ducks/action-stack/selectors';
 import { setBookmarkOpen } from '../../redux/ducks/bookmarks/actions';
 import { useBookmarksState } from '../../redux/ducks/bookmarks/selectors';
 import { useContextState } from '../../redux/ducks/context/selectors';
 import { AppDialogs } from '../../redux/ducks/context/state';
 import { setKeyboardState } from '../../redux/ducks/keyboard/actions';
 import { useKeyboardState } from '../../redux/ducks/keyboard/selectors';
+import { inverseAction } from './action-snackbar';
 
 export function useKeyboardNavigation() {
   const dispatch = useDispatch();
   const { linearList } = useKeyboardState();
   const { activeDialog } = useContextState();
+  const { stack } = useActionStackState();
   const { map, query, openMap, searchResultsOpenMap } = useBookmarksState();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
@@ -49,11 +53,27 @@ export function useKeyboardNavigation() {
           } else {
             setActiveIndex((activeIndex ?? -1) + 1);
           }
+        } else if (e.key === 'z' && e.ctrlKey && query.length === 0) {
+          const acton = stack[stack.length - 1];
+          if (acton) {
+            inverseAction(acton);
+            dispatch(popAction());
+          }
         } else {
           clearActiveIndex();
         }
       },
-      [activeIndex, clearActiveIndex, dispatch, linearList, map, openMap, query, searchResultsOpenMap]
+      [
+        activeIndex,
+        clearActiveIndex,
+        dispatch,
+        linearList,
+        map,
+        openMap,
+        query.length,
+        searchResultsOpenMap,
+        stack,
+      ]
     )
   );
 

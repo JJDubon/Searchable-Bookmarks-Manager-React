@@ -4,8 +4,8 @@ import { truncate } from 'lodash';
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { createBookmark, editBookmark, moveBookmark, removeBookmark } from '../../helpers/ChromeApiHelpers';
-import { clearStackAction } from '../../redux/ducks/action-stack/actions';
-import { useActionStack } from '../../redux/ducks/action-stack/selectors';
+import { clearCurrentAction, popAction } from '../../redux/ducks/action-stack/actions';
+import { useActionStackState } from '../../redux/ducks/action-stack/selectors';
 import { BookmarkAction } from '../../redux/ducks/action-stack/state';
 
 export const inverseAction = (action: BookmarkAction) => {
@@ -30,10 +30,10 @@ export const inverseAction = (action: BookmarkAction) => {
 
 export const ActionSnackbar = () => {
   const dispatch = useDispatch();
-  const { currentAction } = useActionStack();
+  const { currentAction, stack } = useActionStackState();
 
   const handleClose = useCallback(() => {
-    dispatch(clearStackAction());
+    dispatch(clearCurrentAction());
   }, [dispatch]);
 
   const actionText = useMemo(() => {
@@ -55,11 +55,12 @@ export const ActionSnackbar = () => {
   }, [currentAction]);
 
   const handleUndo = useCallback(() => {
-    if (currentAction) {
-      inverseAction(currentAction);
-      dispatch(clearStackAction());
+    const action = stack[stack.length - 1];
+    if (action) {
+      inverseAction(action);
+      dispatch(popAction());
     }
-  }, [dispatch, currentAction]);
+  }, [dispatch, stack]);
 
   const action = useMemo(
     () => (
@@ -79,7 +80,7 @@ export const ActionSnackbar = () => {
     <Snackbar
       open={!!currentAction}
       autoHideDuration={4000}
-      onClose={() => dispatch(clearStackAction())}
+      onClose={() => dispatch(clearCurrentAction())}
       message={actionText}
       action={action}
     />

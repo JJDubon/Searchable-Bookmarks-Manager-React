@@ -38,10 +38,10 @@ export const Header = ({ showSettings }: HeaderProps) => {
         if (queryExists) {
           setValue('');
           dispatch(searchBookmarks({ query: '' }));
+          e.preventDefault();
         }
 
         ref.current?.focus();
-        e.preventDefault();
       }
     },
     [activeDialog, escapeBehavior, queryExists, dispatch]
