@@ -6,6 +6,8 @@ A Chrome extensions which manages a user's bookmarks through a popup window in t
 
 ## To Run
 
-At the command line, type `yarn` which will create the `build` folder in the base directory.
+At the command line, type `yarn build` which will create the `build` folder in the base directory.
+
+Alternatively, `yarn start` will watch for changes and rebuild automatically.
 
 After enabling dev mode in Chrome, you can load the `build` folder as an unpacked extension.
