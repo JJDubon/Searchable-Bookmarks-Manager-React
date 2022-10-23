@@ -1,12 +1,12 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { FlattenedBookmarkTreeNode } from '../bookmarks/store';
+import { BookmarkTreeNode } from '../bookmarks/store';
 import {
   clearCurrentActionSuccess,
   mapActionStackItemSuccess,
   popActionSuccess,
   pushActionSuccess,
 } from './actions';
-import { ActionStackStore, BookmarkTreeNode } from './store';
+import { ActionStackStore } from './store';
 
 const initialStore: ActionStackStore = {
   stack: [],
@@ -45,14 +45,18 @@ export const actionStackReducer = createReducer(initialStore, (builder) => {
   });
 });
 
-function mapNode(target: FlattenedBookmarkTreeNode, node: BookmarkTreeNode, matchId: string) {
-  if (target.id === matchId) {
-    target.id = node.id;
-  }
-  if (target.parentId === matchId) {
-    target.parentId = node.id;
-  }
-  if (target.children) {
-    target.children = target.children.map((c) => (c === matchId ? node.id : c));
+function mapNode(target: BookmarkTreeNode, node: BookmarkTreeNode, matchId: string) {
+  walk(target, (current) => {
+    if (current.id === matchId) {
+      current.id = node.id;
+    }
+    if (current.parentId === matchId) {
+      current.parentId = node.id;
+    }
+  });
+
+  function walk(node: BookmarkTreeNode, cb: (node: BookmarkTreeNode) => void) {
+    cb(node);
+    node.children?.forEach((c) => walk(c, cb));
   }
 }

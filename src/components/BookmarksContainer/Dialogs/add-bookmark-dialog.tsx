@@ -69,7 +69,7 @@ export const AddBookmarkDialog = ({ open, onClose }: AddBookmarkDialogProps) => 
     onClose();
   }
 
-  function handleAdd() {
+  async function handleAdd() {
     const cleanedUrl = cleanUrl(url);
     const urlValid = validUrl.isUri(url);
     const cleanedUrlValid = validUrl.isUri(cleanedUrl);
@@ -80,27 +80,22 @@ export const AddBookmarkDialog = ({ open, onClose }: AddBookmarkDialogProps) => 
     } else if (!(urlValid || cleanedUrlValid)) {
       setError('Please provide a valid url');
     } else {
-      let createPromise;
+      let result;
       if (!urlValid) {
-        createPromise = createBookmark(title, bookmark!.children!.length ?? 0, bookmark!.id, cleanedUrl);
+        result = await createBookmark(title, bookmark!.children!.length ?? 0, bookmark!.id, cleanedUrl);
       } else {
-        createPromise = createBookmark(title, bookmark!.children!.length ?? 0, bookmark!.id, url);
+        result = await createBookmark(title, bookmark!.children!.length ?? 0, bookmark!.id, url);
       }
 
-      createPromise.then((result) => {
-        dispatch(
-          pushAction({
-            action: {
-              type: 'Add',
-              bookmark: {
-                ...result,
-                children: undefined,
-              },
-            },
-            showSnackbar: true,
-          })
-        );
-      });
+      dispatch(
+        pushAction({
+          action: {
+            type: 'Add',
+            bookmark: result,
+          },
+          showSnackbar: true,
+        })
+      );
 
       dispatch(setBookmarkOpen({ path, open: true }));
       handleClose();

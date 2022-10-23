@@ -8,29 +8,36 @@ import { createBookmark, editBookmark, moveBookmark, removeBookmark } from '../.
 import { clearCurrentAction, mapActionStackItem, popAction } from '../../redux/ducks/action-stack/actions';
 import { useActionStackStore } from '../../redux/ducks/action-stack/selectors';
 import { BookmarkAction } from '../../redux/ducks/action-stack/store';
+import { BookmarkTreeNode } from '../../redux/ducks/bookmarks/store';
 
-export const inverseAction = (action: BookmarkAction, dispatch: Dispatch<AnyAction>) => {
+export const inverseAction = async (action: BookmarkAction, dispatch: Dispatch<AnyAction>) => {
   const bookmark = action.bookmark;
-  switch (action.type) {
-    case 'Add':
-      removeBookmark(bookmark.id);
-      break;
-    case 'Delete':
-      createBookmark(bookmark.title, bookmark.index!, bookmark.parentId!, bookmark.url).then((newNode) => {
-        dispatch(mapActionStackItem({ id: bookmark.id, newNode }));
-      });
-      break;
-    case 'Move':
-      moveBookmark(bookmark.id, action.previousBookmark.parentId!, action.previousBookmark.index!).then(
-        (newNode) => {
-          dispatch(mapActionStackItem({ id: bookmark.id, newNode }));
-        }
+  if (action.type === 'Add') {
+    await removeBookmark(bookmark.id);
+  } else if (action.type === 'Delete') {
+    const walk = async (node: BookmarkTreeNode, newParentId: string) => {
+      const newNode = await createBookmark(node.title, node.index!, newParentId, node.url);
+      dispatch(mapActionStackItem({ id: node.id, newNode }));
+      await Promise.all(
+        (node.children ?? []).map((childNode) => {
+          return walk(childNode, newNode.id);
+        })
       );
-      break;
-    case 'Change':
-      editBookmark(bookmark.id, action.previousBookmark.title, action.previousBookmark.url);
-      break;
+    };
+
+    await walk(action.bookmark, action.bookmark.parentId!);
+  } else if (action.type === 'Move') {
+    const movedNode = await moveBookmark(
+      bookmark.id,
+      action.previousBookmark.parentId!,
+      action.previousBookmark.index!
+    );
+    dispatch(mapActionStackItem({ id: bookmark.id, newNode: movedNode }));
+  } else if (action.type === 'Change') {
+    await editBookmark(bookmark.id, action.previousBookmark.title, action.previousBookmark.url);
   }
+
+  dispatch(popAction());
 };
 
 export const ActionSnackbar = () => {
@@ -63,7 +70,6 @@ export const ActionSnackbar = () => {
     const action = stack[stack.length - 1];
     if (action) {
       inverseAction(action, dispatch);
-      dispatch(popAction());
     }
   }, [dispatch, stack]);
 

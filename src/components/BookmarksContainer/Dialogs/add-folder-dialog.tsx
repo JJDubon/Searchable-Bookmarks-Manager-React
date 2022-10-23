@@ -53,24 +53,20 @@ export const AddFolderDialog = ({ open, onClose }: AddFolderDialogProps) => {
     onClose();
   }
 
-  function handleAdd() {
+  async function handleAdd() {
     if (title.trim().length === 0) {
       setError('Please provide a bookmark name');
     } else {
-      createBookmark(title, bookmark!.children!.length ?? 0, bookmark!.id).then((result) => {
-        dispatch(
-          pushAction({
-            action: {
-              type: 'Add',
-              bookmark: {
-                ...result,
-                children: result.children ? result.children.map((n) => n.id) : undefined,
-              },
-            },
-            showSnackbar: true,
-          })
-        );
-      });
+      const result = await createBookmark(title, bookmark!.children!.length ?? 0, bookmark!.id);
+      dispatch(
+        pushAction({
+          action: {
+            type: 'Add',
+            bookmark: result,
+          },
+          showSnackbar: true,
+        })
+      );
 
       dispatch(setBookmarkOpen({ path, open: true }));
       handleClose();

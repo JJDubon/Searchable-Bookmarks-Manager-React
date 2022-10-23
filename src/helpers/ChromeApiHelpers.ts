@@ -29,6 +29,18 @@ export async function createBookmark(title: string, index: number, parentId: str
   return await instance.bookmarks.create({ title, index, parentId, url });
 }
 
+export async function getBookmark(id: string) {
+  const instance = getChromeInstance();
+  const result = await instance.bookmarks.get(id);
+  return result[0];
+}
+
+export async function getFolder(id: string) {
+  const instance = getChromeInstance();
+  const result = await instance.bookmarks.getSubTree(id);
+  return result[0];
+}
+
 export async function editBookmark(id: string, title: string, url?: string) {
   const instance = getChromeInstance();
   return await instance.bookmarks.update(id, { title, url });

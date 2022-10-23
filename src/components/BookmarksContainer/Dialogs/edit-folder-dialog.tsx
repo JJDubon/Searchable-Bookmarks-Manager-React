@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { editBookmark } from '../../../helpers/ChromeApiHelpers';
+import { editBookmark, getBookmark } from '../../../helpers/ChromeApiHelpers';
 import { pushAction } from '../../../redux/ducks/action-stack/actions';
 import { useContextStore } from '../../../redux/ducks/context/selectors';
 import { DialogErrorText } from './styles';
@@ -60,27 +60,22 @@ export const EditFolderDialog = ({ open, onClose }: EditFolderDialogProps) => {
     onClose();
   }
 
-  function handleEdit() {
+  async function handleEdit() {
     if (title.trim().length === 0) {
       setError('Please provide a bookmark name');
     } else {
-      editBookmark(bookmark!.id, title).then((result) => {
-        if (bookmark) {
-          dispatch(
-            pushAction({
-              action: {
-                type: 'Change',
-                bookmark: {
-                  ...result,
-                  children: result.children?.map((n) => n.id),
-                },
-                previousBookmark: bookmark,
-              },
-              showSnackbar: true,
-            })
-          );
-        }
-      });
+      const oldBookmarkNode = await getBookmark(bookmark!.id);
+      const result = await editBookmark(bookmark!.id, title);
+      dispatch(
+        pushAction({
+          action: {
+            type: 'Change',
+            bookmark: result,
+            previousBookmark: oldBookmarkNode,
+          },
+          showSnackbar: true,
+        })
+      );
 
       handleClose();
     }

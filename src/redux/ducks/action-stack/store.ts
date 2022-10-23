@@ -1,27 +1,25 @@
-import { FlattenedBookmarkTreeNode } from '../bookmarks/store';
-
-export type BookmarkTreeNode = chrome.bookmarks.BookmarkTreeNode;
+import { BookmarkTreeNode } from '../bookmarks/store';
 
 export type BookmarkAddAction = {
   type: 'Add';
-  bookmark: FlattenedBookmarkTreeNode;
+  bookmark: BookmarkTreeNode;
 };
 
 export type BookmarkDeleteAction = {
   type: 'Delete';
-  bookmark: FlattenedBookmarkTreeNode;
+  bookmark: BookmarkTreeNode;
 };
 
 export type BookmarkMoveAction = {
   type: 'Move';
-  previousBookmark: FlattenedBookmarkTreeNode;
-  bookmark: FlattenedBookmarkTreeNode;
+  previousBookmark: BookmarkTreeNode;
+  bookmark: BookmarkTreeNode;
 };
 
 export type BookmarkChangeAction = {
   type: 'Change';
-  previousBookmark: FlattenedBookmarkTreeNode;
-  bookmark: FlattenedBookmarkTreeNode;
+  previousBookmark: BookmarkTreeNode;
+  bookmark: BookmarkTreeNode;
 };
 
 export type BookmarkAction =

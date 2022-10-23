@@ -2,7 +2,7 @@ import { RefObject, useEffect, useState } from 'react';
 import { DropTargetMonitor, useDrag, useDrop, XYCoord } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import { useDispatch } from 'react-redux';
-import { moveBookmark } from '../../../helpers/ChromeApiHelpers';
+import { getBookmark, moveBookmark } from '../../../helpers/ChromeApiHelpers';
 import { pushAction } from '../../../redux/ducks/action-stack/actions';
 import { setBookmarkOpen } from '../../../redux/ducks/bookmarks/actions';
 import { useBookmark, useBookmarksStore } from '../../../redux/ducks/bookmarks/selectors';
@@ -114,17 +114,25 @@ export function useBookmarkDrop(
           }
 
           if (newParentId !== undefined && newIndex !== undefined) {
-            moveBookmark(dragItem.id, newParentId, newIndex);
-            dispatch(
-              pushAction({
-                showSnackbar: false,
-                action: {
-                  type: 'Move',
-                  previousBookmark: { ...dragItem, index: dragItem.index! + previousBookmarkIndexAdjustment },
-                  bookmark: { ...dragItem, parentId: newParentId, index: newIndex },
-                },
-              })
-            );
+            (async function () {
+              const oldBookmarkNode = await getBookmark(dragItem.id);
+              await moveBookmark(dragItem.id, newParentId, newIndex);
+              const newBookmarkNode = await getBookmark(dragItem.id);
+
+              dispatch(
+                pushAction({
+                  showSnackbar: false,
+                  action: {
+                    type: 'Move',
+                    previousBookmark: {
+                      ...oldBookmarkNode,
+                      index: dragItem.index! + previousBookmarkIndexAdjustment,
+                    },
+                    bookmark: newBookmarkNode,
+                  },
+                })
+              );
+            })();
           }
         }
       },

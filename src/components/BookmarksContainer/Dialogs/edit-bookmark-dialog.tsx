@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import * as validUrl from 'valid-url';
 import { cleanUrl } from '../../../helpers/BrowserHelpers';
-import { editBookmark } from '../../../helpers/ChromeApiHelpers';
+import { editBookmark, getBookmark } from '../../../helpers/ChromeApiHelpers';
 import { pushAction } from '../../../redux/ducks/action-stack/actions';
 import { useContextStore } from '../../../redux/ducks/context/selectors';
 import { DialogErrorText } from './styles';
@@ -77,7 +77,7 @@ export const EditBookmarkDialog = ({ open, onClose }: EditBookmarkDialogProps) =
     onClose();
   }
 
-  function handleEdit() {
+  async function handleEdit() {
     const cleanedUrl = cleanUrl(url);
     const urlValid = validUrl.isUri(url);
     const cleanedUrlValid = validUrl.isUri(cleanedUrl);
@@ -89,23 +89,18 @@ export const EditBookmarkDialog = ({ open, onClose }: EditBookmarkDialogProps) =
       setError('Please provide a valid url');
     } else {
       const bookmarkUrl = urlValid ? url : cleanedUrl;
-      editBookmark(bookmark!.id, title, bookmarkUrl).then((result) => {
-        if (bookmark) {
-          dispatch(
-            pushAction({
-              action: {
-                type: 'Change',
-                bookmark: {
-                  ...result,
-                  children: undefined,
-                },
-                previousBookmark: bookmark,
-              },
-              showSnackbar: true,
-            })
-          );
-        }
-      });
+      const oldBookmarkNode = await getBookmark(bookmark!.id);
+      const result = await editBookmark(bookmark!.id, title, bookmarkUrl);
+      dispatch(
+        pushAction({
+          action: {
+            type: 'Change',
+            bookmark: oldBookmarkNode,
+            previousBookmark: result,
+          },
+          showSnackbar: true,
+        })
+      );
 
       handleClose();
     }

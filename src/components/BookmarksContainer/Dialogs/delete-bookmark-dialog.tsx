@@ -1,7 +1,8 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { removeBookmark, removeFolder } from '../../../helpers/ChromeApiHelpers';
+import { getBookmark, getFolder, removeBookmark, removeFolder } from '../../../helpers/ChromeApiHelpers';
 import { pushAction } from '../../../redux/ducks/action-stack/actions';
+import { BookmarkTreeNode } from '../../../redux/ducks/bookmarks/store';
 import { useContextStore } from '../../../redux/ducks/context/selectors';
 import { BookmarkTitle, DialogContentTitleText } from './styles';
 
@@ -41,27 +42,27 @@ export const DeleteBookmarkDialog = ({ open, onClose }: DeleteBookmarkDialogProp
     onClose();
   }
 
-  function handleRemove() {
-    let removePromise;
+  async function handleRemove() {
+    let bookmarkNode: BookmarkTreeNode;
     if (bookmark!.children) {
-      removePromise = removeFolder(bookmark!.id);
+      bookmarkNode = await getFolder(bookmark!.id);
+      await removeFolder(bookmark!.id);
     } else {
-      removePromise = removeBookmark(bookmark!.id);
+      bookmarkNode = await getBookmark(bookmark!.id);
+      await removeBookmark(bookmark!.id);
     }
 
-    removePromise.then(() => {
-      if (bookmark) {
-        dispatch(
-          pushAction({
-            action: {
-              type: 'Delete',
-              bookmark,
-            },
-            showSnackbar: true,
-          })
-        );
-      }
-    });
+    if (bookmark) {
+      dispatch(
+        pushAction({
+          action: {
+            type: 'Delete',
+            bookmark: bookmarkNode,
+          },
+          showSnackbar: true,
+        })
+      );
+    }
 
     handleClose();
   }

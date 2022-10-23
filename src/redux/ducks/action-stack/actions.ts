@@ -1,5 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
-import { BookmarkAction, BookmarkTreeNode } from './store';
+import { BookmarkTreeNode } from '../bookmarks/store';
+import { BookmarkAction } from './store';
 
 export const pushAction = createAction<{ action: BookmarkAction; showSnackbar?: boolean }>(
   'ACTION_STACK_PUSH'

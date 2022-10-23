@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import { useKeyDown, useMouseDown, useMouseMove } from '../../helpers/BrowserHelpers';
 import { useRateLimit } from '../../helpers/CallbackHelpers';
 import { openInCurrentTab } from '../../helpers/ChromeApiHelpers';
-import { popAction } from '../../redux/ducks/action-stack/actions';
 import { useActionStackStore } from '../../redux/ducks/action-stack/selectors';
 import { setBookmarkOpen } from '../../redux/ducks/bookmarks/actions';
 import { useBookmarksStore } from '../../redux/ducks/bookmarks/selectors';
@@ -57,7 +56,6 @@ export function useKeyboardNavigation() {
           const action = stack[stack.length - 1];
           if (action) {
             inverseAction(action, dispatch);
-            dispatch(popAction());
           }
         } else {
           clearActiveIndex();
