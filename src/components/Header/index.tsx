@@ -1,6 +1,6 @@
 import SearchIcon from '@mui/icons-material/Search';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
-import SettingsIcon from '@mui/icons-material/Settings';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useCallback, useRef, useState } from 'react';
@@ -80,7 +80,7 @@ export const Header = ({ showSettings }: HeaderProps) => {
                 {queryExists ? <SearchOffIcon /> : <SearchIcon />}
               </IconButton>
               <IconButton aria-label='settings' onClick={() => showSettings()}>
-                <SettingsIcon />
+                <SettingsOutlinedIcon />
               </IconButton>
             </InputAdornment>
           ),

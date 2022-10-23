@@ -1,8 +1,10 @@
 import AddLinkIcon from '@mui/icons-material/AddLink';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import CreateNewFolderOutlinedIcon from '@mui/icons-material/CreateNewFolderOutlined';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
@@ -21,9 +23,11 @@ import {
   openInNewIncognitoWindow,
   openInNewTab,
   openInNewWindow,
+  openTabsInNewGroup,
 } from '../../../helpers/ChromeApiHelpers';
 import { setBookmarkOpen } from '../../../redux/ducks/bookmarks/actions';
-import { FlattenedBookmarkTreeNode } from '../../../redux/ducks/bookmarks/store';
+import { useBookmarksStore } from '../../../redux/ducks/bookmarks/selectors';
+import { BookmarkMap, FlattenedBookmarkTreeNode } from '../../../redux/ducks/bookmarks/store';
 import { setActiveDialog } from '../../../redux/ducks/context/actions';
 import { AppDialogs } from '../../../redux/ducks/context/store';
 import { setSettings } from '../../../redux/ducks/settings/actions';
@@ -38,6 +42,7 @@ interface MenuProps {
 export const Menu = ({ path, bookmark }: MenuProps) => {
   const dispatch = useDispatch();
   const { defaultOpenMap } = useSettingsStore();
+  const { map } = useBookmarksStore();
   const type = bookmark?.children ? 'folder' : 'bookmark';
   const modifiable = bookmark && isModifiable(bookmark);
   const menuItems = useMemo(() => {
@@ -119,20 +124,27 @@ export const Menu = ({ path, bookmark }: MenuProps) => {
         onClick={() => dispatch(setActiveDialog({ dialog: AppDialogs.AddBookmark }))}
       >
         <ListItemIcon>
-          <ContentCopyIcon fontSize='small' />
+          <BookmarkBorderIcon fontSize='small' />
         </ListItemIcon>
         <ListItemText>Add Bookmark</ListItemText>
       </MenuItem>,
       <MenuItem key='add-folder' onClick={() => dispatch(setActiveDialog({ dialog: AppDialogs.AddFolder }))}>
         <ListItemIcon>
-          <CreateNewFolderIcon fontSize='small' />
+          <CreateNewFolderOutlinedIcon fontSize='small' />
         </ListItemIcon>
         <ListItemText>Add Folder</ListItemText>
+      </MenuItem>,
+      <Divider key='d3' />,
+      <MenuItem key='open-all-children' onClick={() => openAllChildrenInNewTabs(bookmark!, map)}>
+        <ListItemIcon>
+          <DriveFolderUploadIcon fontSize='small' />
+        </ListItemIcon>
+        <ListItemText>Open all children in a new tab</ListItemText>
       </MenuItem>,
     ];
 
     const modifiableOptions = [
-      <Divider key='d3' />,
+      <Divider key='d4' />,
       <MenuItem
         key='edit'
         onClick={() => {
@@ -144,13 +156,13 @@ export const Menu = ({ path, bookmark }: MenuProps) => {
         }}
       >
         <ListItemIcon>
-          <EditIcon fontSize='small' />
+          <EditOutlinedIcon fontSize='small' />
         </ListItemIcon>
         <ListItemText>Edit {type}</ListItemText>
       </MenuItem>,
       <MenuItem key='delete' onClick={() => dispatch(setActiveDialog({ dialog: AppDialogs.DeleteBookmark }))}>
         <ListItemIcon>
-          <DeleteIcon fontSize='small' />
+          <DeleteOutlineIcon fontSize='small' />
         </ListItemIcon>
         <ListItemText>Delete {type}</ListItemText>
       </MenuItem>,
@@ -161,7 +173,21 @@ export const Menu = ({ path, bookmark }: MenuProps) => {
       ...(type === 'folder' ? folderOptions : []),
       ...(modifiable ? modifiableOptions : []),
     ];
-  }, [bookmark, defaultOpenMap, type, modifiable, dispatch, path]);
+  }, [bookmark, defaultOpenMap, map, type, modifiable, dispatch, path]);
 
   return <MenuList dense>{menuItems}</MenuList>;
 };
+
+async function openAllChildrenInNewTabs(bookmark: FlattenedBookmarkTreeNode, map: BookmarkMap) {
+  const urls: string[] = [];
+  walk(bookmark);
+  await openTabsInNewGroup(bookmark.title, urls);
+
+  function walk(node: FlattenedBookmarkTreeNode) {
+    if (node.children) {
+      node.children.forEach((childId) => walk(map[childId]));
+    } else {
+      urls.push(node.url!);
+    }
+  }
+}

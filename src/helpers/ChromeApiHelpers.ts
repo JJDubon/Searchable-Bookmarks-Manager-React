@@ -75,6 +75,18 @@ export async function openInNewTab(url: string, focus: boolean = false): Promise
   }
 }
 
+export async function openTabsInNewGroup(groupTitle: string, urls: string[]): Promise<void> {
+  const tabs = await Promise.all(
+    urls.map((url) => {
+      return chrome.tabs.create({ url: String(url), active: false });
+    })
+  );
+
+  const tabIds = tabs.map((t) => t.id!);
+  var groupId = await chrome.tabs.group({ tabIds: tabIds });
+  await chrome.tabGroups.update(groupId, { collapsed: false, title: groupTitle, color: 'blue' });
+}
+
 export async function openInNewWindow(url: string): Promise<void> {
   await chrome.windows.create({ url: String(url), incognito: false });
 }
