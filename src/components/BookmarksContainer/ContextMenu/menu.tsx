@@ -139,7 +139,7 @@ export const Menu = ({ path, bookmark }: MenuProps) => {
         <ListItemIcon>
           <DriveFolderUploadIcon fontSize='small' />
         </ListItemIcon>
-        <ListItemText>Open all children in a new tab</ListItemText>
+        <ListItemText>Open all bookmarks in this folder</ListItemText>
       </MenuItem>,
     ];
 
