@@ -1,5 +1,5 @@
 import { useCallback, useRef } from 'react';
-import { openInNewTab, openInNewWindow } from '../../helpers/ChromeApiHelpers';
+import { openInCurrentTab, openInNewTab, openInNewWindow } from '../../helpers/ChromeApiHelpers';
 import { useBookmark } from '../../redux/ducks/bookmarks/selectors';
 import { ActiveBookmarkWrapper } from './active-bookmark-wrapper';
 import { BookmarkListItem } from './bookmark-list-item';
@@ -31,7 +31,7 @@ export const Bookmark = ({ id, path, indentLevel }: BookmarksProps) => {
       } else if (e.shiftKey) {
         openInNewWindow(bookmark.url!);
       } else {
-        // TODO - open in current tab
+        openInCurrentTab(bookmark.url!);
       }
     },
     [bookmark.url]

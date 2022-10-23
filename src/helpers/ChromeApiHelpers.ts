@@ -84,7 +84,7 @@ export async function openTabsInNewGroup(groupTitle: string, urls: string[]): Pr
 
   const tabIds = tabs.map((t) => t.id!);
   var groupId = await chrome.tabs.group({ tabIds: tabIds });
-  await chrome.tabGroups.update(groupId, { collapsed: false, title: groupTitle, color: 'blue' });
+  await chrome.tabGroups.update(groupId, { collapsed: false, title: groupTitle, color: getRandomColor() });
 }
 
 export async function openInNewWindow(url: string): Promise<void> {
@@ -93,4 +93,20 @@ export async function openInNewWindow(url: string): Promise<void> {
 
 export async function openInNewIncognitoWindow(url: string): Promise<void> {
   await chrome.windows.create({ url: String(url), incognito: true });
+}
+
+function getRandomColor(): chrome.tabGroups.ColorEnum {
+  const values: chrome.tabGroups.ColorEnum[] = [
+    'grey',
+    'blue',
+    'red',
+    'yellow',
+    'green',
+    'pink',
+    'purple',
+    'cyan',
+    'orange',
+  ];
+  const index = Math.floor(Math.random() * values.length);
+  return values[index];
 }
