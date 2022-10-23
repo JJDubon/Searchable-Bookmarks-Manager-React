@@ -69,7 +69,9 @@ export const ActionSnackbar = () => {
   const handleUndo = useCallback(() => {
     const action = stack[stack.length - 1];
     if (action) {
-      inverseAction(action, dispatch);
+      inverseAction(action, dispatch).then(() => {
+        dispatch(clearCurrentAction());
+      });
     }
   }, [dispatch, stack]);
 
