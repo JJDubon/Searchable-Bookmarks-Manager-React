@@ -6,7 +6,7 @@ const initialStore: SettingsStore = {
   loading: true,
   palette: 'light',
   fontSize: '14px',
-  padding: '2px',
+  lineHeight: '1.25',
   noWrap: true,
   defaultOpenMap: {},
   escapeBehavior: 'clear',

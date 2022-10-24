@@ -34,8 +34,8 @@ export const ActiveHighlight = styled('div')<ActiveHighlightProps>(({ theme, act
 
 export const BookmarkButton = styled(ListItemButton)(({ theme }) => ({
   color: theme.palette.text.primary,
-  paddingBottom: theme.bookmarks.adjustablePadding(1),
-  paddingTop: theme.bookmarks.adjustablePadding(1),
+  paddingBottom: theme.bookmarks.padding,
+  paddingTop: theme.bookmarks.padding,
   width: '100%',
 })) as typeof ListItemButton;
 
@@ -50,9 +50,10 @@ export const BookmarkImg = styled('img')(({ theme }) => ({
   width: '1.5em',
 }));
 
-export const BookmarkPrimaryTextOverrides = (fontSize: string, noWrap: boolean) => {
+export const BookmarkPrimaryTextOverrides = (lineHeight: string, fontSize: string, noWrap: boolean) => {
   let settings: TypographyProps = {
     fontSize: fontSize,
+    lineHeight: lineHeight,
     marginTop: '1px',
   };
 

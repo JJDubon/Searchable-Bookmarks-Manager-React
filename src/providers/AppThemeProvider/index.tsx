@@ -7,9 +7,8 @@ declare module '@mui/material/styles' {
       offset: (factor: number) => string;
     };
     bookmarks: {
-      fontColor: string;
       padding: string;
-      adjustablePadding: (factor: number) => string;
+      lineHeight: string;
     };
   }
   interface ThemeOptions {
@@ -17,9 +16,8 @@ declare module '@mui/material/styles' {
       offset?: (factor: number) => string;
     };
     bookmarks?: {
-      fontColor?: string;
       padding?: string;
-      adjustablePadding?: (factor: number) => string;
+      lineHeight?: string;
     };
   }
 }
@@ -48,8 +46,8 @@ export const AppThemeProvider = ({ children }: AppThemeProviderProps) => {
       },
     },
     bookmarks: {
-      padding: settings.padding,
-      adjustablePadding: (factor: number) => `calc(${settings.padding} * ${factor})`,
+      padding: '2px',
+      lineHeight: settings.lineHeight,
     },
   });
 

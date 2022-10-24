@@ -4,7 +4,7 @@ import { OpenMap } from '../bookmarks/store';
 export const SettingsStoreKeys: (keyof SettingsStore)[] = [
   'palette',
   'fontSize',
-  'padding',
+  'lineHeight',
   'noWrap',
   'defaultOpenMap',
   'escapeBehavior',
@@ -14,7 +14,7 @@ export interface SettingsStore {
   loading: boolean;
   palette: PaletteMode;
   fontSize: string;
-  padding: string;
+  lineHeight: string;
   noWrap: boolean;
   escapeBehavior: 'clear' | 'close';
   defaultOpenMap: OpenMap;

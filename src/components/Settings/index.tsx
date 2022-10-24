@@ -14,7 +14,7 @@ interface SettingsDrawerProps {
 export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
   const loading = useAppIsLoading();
   const dispatch = useDispatch();
-  const { palette, fontSize, padding, noWrap, escapeBehavior } = useSettingsStore();
+  const { palette, fontSize, lineHeight, noWrap, escapeBehavior } = useSettingsStore();
 
   if (loading) {
     return <></>;
@@ -70,16 +70,15 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
               id='bookmark-spacing-field'
               variant='standard'
               label='Bookmark spacing'
-              value={padding}
+              value={lineHeight}
               onChange={(e) => {
                 const value = e.target.value as string;
-                dispatch(setSettings({ settings: { padding: value } }));
+                dispatch(setSettings({ settings: { lineHeight: value } }));
               }}
             >
-              <MenuItem value={'0px'}>Small (Default)</MenuItem>
-              <MenuItem value={'2px'}>Medium</MenuItem>
-              <MenuItem value={'4px'}>Large</MenuItem>
-              <MenuItem value={'8px'}>Very Large</MenuItem>
+              <MenuItem value={'1.25'}>Small</MenuItem>
+              <MenuItem value={'1.5'}>Medium (Default)</MenuItem>
+              <MenuItem value={'2'}>Large</MenuItem>
             </TextField>
           </FormControl>
           <FormControl fullWidth>
@@ -94,7 +93,7 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
                 dispatch(setSettings({ settings: { noWrap: value === 'true' } }));
               }}
             >
-              <MenuItem value={'true'}>Single Line</MenuItem>
+              <MenuItem value={'true'}>Single Line (Default)</MenuItem>
               <MenuItem value={'false'}>Multi line</MenuItem>
             </TextField>
           </FormControl>
@@ -110,7 +109,7 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
                 dispatch(setSettings({ settings: { escapeBehavior: value } }));
               }}
             >
-              <MenuItem value={'clear'}>Clear Search</MenuItem>
+              <MenuItem value={'clear'}>Clear Search (Default)</MenuItem>
               <MenuItem value={'close'}>Close Extension</MenuItem>
             </TextField>
           </FormControl>

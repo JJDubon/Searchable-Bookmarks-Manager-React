@@ -23,10 +23,10 @@ export function useOpenStatus(path: string): boolean {
 }
 
 export function useListItemOverrides() {
-  const { fontSize, noWrap } = useSettingsStore();
+  const { lineHeight, fontSize, noWrap } = useSettingsStore();
   return useMemo(() => {
-    return BookmarkPrimaryTextOverrides(fontSize, noWrap);
-  }, [fontSize, noWrap]);
+    return BookmarkPrimaryTextOverrides(lineHeight, fontSize, noWrap);
+  }, [lineHeight, fontSize, noWrap]);
 }
 
 export function isRootNode(bookmark: FlattenedBookmarkTreeNode): boolean {
