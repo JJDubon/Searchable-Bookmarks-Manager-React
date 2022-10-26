@@ -23,6 +23,9 @@ export function* setSettingsSaga({ payload }: ReturnType<typeof setSettings>) {
   try {
     yield call(() => setAppSettings(payload.settings));
     yield put(setSettingsSuccess({ settings: payload.settings }));
+    if (payload.settings.iconColor) {
+      yield chrome.runtime.sendMessage({ type: 'SBM_ICON_UPDATED' });
+    }
   } catch (ex) {
     yield put(setSettingsFailure());
   }

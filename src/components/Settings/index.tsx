@@ -14,7 +14,7 @@ interface SettingsDrawerProps {
 export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
   const loading = useAppIsLoading();
   const dispatch = useDispatch();
-  const { palette, fontSize, lineHeight, noWrap, escapeBehavior } = useSettingsStore();
+  const { palette, iconColor, fontSize, lineHeight, noWrap, escapeBehavior } = useSettingsStore();
 
   if (loading) {
     return <></>;
@@ -44,6 +44,23 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
             >
               <MenuItem value={'light'}>Light (Default)</MenuItem>
               <MenuItem value={'dark'}>Dark</MenuItem>
+            </TextField>
+          </FormControl>
+          <FormControl fullWidth>
+            <TextField
+              select
+              id='app-icon-color'
+              variant='standard'
+              label='Theme'
+              value={iconColor}
+              onChange={(e) => {
+                const value = e.target.value as string;
+                dispatch(setSettings({ settings: { iconColor: value } }));
+              }}
+            >
+              <MenuItem value={'blue'}>Blue (Default)</MenuItem>
+              <MenuItem value={'white'}>White</MenuItem>
+              <MenuItem value={'black'}>Black</MenuItem>
             </TextField>
           </FormControl>
           <FormControl fullWidth>

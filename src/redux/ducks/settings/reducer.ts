@@ -5,6 +5,7 @@ import { SettingsStore } from './store';
 const initialStore: SettingsStore = {
   loading: true,
   palette: 'light',
+  iconColor: 'blue',
   fontSize: '14px',
   lineHeight: '1.25',
   noWrap: true,

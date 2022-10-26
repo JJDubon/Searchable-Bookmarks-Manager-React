@@ -3,6 +3,7 @@ import { OpenMap } from '../bookmarks/store';
 
 export const SettingsStoreKeys: (keyof SettingsStore)[] = [
   'palette',
+  'iconColor',
   'fontSize',
   'lineHeight',
   'noWrap',
@@ -13,6 +14,7 @@ export const SettingsStoreKeys: (keyof SettingsStore)[] = [
 export interface SettingsStore {
   loading: boolean;
   palette: PaletteMode;
+  iconColor: string;
   fontSize: string;
   lineHeight: string;
   noWrap: boolean;
