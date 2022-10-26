@@ -51,7 +51,7 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
               select
               id='app-icon-color'
               variant='standard'
-              label='Theme'
+              label='Icon Color'
               value={iconColor}
               onChange={(e) => {
                 const value = e.target.value as string;

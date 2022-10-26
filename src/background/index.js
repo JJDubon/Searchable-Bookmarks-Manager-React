@@ -17,14 +17,25 @@ class DataPreloader {
           root: this.root,
           settings: this.settings,
         });
+
+        // Call update again so, if somehow the cache is outdated, the user can just open the extension again
+        // to refresh any stale data
+        this.update();
       }
     });
 
     chrome.runtime.onInstalled.addListener(() => {
-      this.getRoot();
-      this.getSettings();
+      this.update();
     });
+
+    setInterval(() => {
+      this.update();
+    }, 5000);
   }
+
+  update = async () => {
+    await Promise.all([this.getRoot(), this.getSettings()]);
+  };
 
   getRoot = async () => {
     this.root = await chrome.bookmarks.getTree();
