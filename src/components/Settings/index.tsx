@@ -58,6 +58,7 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
                 dispatch(setSettings({ settings: { iconColor: value } }));
               }}
             >
+              <MenuItem value={'light-blue'}>Light Blue</MenuItem>
               <MenuItem value={'blue'}>Blue (Default)</MenuItem>
               <MenuItem value={'white'}>White</MenuItem>
               <MenuItem value={'black'}>Black</MenuItem>
