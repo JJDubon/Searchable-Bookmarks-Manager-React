@@ -26,5 +26,8 @@ export const contextReducer = createReducer(initialStore, (builder) => {
 
   builder.addCase(setActiveDialogSuccess, (store, action) => {
     store.activeDialog = action.payload.dialog;
+    if (action.payload.dialog === AppDialogs.None) {
+      store.bookmark = null;
+    }
   });
 });
