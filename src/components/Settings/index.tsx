@@ -51,14 +51,14 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
               select
               id='app-icon-color'
               variant='standard'
-              label='Icon Color'
+              label='Icon color'
               value={iconColor}
               onChange={(e) => {
                 const value = e.target.value as string;
                 dispatch(setSettings({ settings: { iconColor: value } }));
               }}
             >
-              <MenuItem value={'light-blue'}>Light Blue</MenuItem>
+              <MenuItem value={'light-blue'}>Light blue</MenuItem>
               <MenuItem value={'blue'}>Blue (Default)</MenuItem>
               <MenuItem value={'white'}>White</MenuItem>
               <MenuItem value={'black'}>Black</MenuItem>
@@ -79,7 +79,7 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
               <MenuItem value={'14px'}>Small (Default)</MenuItem>
               <MenuItem value={'16px'}>Medium</MenuItem>
               <MenuItem value={'18px'}>Large</MenuItem>
-              <MenuItem value={'24px'}>Very Large</MenuItem>
+              <MenuItem value={'24px'}>Very large</MenuItem>
             </TextField>
           </FormControl>
           <FormControl fullWidth>
@@ -111,7 +111,7 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
                 dispatch(setSettings({ settings: { noWrap: value === 'true' } }));
               }}
             >
-              <MenuItem value={'true'}>Single Line (Default)</MenuItem>
+              <MenuItem value={'true'}>Single line (Default)</MenuItem>
               <MenuItem value={'false'}>Multi line</MenuItem>
             </TextField>
           </FormControl>
@@ -127,8 +127,8 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
                 dispatch(setSettings({ settings: { escapeBehavior: value } }));
               }}
             >
-              <MenuItem value={'clear'}>Clear Search (Default)</MenuItem>
-              <MenuItem value={'close'}>Close Extension</MenuItem>
+              <MenuItem value={'clear'}>Clear search (Default)</MenuItem>
+              <MenuItem value={'close'}>Close extension</MenuItem>
             </TextField>
           </FormControl>
         </SettingsForm>
