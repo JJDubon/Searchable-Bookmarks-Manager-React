@@ -30,7 +30,7 @@ export function useBookmarkDrag(
   const [{ isDragging }, drag, preview] = useDrag(
     () => ({
       type: DragTypes.BOOKMARK,
-      canDrag: () => isModifiable(bookmark) && query.trim().length === 0,
+      canDrag: () => isModifiable(bookmark) && query.length === 0,
       item: () => ({ bookmark, path }),
       collect: (monitor) => ({
         isDragging: !!monitor.isDragging(),

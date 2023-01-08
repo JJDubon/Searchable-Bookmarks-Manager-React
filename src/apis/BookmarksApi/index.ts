@@ -50,7 +50,7 @@ export class BookmarksApi {
       }
     });
 
-    if (this.query.trim().length === 0) {
+    if (this.query.length === 0) {
       this.activeNodes = this.rootNodes;
     } else {
       this.search(this.query);
@@ -66,7 +66,7 @@ export class BookmarksApi {
   }
 
   public async search(query: string) {
-    this.query = query?.trim() ?? '';
+    this.query = query ?? '';
     if (query.length !== 0) {
       const nodes = await searchTree(query);
       this.activeNodes = nodes.map((node) => node.id);
