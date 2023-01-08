@@ -1,4 +1,4 @@
-import { FlattenedBookmarkTreeNode } from '../bookmarks/store';
+import { FlattenedBookmarkTreeNode } from '../../../apis/BookmarksApi/types';
 
 export enum AppDialogs {
   None,

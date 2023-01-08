@@ -1,6 +1,6 @@
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { useBookmarksStore } from '../../redux/ducks/bookmarks/selectors';
+import { useBookmarksApiData } from '../../apis/BookmarksApi/hooks';
 import { ActionSnackbar } from './action-snackbar';
 import { BookmarksList } from './bookmark-list';
 import { ContextMenu } from './ContextMenu/context-menu';
@@ -17,7 +17,7 @@ import {
 import { Container } from './styles';
 
 export const BookmarksContainer = () => {
-  const { activeNodes } = useBookmarksStore();
+  const { activeNodes } = useBookmarksApiData();
 
   // Listen for chrome api events
   useOnCreatedListener();

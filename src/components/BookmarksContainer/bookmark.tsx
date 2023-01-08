@@ -1,6 +1,6 @@
 import { useCallback, useRef } from 'react';
+import { useBookmark } from '../../apis/BookmarksApi/hooks';
 import { openInCurrentTab, openInNewTab, openInNewWindow } from '../../helpers/ChromeApiHelpers';
-import { useBookmark } from '../../redux/ducks/bookmarks/selectors';
 import { ActiveBookmarkWrapper } from './active-bookmark-wrapper';
 import { BookmarkListItem } from './bookmark-list-item';
 import { WithContextMenu } from './ContextMenu';

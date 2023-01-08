@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { BookmarkTreeNode } from '../bookmarks/store';
+import { BookmarkTreeNode } from '../../../apis/BookmarksApi/types';
 import {
   clearCurrentActionSuccess,
   mapActionStackItemSuccess,

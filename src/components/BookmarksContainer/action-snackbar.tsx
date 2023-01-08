@@ -4,11 +4,11 @@ import { AnyAction, Dispatch } from '@reduxjs/toolkit';
 import { truncate } from 'lodash';
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
+import { BookmarkTreeNode } from '../../apis/BookmarksApi/types';
 import { createBookmark, editBookmark, moveBookmark, removeBookmark } from '../../helpers/ChromeApiHelpers';
 import { clearCurrentAction, mapActionStackItem, popAction } from '../../redux/ducks/action-stack/actions';
 import { useActionStackStore } from '../../redux/ducks/action-stack/selectors';
 import { BookmarkAction } from '../../redux/ducks/action-stack/store';
-import { BookmarkTreeNode } from '../../redux/ducks/bookmarks/store';
 
 export const inverseAction = async (action: BookmarkAction, dispatch: Dispatch<AnyAction>) => {
   const bookmark = action.bookmark;

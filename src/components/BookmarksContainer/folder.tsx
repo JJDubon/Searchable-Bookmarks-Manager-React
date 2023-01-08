@@ -3,9 +3,8 @@ import FolderIcon from '@mui/icons-material/Folder';
 import TabUnselectedIcon from '@mui/icons-material/TabUnselected';
 import { Collapse, List } from '@mui/material';
 import { useCallback, useMemo, useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import { setBookmarkOpen } from '../../redux/ducks/bookmarks/actions';
-import { useBookmark } from '../../redux/ducks/bookmarks/selectors';
+import { useBookmark } from '../../apis/BookmarksApi/hooks';
+import { useBookmarksApi } from '../../providers/ApiProvider/hooks';
 import { ActiveBookmarkWrapper } from './active-bookmark-wrapper';
 import { BookmarksList } from './bookmark-list';
 import { BookmarkListItem } from './bookmark-list-item';
@@ -24,8 +23,8 @@ interface FolderProps {
 export const Folder = ({ id, indentLevel, path, hideDetails = false, forceClose = false }: FolderProps) => {
   path = `${path}/${id}`;
 
-  const dispatch = useDispatch();
   const ref = useRef<HTMLDivElement>(null);
+  const bookmarksApi = useBookmarksApi();
   const folder = useBookmark(id);
   const { isDragging } = useBookmarkDrag(id, path, ref);
   const { dropType } = useBookmarkDrop(id, path, ref);
@@ -47,9 +46,9 @@ export const Folder = ({ id, indentLevel, path, hideDetails = false, forceClose 
 
   const onClick = useCallback(() => {
     if (!forceClose) {
-      dispatch(setBookmarkOpen({ path: path, open: !open }));
+      bookmarksApi.setOpen(path, !open);
     }
-  }, [dispatch, forceClose, open, path]);
+  }, [bookmarksApi, forceClose, open, path]);
 
   return (
     <>

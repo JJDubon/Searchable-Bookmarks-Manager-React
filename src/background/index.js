@@ -1,51 +1,4 @@
 /* eslint-disable no-undef */
-class DataPreloader {
-  root = null;
-  settings = null;
-
-  constructor() {
-    chrome.bookmarks.onChanged.addListener(() => this.getRoot());
-    chrome.bookmarks.onChildrenReordered.addListener(() => this.getRoot());
-    chrome.bookmarks.onCreated.addListener(() => this.getRoot());
-    chrome.bookmarks.onMoved.addListener(() => this.getRoot());
-    chrome.bookmarks.onRemoved.addListener(() => this.getRoot());
-    chrome.storage.local.onChanged.addListener(() => this.getSettings());
-
-    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-      if (request && request.type === 'SBM_POPUP_OPENED') {
-        sendResponse({
-          root: this.root,
-          settings: this.settings,
-        });
-
-        // Call update again so, if somehow the cache is outdated, the user can just open the extension again
-        // to refresh any stale data
-        this.update();
-      }
-    });
-
-    chrome.runtime.onInstalled.addListener(() => {
-      this.update();
-    });
-
-    setInterval(() => {
-      this.update();
-    }, 5000);
-  }
-
-  update = async () => {
-    await Promise.all([this.getRoot(), this.getSettings()]);
-  };
-
-  getRoot = async () => {
-    this.root = await chrome.bookmarks.getTree();
-  };
-
-  getSettings = async () => {
-    this.settings = await chrome.storage.local.get(null);
-  };
-}
-
 class IconLoader {
   constructor() {
     chrome.runtime.onInstalled.addListener(() => {
@@ -72,5 +25,4 @@ class IconLoader {
   };
 }
 
-new DataPreloader();
 new IconLoader();

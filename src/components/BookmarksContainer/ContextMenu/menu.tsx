@@ -17,6 +17,9 @@ import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
+import { useBookmarksApiData } from '../../../apis/BookmarksApi/hooks';
+import { BookmarkMap, FlattenedBookmarkTreeNode } from '../../../apis/BookmarksApi/types';
+import { useSettings } from '../../../apis/SettingsApi/hooks';
 import { copyToClipboard } from '../../../helpers/BrowserHelpers';
 import {
   openInCurrentTab,
@@ -25,13 +28,9 @@ import {
   openInNewWindow,
   openTabsInNewGroup,
 } from '../../../helpers/ChromeApiHelpers';
-import { setBookmarkOpen } from '../../../redux/ducks/bookmarks/actions';
-import { useBookmarksStore } from '../../../redux/ducks/bookmarks/selectors';
-import { BookmarkMap, FlattenedBookmarkTreeNode } from '../../../redux/ducks/bookmarks/store';
+import { useBookmarksApi, useSettingsApi } from '../../../providers/ApiProvider/hooks';
 import { setActiveDialog } from '../../../redux/ducks/context/actions';
 import { AppDialogs } from '../../../redux/ducks/context/store';
-import { setSettings } from '../../../redux/ducks/settings/actions';
-import { useSettingsStore } from '../../../redux/ducks/settings/selectors';
 import { isModifiable, isRootNode } from '../utils';
 
 interface MenuProps {
@@ -41,8 +40,10 @@ interface MenuProps {
 
 export const Menu = ({ path, bookmark }: MenuProps) => {
   const dispatch = useDispatch();
-  const { defaultOpenMap } = useSettingsStore();
-  const { map } = useBookmarksStore();
+  const { defaultOpenMap } = useSettings();
+  const { map } = useBookmarksApiData();
+  const settingsApi = useSettingsApi();
+  const bookmarksApi = useBookmarksApi();
   const type = bookmark?.children ? 'folder' : 'bookmark';
   const modifiable = bookmark && isModifiable(bookmark);
   const menuItems = useMemo(() => {
@@ -109,8 +110,8 @@ export const Menu = ({ path, bookmark }: MenuProps) => {
         onClick={() => {
           const updatedOption = !openByDefault;
           const updatedMap = { ...defaultOpenMap, [bookmark!.id]: updatedOption };
-          dispatch(setSettings({ settings: { defaultOpenMap: updatedMap } }));
-          dispatch(setBookmarkOpen({ path, open: updatedMap[bookmark!.id] }));
+          settingsApi.updateSettings({ defaultOpenMap: updatedMap });
+          bookmarksApi.setOpen(path, updatedMap[bookmark!.id]);
         }}
       >
         <ListItemIcon>
@@ -173,7 +174,7 @@ export const Menu = ({ path, bookmark }: MenuProps) => {
       ...(type === 'folder' ? folderOptions : []),
       ...(modifiable ? modifiableOptions : []),
     ];
-  }, [bookmark, defaultOpenMap, map, type, modifiable, dispatch, path]);
+  }, [bookmark, defaultOpenMap, type, modifiable, settingsApi, bookmarksApi, path, dispatch, map]);
 
   return <MenuList dense>{menuItems}</MenuList>;
 };

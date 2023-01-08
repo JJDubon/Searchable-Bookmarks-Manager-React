@@ -1,7 +1,7 @@
 import { PaletteMode } from '@mui/material';
-import { OpenMap } from '../bookmarks/store';
+import { OpenMap } from '../BookmarksApi/types';
 
-export const SettingsStoreKeys: (keyof SettingsStore)[] = [
+export const SettingsKeys: (keyof Settings)[] = [
   'palette',
   'iconColor',
   'fontSize',
@@ -11,7 +11,7 @@ export const SettingsStoreKeys: (keyof SettingsStore)[] = [
   'escapeBehavior',
 ];
 
-export interface SettingsStore {
+export interface Settings {
   loading: boolean;
   palette: PaletteMode;
   iconColor: string;

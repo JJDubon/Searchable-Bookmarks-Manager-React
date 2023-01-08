@@ -1,8 +1,7 @@
 import CloseIcon from '@mui/icons-material/Close';
 import { Box, Drawer, FormControl, IconButton, MenuItem, PaletteMode, TextField } from '@mui/material';
-import { useDispatch } from 'react-redux';
-import { setSettings } from '../../redux/ducks/settings/actions';
-import { useSettingsStore } from '../../redux/ducks/settings/selectors';
+import { useSettings } from '../../apis/SettingsApi/hooks';
+import { useSettingsApi } from '../../providers/ApiProvider/hooks';
 import { useAppIsLoading } from '../../redux/selectors';
 import { SettingsForm, SettingsHeader, SettingsTitle } from './styles';
 
@@ -13,8 +12,8 @@ interface SettingsDrawerProps {
 
 export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
   const loading = useAppIsLoading();
-  const dispatch = useDispatch();
-  const { palette, iconColor, fontSize, lineHeight, noWrap, escapeBehavior } = useSettingsStore();
+  const settingsApi = useSettingsApi();
+  const { palette, iconColor, fontSize, lineHeight, noWrap, escapeBehavior } = useSettings();
 
   if (loading) {
     return <></>;
@@ -39,7 +38,7 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
               value={palette}
               onChange={(e) => {
                 const value = e.target.value as PaletteMode;
-                dispatch(setSettings({ settings: { palette: value } }));
+                settingsApi.updateSettings({ palette: value });
               }}
             >
               <MenuItem value={'light'}>Light (Default)</MenuItem>
@@ -55,7 +54,7 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
               value={iconColor}
               onChange={(e) => {
                 const value = e.target.value as string;
-                dispatch(setSettings({ settings: { iconColor: value } }));
+                settingsApi.updateSettings({ iconColor: value });
               }}
             >
               <MenuItem value={'light-blue'}>Light blue</MenuItem>
@@ -73,7 +72,7 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
               value={fontSize}
               onChange={(e) => {
                 const value = e.target.value as string;
-                dispatch(setSettings({ settings: { fontSize: value } }));
+                settingsApi.updateSettings({ fontSize: value });
               }}
             >
               <MenuItem value={'14px'}>Small (Default)</MenuItem>
@@ -91,7 +90,7 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
               value={lineHeight}
               onChange={(e) => {
                 const value = e.target.value as string;
-                dispatch(setSettings({ settings: { lineHeight: value } }));
+                settingsApi.updateSettings({ lineHeight: value });
               }}
             >
               <MenuItem value={'1.25'}>Small</MenuItem>
@@ -108,7 +107,7 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
               value={noWrap}
               onChange={(e) => {
                 const value = e.target.value as string;
-                dispatch(setSettings({ settings: { noWrap: value === 'true' } }));
+                settingsApi.updateSettings({ noWrap: value === 'true' });
               }}
             >
               <MenuItem value={'true'}>Single line (Default)</MenuItem>
@@ -124,7 +123,7 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
               value={escapeBehavior}
               onChange={(e) => {
                 const value = e.target.value as 'clear' | 'close';
-                dispatch(setSettings({ settings: { escapeBehavior: value } }));
+                settingsApi.updateSettings({ escapeBehavior: value });
               }}
             >
               <MenuItem value={'clear'}>Clear search (Default)</MenuItem>

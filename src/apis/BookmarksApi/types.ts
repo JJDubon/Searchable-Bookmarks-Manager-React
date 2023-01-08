@@ -11,13 +11,3 @@ export interface BookmarkMap {
 export interface OpenMap {
   [path: string]: boolean;
 }
-
-export interface BookmarksStore {
-  loading: boolean;
-  rootNodes: string[];
-  activeNodes: string[];
-  map: BookmarkMap;
-  query: string;
-  openMap: OpenMap;
-  searchResultsOpenMap: OpenMap;
-}

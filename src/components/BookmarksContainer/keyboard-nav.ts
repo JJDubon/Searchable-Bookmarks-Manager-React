@@ -1,23 +1,21 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useBookmarksApiData } from '../../apis/BookmarksApi/hooks';
 import { useKeyDown, useMouseDown, useMouseMove } from '../../helpers/BrowserHelpers';
 import { useRateLimit } from '../../helpers/CallbackHelpers';
 import { openInCurrentTab } from '../../helpers/ChromeApiHelpers';
+import { useBookmarksApi } from '../../providers/ApiProvider/hooks';
 import { useActionStackStore } from '../../redux/ducks/action-stack/selectors';
-import { setBookmarkOpen } from '../../redux/ducks/bookmarks/actions';
-import { useBookmarksStore } from '../../redux/ducks/bookmarks/selectors';
 import { useContextStore } from '../../redux/ducks/context/selectors';
 import { AppDialogs } from '../../redux/ducks/context/store';
-import { setKeyboardStore } from '../../redux/ducks/keyboard/actions';
-import { useKeyboardStore } from '../../redux/ducks/keyboard/selectors';
 import { inverseAction } from './action-snackbar';
 
 export function useKeyboardNavigation() {
   const dispatch = useDispatch();
-  const { linearList } = useKeyboardStore();
+  const bookmarksApi = useBookmarksApi();
   const { activeDialog } = useContextStore();
   const { stack } = useActionStackStore();
-  const { map, query, openMap, searchResultsOpenMap } = useBookmarksStore();
+  const { map, query, openMap, searchResultsOpenMap, linearList } = useBookmarksApiData();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const clearActiveIndex = useCallback(() => {
@@ -35,7 +33,7 @@ export function useKeyboardNavigation() {
             const bookmark = map[id];
             if (bookmark.children) {
               const isOpen = (query.length !== 0 ? searchResultsOpenMap : openMap)[path];
-              dispatch(setBookmarkOpen({ path, open: !isOpen }));
+              bookmarksApi.setOpen(path, !isOpen);
             } else {
               openInCurrentTab(bookmark.url!);
             }
@@ -63,6 +61,7 @@ export function useKeyboardNavigation() {
       },
       [
         activeIndex,
+        bookmarksApi,
         clearActiveIndex,
         dispatch,
         linearList,
@@ -89,9 +88,8 @@ export function useKeyboardNavigation() {
   );
 
   useEffect(() => {
-    const changes = { activePath: activeIndex === null ? null : linearList[activeIndex] };
-    dispatch(setKeyboardStore({ changes }));
-  }, [activeIndex, dispatch, linearList]);
+    bookmarksApi.setActivePath(activeIndex === null ? null : linearList[activeIndex]);
+  }, [activeIndex, bookmarksApi, dispatch, linearList]);
 
   useKeyDown(null, onKeyDown);
   useMouseMove(clearActiveIndex);

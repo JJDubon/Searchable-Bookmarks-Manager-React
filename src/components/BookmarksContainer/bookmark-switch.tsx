@@ -1,4 +1,4 @@
-import { useBookmark } from '../../redux/ducks/bookmarks/selectors';
+import { useBookmark } from '../../apis/BookmarksApi/hooks';
 import { Bookmark } from './bookmark';
 import { Folder } from './folder';
 

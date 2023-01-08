@@ -2,10 +2,7 @@ import { applyMiddleware, createStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { actionStackReducer } from './ducks/action-stack/reducer';
-import { bookmarksReducer } from './ducks/bookmarks/reducer';
 import { contextReducer } from './ducks/context/reducer';
-import { keyboardReducer } from './ducks/keyboard/reducer';
-import { settingsReducer } from './ducks/settings/reducer';
 import { defaultSaga } from './sagas';
 
 const useLogging = false;
@@ -23,10 +20,7 @@ const logger = (store: any) => (next: any) => (action: any) => {
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
   combineReducers({
-    bookmarks: bookmarksReducer,
-    settings: settingsReducer,
     context: contextReducer,
-    keyboard: keyboardReducer,
     actionStack: actionStackReducer,
   }),
   applyMiddleware(sagaMiddleware, logger)

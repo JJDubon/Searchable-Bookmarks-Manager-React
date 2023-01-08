@@ -1,8 +1,8 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { useDispatch } from 'react-redux';
+import { BookmarkTreeNode } from '../../../apis/BookmarksApi/types';
 import { getBookmark, getFolder, removeBookmark, removeFolder } from '../../../helpers/ChromeApiHelpers';
 import { pushAction } from '../../../redux/ducks/action-stack/actions';
-import { BookmarkTreeNode } from '../../../redux/ducks/bookmarks/store';
 import { useContextStore } from '../../../redux/ducks/context/selectors';
 import { BookmarkTitle, DialogContentTitleText } from './styles';
 

@@ -4,13 +4,12 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useCallback, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useBookmarksApiData } from '../../apis/BookmarksApi/hooks';
+import { useSettings } from '../../apis/SettingsApi/hooks';
 import { useKeyDown } from '../../helpers/BrowserHelpers';
-import { searchBookmarks } from '../../redux/ducks/bookmarks/actions';
-import { useBookmarksStore } from '../../redux/ducks/bookmarks/selectors';
+import { useBookmarksApi } from '../../providers/ApiProvider/hooks';
 import { useContextStore } from '../../redux/ducks/context/selectors';
 import { AppDialogs } from '../../redux/ducks/context/store';
-import { useSettingsStore } from '../../redux/ducks/settings/selectors';
 import { ignoredSearchKeys } from './ignored-keys';
 import { Container, SearchField } from './styles';
 
@@ -19,11 +18,11 @@ interface HeaderProps {
 }
 
 export const Header = ({ showSettings }: HeaderProps) => {
-  const dispatch = useDispatch();
   const ref = useRef<HTMLElement>(null);
+  const bookmarksApi = useBookmarksApi();
   const [value, setValue] = useState('');
-  const { query } = useBookmarksStore();
-  const { escapeBehavior } = useSettingsStore();
+  const { query } = useBookmarksApiData();
+  const { escapeBehavior } = useSettings();
   const { activeDialog } = useContextStore();
   const queryExists = query.length !== 0;
 
@@ -37,14 +36,14 @@ export const Header = ({ showSettings }: HeaderProps) => {
       if (escapeBehavior === 'clear') {
         if (queryExists) {
           setValue('');
-          dispatch(searchBookmarks({ query: '' }));
+          bookmarksApi.search('');
           e.preventDefault();
         }
 
         ref.current?.focus();
       }
     },
-    [activeDialog, escapeBehavior, queryExists, dispatch]
+    [activeDialog, escapeBehavior, queryExists, bookmarksApi]
   );
 
   const onKeyDown = useCallback(
@@ -91,16 +90,16 @@ export const Header = ({ showSettings }: HeaderProps) => {
 
   function runQuery(value: string) {
     setValue(value ?? '');
-    dispatch(searchBookmarks({ query: value ?? '' }));
+    bookmarksApi.search(value ?? '');
   }
 
   function onSearchIconClick() {
     ref.current?.focus();
     if (queryExists) {
       setValue('');
-      dispatch(searchBookmarks({ query: '' }));
+      bookmarksApi.search('');
     } else {
-      dispatch(searchBookmarks({ query }));
+      bookmarksApi.search(query);
     }
   }
 };

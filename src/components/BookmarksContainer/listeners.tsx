@@ -1,13 +1,12 @@
 import { useCallback, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { getChromeInstance } from '../../helpers/ChromeApiHelpers';
-import { resetBookmarks } from '../../redux/ducks/bookmarks/actions';
+import { useBookmarksApi } from '../../providers/ApiProvider/hooks';
 
 function useReset(getEvent: () => chrome.events.Event<any>) {
-  const dispatch = useDispatch();
+  const bookmarksApi = useBookmarksApi();
   const resetCallback = useCallback(() => {
-    dispatch(resetBookmarks());
-  }, [dispatch]);
+    bookmarksApi.resetTree();
+  }, [bookmarksApi]);
 
   return useEffect(() => {
     getEvent().addListener(resetCallback);

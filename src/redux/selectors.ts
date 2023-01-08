@@ -7,6 +7,5 @@ export function useAppStore() {
   });
 }
 export function useAppIsLoading() {
-  const store = useAppStore();
-  return !!(store?.settings?.loading === true || store?.bookmarks?.loading === true);
+  return false;
 }
