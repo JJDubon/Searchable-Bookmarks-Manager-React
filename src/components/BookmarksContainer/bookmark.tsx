@@ -46,6 +46,13 @@ export const Bookmark = ({ id, path, indentLevel }: BookmarksProps) => {
     [bookmark.url]
   );
 
+  const onMouseDown = useCallback((e: React.MouseEvent<HTMLAnchorElement | HTMLDivElement, MouseEvent>) => {
+    if (e.button === 1) {
+      e.preventDefault();
+      return false;
+    }
+  }, []);
+
   return (
     <WithContextMenu path={path} bookmark={bookmark}>
       <ActiveBookmarkWrapper path={path}>
@@ -61,6 +68,7 @@ export const Bookmark = ({ id, path, indentLevel }: BookmarksProps) => {
             src={bookmark.url!}
             onClick={onClick}
             onMouseUp={onMouseUp}
+            onMouseDown={onMouseDown}
             hideDetails
           />
         </div>

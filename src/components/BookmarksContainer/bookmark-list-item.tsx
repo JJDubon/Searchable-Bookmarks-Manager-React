@@ -20,6 +20,7 @@ interface FolderProps {
   overrides: TypographyProps<'span', {}>;
   onClick: (e: React.MouseEvent<HTMLAnchorElement | HTMLDivElement>) => void;
   onMouseUp?: (e: React.MouseEvent<HTMLAnchorElement | HTMLDivElement>) => void;
+  onMouseDown?: (e: React.MouseEvent<HTMLAnchorElement | HTMLDivElement>) => void;
   icon?: JSX.Element;
   src?: string;
   isOpen?: boolean;
@@ -42,6 +43,7 @@ const BookmarkListItemComponent = ({
   disabled = false,
   onClick,
   onMouseUp,
+  onMouseDown,
 }: FolderProps) => {
   const componentProps = useMemo(() => getComponentType(type), [type]);
   return (
@@ -56,6 +58,7 @@ const BookmarkListItemComponent = ({
         sx={{ pl: getIndent(indentLevel) }}
         onClick={onClick}
         onMouseUp={onMouseUp}
+        onMouseDown={onMouseDown}
         disabled={disabled}
         {...componentProps}
       >
