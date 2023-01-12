@@ -7,6 +7,11 @@ module.exports = {
     },
   },
   webpack: {
+    configure: {
+      experiments: {
+        topLevelAwait: true,
+      },
+    },
     plugins: [
       new CopyPlugin({
         patterns: [{ from: 'src/background', to: 'background' }],

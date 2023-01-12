@@ -1,45 +1,24 @@
-import { useEffect, useState } from 'react';
-import { BookmarksService } from './services/BookmarksService';
-import { SettingsService } from './services/SettingsService';
-import { Settings } from './services/SettingsService/types';
+import { useState } from 'react';
 import { ApplicationFrame } from './components/ApplicationFrame';
 import { BookmarksContainer } from './components/BookmarksContainer';
 import { Header } from './components/Header';
 import { SettingsDrawer } from './components/Settings';
-import { ServiceProvider } from './providers/ServiceProvider';
 import { AppThemeProvider } from './providers/AppThemeProvider';
+import { ServiceProvider } from './providers/ServiceProvider';
 import { ActionsService } from './services/ActionsService';
+import { BookmarksService } from './services/BookmarksService';
 import { ContextService } from './services/ContextService';
+import { SettingsService } from './services/SettingsService';
 
-function App() {
-  const [bookmarksService, setBookmarksService] = useState<BookmarksService | null>(null);
-  const [settingsService, setSettingsService] = useState<SettingsService | null>(null);
-  const [actionsService, setActionsService] = useState<ActionsService | null>(null);
-  const [contextService, setContextService] = useState<ContextService | null>(null);
+interface AppProps {
+  bookmarksService: BookmarksService;
+  settingsService: SettingsService;
+  actionsService: ActionsService;
+  contextService: ContextService;
+}
+
+function App({ bookmarksService, settingsService, actionsService, contextService }: AppProps) {
   const [showSettings, setShowSettings] = useState(false);
-  const loading =
-    bookmarksService === null || settingsService === null || actionsService == null || contextService == null;
-
-  useEffect(() => {
-    chrome.storage.local.get((settings) => {
-      const settingsService = new SettingsService(settings as Settings);
-      setSettingsService(settingsService);
-
-      chrome.bookmarks.getTree((tree) => {
-        const bookmarksService = new BookmarksService(tree, settings?.defaultOpenMap ?? {});
-        const actionsService = new ActionsService();
-        const contextService = new ContextService();
-        setBookmarksService(bookmarksService);
-        setActionsService(actionsService);
-        setContextService(contextService);
-      });
-    });
-  }, []);
-
-  if (loading) {
-    return <></>;
-  }
-
   return (
     <ServiceProvider
       bookmarksService={bookmarksService}
