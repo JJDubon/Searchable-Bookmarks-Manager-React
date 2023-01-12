@@ -53,6 +53,7 @@ export function useKeyboardNavigation() {
           const action = stack[stack.length - 1];
           if (action) {
             inverseAction(action, actionsService);
+            actionsService.clearCurrentAction();
           }
         } else {
           clearActiveIndex();
