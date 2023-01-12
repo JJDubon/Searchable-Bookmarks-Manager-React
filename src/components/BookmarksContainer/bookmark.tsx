@@ -1,5 +1,5 @@
 import { useCallback, useRef } from 'react';
-import { useBookmark } from '../../apis/BookmarksApi/hooks';
+import { useBookmark } from '../../services/BookmarksService/hooks';
 import { openInCurrentTab, openInNewTab, openInNewWindow } from '../../helpers/ChromeApiHelpers';
 import { ActiveBookmarkWrapper } from './active-bookmark-wrapper';
 import { BookmarkListItem } from './bookmark-list-item';

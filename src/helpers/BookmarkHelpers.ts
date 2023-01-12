@@ -1,4 +1,4 @@
-import { BookmarkMap, BookmarkTreeNode, OpenMap } from '../apis/BookmarksApi/types';
+import { BookmarkMap, BookmarkTreeNode, OpenMap } from '../services/BookmarksService/types';
 
 export function traverseTree(nodes: BookmarkTreeNode[], callback: (node: BookmarkTreeNode) => void): void {
   nodes.forEach((node) => {

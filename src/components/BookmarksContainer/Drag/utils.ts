@@ -2,10 +2,10 @@ import { RefObject, useEffect, useState } from 'react';
 import { DropTargetMonitor, useDrag, useDrop, XYCoord } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import { useDispatch } from 'react-redux';
-import { useBookmark, useBookmarksApiData } from '../../../apis/BookmarksApi/hooks';
-import { BookmarkMap, FlattenedBookmarkTreeNode } from '../../../apis/BookmarksApi/types';
+import { useBookmark, useBookmarksServiceData } from '../../../services/BookmarksService/hooks';
+import { BookmarkMap, FlattenedBookmarkTreeNode } from '../../../services/BookmarksService/types';
 import { getBookmark, moveBookmark } from '../../../helpers/ChromeApiHelpers';
-import { useBookmarksApi } from '../../../providers/ApiProvider/hooks';
+import { useBookmarksService } from '../../../providers/ServiceProvider/hooks';
 import { pushAction } from '../../../redux/ducks/action-stack/actions';
 import { DropType, getDropBehavior, isModifiable, useOpenMap } from '../utils';
 
@@ -26,7 +26,7 @@ export function useBookmarkDrag(
   isDragging: boolean;
 } {
   const bookmark = useBookmark(id);
-  const { query } = useBookmarksApiData();
+  const { query } = useBookmarksServiceData();
   const [{ isDragging }, drag, preview] = useDrag(
     () => ({
       type: DragTypes.BOOKMARK,
@@ -56,8 +56,8 @@ export function useBookmarkDrop(
   dropType: DropType;
 } {
   const dispatch = useDispatch();
-  const bookmarksApi = useBookmarksApi();
-  const { map } = useBookmarksApiData();
+  const bookmarksService = useBookmarksService();
+  const { map } = useBookmarksServiceData();
   const openMap = useOpenMap();
   const open = openMap[path];
   const [dropType, setDropType] = useState<DropType>(null);
@@ -89,7 +89,7 @@ export function useBookmarkDrop(
           );
 
           if (openMap[dragItemPath]) {
-            bookmarksApi.setOpen(dragItemPath, false);
+            bookmarksService.setOpen(dragItemPath, false);
           }
 
           let newParentId;

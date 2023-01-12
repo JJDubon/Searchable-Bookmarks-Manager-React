@@ -1,26 +1,26 @@
 import { useEffect, useState } from 'react';
-import { BookmarksApi } from './apis/BookmarksApi';
-import { SettingsApi } from './apis/SettingsApi';
-import { Settings } from './apis/SettingsApi/types';
+import { BookmarksService } from './services/BookmarksService';
+import { SettingsService } from './services/SettingsService';
+import { Settings } from './services/SettingsService/types';
 import { ApplicationFrame } from './components/ApplicationFrame';
 import { BookmarksContainer } from './components/BookmarksContainer';
 import { Header } from './components/Header';
 import { SettingsDrawer } from './components/Settings';
-import { ApiProvider } from './providers/ApiProvider';
+import { ServiceProvider } from './providers/ServiceProvider';
 import { AppThemeProvider } from './providers/AppThemeProvider';
 
 function App() {
-  const [bookmarksApi, setBookmarksApi] = useState<BookmarksApi | null>(null);
-  const [settingsApi, setSettingsApi] = useState<SettingsApi | null>(null);
+  const [bookmarksService, setBookmarksService] = useState<BookmarksService | null>(null);
+  const [settingsService, setSettingsService] = useState<SettingsService | null>(null);
   const [showSettings, setShowSettings] = useState(false);
-  const loading = bookmarksApi === null || settingsApi === null;
+  const loading = bookmarksService === null || settingsService === null;
 
   useEffect(() => {
     Promise.all([chrome.bookmarks.getTree(), chrome.storage.local.get(null)]).then(([tree, settings]) => {
-      const settingsApi = new SettingsApi(settings as Settings);
-      const bookmarksApi = new BookmarksApi(tree, settings?.defaultOpenMap ?? {});
-      setSettingsApi(settingsApi);
-      setBookmarksApi(bookmarksApi);
+      const settingsService = new SettingsService(settings as Settings);
+      const bookmarksService = new BookmarksService(tree, settings?.defaultOpenMap ?? {});
+      setSettingsService(settingsService);
+      setBookmarksService(bookmarksService);
     });
   }, []);
 
@@ -29,14 +29,14 @@ function App() {
   }
 
   return (
-    <ApiProvider bookmarksApi={bookmarksApi} settingsApi={settingsApi}>
+    <ServiceProvider bookmarksService={bookmarksService} settingsService={settingsService}>
       <AppThemeProvider>
         <SettingsDrawer open={showSettings} hideSettings={() => setShowSettings(false)} />
         <ApplicationFrame header={<Header showSettings={() => setShowSettings(true)} />}>
           <BookmarksContainer />
         </ApplicationFrame>
       </AppThemeProvider>
-    </ApiProvider>
+    </ServiceProvider>
   );
 }
 

@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { FlattenedBookmarkTreeNode } from '../../../apis/BookmarksApi/types';
+import { FlattenedBookmarkTreeNode } from '../../../services/BookmarksService/types';
 import { AppDialogs } from './store';
 
 export const setContextMenuOpen = createAction<{

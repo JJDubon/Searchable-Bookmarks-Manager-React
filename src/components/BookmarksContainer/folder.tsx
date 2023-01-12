@@ -3,8 +3,8 @@ import FolderIcon from '@mui/icons-material/Folder';
 import TabUnselectedIcon from '@mui/icons-material/TabUnselected';
 import { Collapse, List } from '@mui/material';
 import { useCallback, useMemo, useRef } from 'react';
-import { useBookmark } from '../../apis/BookmarksApi/hooks';
-import { useBookmarksApi } from '../../providers/ApiProvider/hooks';
+import { useBookmark } from '../../services/BookmarksService/hooks';
+import { useBookmarksService } from '../../providers/ServiceProvider/hooks';
 import { ActiveBookmarkWrapper } from './active-bookmark-wrapper';
 import { BookmarksList } from './bookmark-list';
 import { BookmarkListItem } from './bookmark-list-item';
@@ -24,7 +24,7 @@ export const Folder = ({ id, indentLevel, path, hideDetails = false, forceClose 
   path = `${path}/${id}`;
 
   const ref = useRef<HTMLDivElement>(null);
-  const bookmarksApi = useBookmarksApi();
+  const bookmarksService = useBookmarksService();
   const folder = useBookmark(id);
   const { isDragging } = useBookmarkDrag(id, path, ref);
   const { dropType } = useBookmarkDrop(id, path, ref);
@@ -46,9 +46,9 @@ export const Folder = ({ id, indentLevel, path, hideDetails = false, forceClose 
 
   const onClick = useCallback(() => {
     if (!forceClose) {
-      bookmarksApi.setOpen(path, !open);
+      bookmarksService.setOpen(path, !open);
     }
-  }, [bookmarksApi, forceClose, open, path]);
+  }, [bookmarksService, forceClose, open, path]);
 
   return (
     <>

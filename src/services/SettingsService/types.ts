@@ -1,5 +1,5 @@
 import { PaletteMode } from '@mui/material';
-import { OpenMap } from '../BookmarksApi/types';
+import { OpenMap } from '../BookmarksService/types';
 
 export const SettingsKeys: (keyof Settings)[] = [
   'palette',

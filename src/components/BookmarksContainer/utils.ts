@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import { useBookmarksApiData } from '../../apis/BookmarksApi/hooks';
-import { FlattenedBookmarkTreeNode, OpenMap } from '../../apis/BookmarksApi/types';
-import { useSettings } from '../../apis/SettingsApi/hooks';
+import { useBookmarksServiceData } from '../../services/BookmarksService/hooks';
+import { FlattenedBookmarkTreeNode, OpenMap } from '../../services/BookmarksService/types';
+import { useSettings } from '../../services/SettingsService/hooks';
 import { BookmarkPrimaryTextOverrides } from './styles';
 
 export type BookmarkType = 'folder' | 'bookmark';
@@ -9,7 +9,7 @@ export type BookmarkType = 'folder' | 'bookmark';
 export type DropType = 'bottom' | 'top' | 'bottom-center' | 'top-center' | null;
 
 export function useOpenMap(): OpenMap {
-  const { query, openMap, searchResultsOpenMap } = useBookmarksApiData();
+  const { query, openMap, searchResultsOpenMap } = useBookmarksServiceData();
   if (query) {
     return searchResultsOpenMap;
   } else {

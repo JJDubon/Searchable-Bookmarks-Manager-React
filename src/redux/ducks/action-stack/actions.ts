@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { BookmarkTreeNode } from '../../../apis/BookmarksApi/types';
+import { BookmarkTreeNode } from '../../../services/BookmarksService/types';
 import { BookmarkAction } from './store';
 
 export const pushAction = createAction<{ action: BookmarkAction; showSnackbar?: boolean }>(

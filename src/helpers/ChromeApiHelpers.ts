@@ -1,5 +1,5 @@
-import { BookmarkTreeNode } from '../apis/BookmarksApi/types';
-import { Settings } from '../apis/SettingsApi/types';
+import { BookmarkTreeNode } from '../services/BookmarksService/types';
+import { Settings } from '../services/SettingsService/types';
 
 export function getChromeInstance(): typeof chrome {
   const browserInstance = window.chrome || (window as any)['browser'];

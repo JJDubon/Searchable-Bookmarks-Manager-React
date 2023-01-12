@@ -1,4 +1,4 @@
-import { BookmarkTreeNode } from '../../../apis/BookmarksApi/types';
+import { BookmarkTreeNode } from '../../../services/BookmarksService/types';
 
 export type BookmarkAddAction = {
   type: 'Add';

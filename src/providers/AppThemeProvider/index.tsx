@@ -1,5 +1,5 @@
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useSettings } from '../../apis/SettingsApi/hooks';
+import { useSettings } from '../../services/SettingsService/hooks';
 
 declare module '@mui/material/styles' {
   interface Theme {

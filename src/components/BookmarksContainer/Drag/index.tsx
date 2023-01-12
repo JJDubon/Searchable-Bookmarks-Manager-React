@@ -1,6 +1,6 @@
 import { CSSProperties, useMemo } from 'react';
 import { useDragLayer, XYCoord } from 'react-dnd';
-import { FlattenedBookmarkTreeNode } from '../../../apis/BookmarksApi/types';
+import { FlattenedBookmarkTreeNode } from '../../../services/BookmarksService/types';
 import { BookmarkSwitch } from '../bookmark-switch';
 
 const layerStyles: CSSProperties = {

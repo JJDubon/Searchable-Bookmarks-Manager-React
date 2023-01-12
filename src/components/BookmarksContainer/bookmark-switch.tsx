@@ -1,4 +1,4 @@
-import { useBookmark } from '../../apis/BookmarksApi/hooks';
+import { useBookmark } from '../../services/BookmarksService/hooks';
 import { Bookmark } from './bookmark';
 import { Folder } from './folder';
 

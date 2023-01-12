@@ -4,10 +4,10 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useCallback, useRef, useState } from 'react';
-import { useBookmarksApiData } from '../../apis/BookmarksApi/hooks';
-import { useSettings } from '../../apis/SettingsApi/hooks';
+import { useBookmarksServiceData } from '../../services/BookmarksService/hooks';
+import { useSettings } from '../../services/SettingsService/hooks';
 import { useKeyDown } from '../../helpers/BrowserHelpers';
-import { useBookmarksApi } from '../../providers/ApiProvider/hooks';
+import { useBookmarksService } from '../../providers/ServiceProvider/hooks';
 import { useContextStore } from '../../redux/ducks/context/selectors';
 import { AppDialogs } from '../../redux/ducks/context/store';
 import { ignoredSearchKeys } from './ignored-keys';
@@ -19,9 +19,9 @@ interface HeaderProps {
 
 export const Header = ({ showSettings }: HeaderProps) => {
   const ref = useRef<HTMLElement>(null);
-  const bookmarksApi = useBookmarksApi();
+  const bookmarksService = useBookmarksService();
   const [value, setValue] = useState('');
-  const { query } = useBookmarksApiData();
+  const { query } = useBookmarksServiceData();
   const { escapeBehavior } = useSettings();
   const { activeDialog } = useContextStore();
   const queryExists = query.length !== 0;
@@ -36,14 +36,14 @@ export const Header = ({ showSettings }: HeaderProps) => {
       if (escapeBehavior === 'clear') {
         if (queryExists) {
           setValue('');
-          bookmarksApi.search('');
+          bookmarksService.search('');
           e.preventDefault();
         }
 
         ref.current?.focus();
       }
     },
-    [activeDialog, escapeBehavior, queryExists, bookmarksApi]
+    [activeDialog, escapeBehavior, queryExists, bookmarksService]
   );
 
   const onKeyDown = useCallback(
@@ -90,16 +90,16 @@ export const Header = ({ showSettings }: HeaderProps) => {
 
   function runQuery(value: string) {
     setValue(value ?? '');
-    bookmarksApi.search(value ?? '');
+    bookmarksService.search(value ?? '');
   }
 
   function onSearchIconClick() {
     ref.current?.focus();
     if (queryExists) {
       setValue('');
-      bookmarksApi.search('');
+      bookmarksService.search('');
     } else {
-      bookmarksApi.search(query);
+      bookmarksService.search(query);
     }
   }
 };

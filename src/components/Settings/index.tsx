@@ -1,7 +1,7 @@
 import CloseIcon from '@mui/icons-material/Close';
 import { Box, Drawer, FormControl, IconButton, MenuItem, PaletteMode, TextField } from '@mui/material';
-import { useSettings } from '../../apis/SettingsApi/hooks';
-import { useSettingsApi } from '../../providers/ApiProvider/hooks';
+import { useSettings } from '../../services/SettingsService/hooks';
+import { useSettingsService } from '../../providers/ServiceProvider/hooks';
 import { useAppIsLoading } from '../../redux/selectors';
 import { SettingsForm, SettingsHeader, SettingsTitle } from './styles';
 
@@ -12,7 +12,7 @@ interface SettingsDrawerProps {
 
 export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
   const loading = useAppIsLoading();
-  const settingsApi = useSettingsApi();
+  const settingsService = useSettingsService();
   const { palette, iconColor, fontSize, lineHeight, noWrap, escapeBehavior } = useSettings();
 
   if (loading) {
@@ -38,7 +38,7 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
               value={palette}
               onChange={(e) => {
                 const value = e.target.value as PaletteMode;
-                settingsApi.updateSettings({ palette: value });
+                settingsService.updateSettings({ palette: value });
               }}
             >
               <MenuItem value={'light'}>Light (Default)</MenuItem>
@@ -54,7 +54,7 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
               value={iconColor}
               onChange={(e) => {
                 const value = e.target.value as string;
-                settingsApi.updateSettings({ iconColor: value });
+                settingsService.updateSettings({ iconColor: value });
               }}
             >
               <MenuItem value={'light-blue'}>Light blue</MenuItem>
@@ -72,7 +72,7 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
               value={fontSize}
               onChange={(e) => {
                 const value = e.target.value as string;
-                settingsApi.updateSettings({ fontSize: value });
+                settingsService.updateSettings({ fontSize: value });
               }}
             >
               <MenuItem value={'14px'}>Small (Default)</MenuItem>
@@ -90,7 +90,7 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
               value={lineHeight}
               onChange={(e) => {
                 const value = e.target.value as string;
-                settingsApi.updateSettings({ lineHeight: value });
+                settingsService.updateSettings({ lineHeight: value });
               }}
             >
               <MenuItem value={'1.25'}>Small</MenuItem>
@@ -107,7 +107,7 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
               value={noWrap}
               onChange={(e) => {
                 const value = e.target.value as string;
-                settingsApi.updateSettings({ noWrap: value === 'true' });
+                settingsService.updateSettings({ noWrap: value === 'true' });
               }}
             >
               <MenuItem value={'true'}>Single line (Default)</MenuItem>
@@ -123,7 +123,7 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
               value={escapeBehavior}
               onChange={(e) => {
                 const value = e.target.value as 'clear' | 'close';
-                settingsApi.updateSettings({ escapeBehavior: value });
+                settingsService.updateSettings({ escapeBehavior: value });
               }}
             >
               <MenuItem value={'clear'}>Clear search (Default)</MenuItem>

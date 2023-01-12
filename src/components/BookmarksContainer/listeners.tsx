@@ -1,12 +1,12 @@
 import { useCallback, useEffect } from 'react';
 import { getChromeInstance } from '../../helpers/ChromeApiHelpers';
-import { useBookmarksApi } from '../../providers/ApiProvider/hooks';
+import { useBookmarksService } from '../../providers/ServiceProvider/hooks';
 
 function useReset(getEvent: () => chrome.events.Event<any>) {
-  const bookmarksApi = useBookmarksApi();
+  const bookmarksService = useBookmarksService();
   const resetCallback = useCallback(() => {
-    bookmarksApi.resetTree();
-  }, [bookmarksApi]);
+    bookmarksService.resetTree();
+  }, [bookmarksService]);
 
   return useEffect(() => {
     getEvent().addListener(resetCallback);

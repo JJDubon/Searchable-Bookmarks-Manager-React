@@ -4,7 +4,7 @@ import { getTree, searchTree } from '../../helpers/ChromeApiHelpers';
 import { emitIfModified } from '../../helpers/RxjsHelpers';
 import { BookmarkMap, BookmarkTreeNode, OpenMap } from './types';
 
-export class BookmarksApi {
+export class BookmarksService {
   private map: BookmarkMap = {};
   private rootNodes: string[] = [];
   private activeNodes: string[] = [];

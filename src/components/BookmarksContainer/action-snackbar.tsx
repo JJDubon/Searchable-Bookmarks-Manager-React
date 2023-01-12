@@ -4,7 +4,7 @@ import { AnyAction, Dispatch } from '@reduxjs/toolkit';
 import { truncate } from 'lodash';
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
-import { BookmarkTreeNode } from '../../apis/BookmarksApi/types';
+import { BookmarkTreeNode } from '../../services/BookmarksService/types';
 import { createBookmark, editBookmark, moveBookmark, removeBookmark } from '../../helpers/ChromeApiHelpers';
 import { clearCurrentAction, mapActionStackItem, popAction } from '../../redux/ducks/action-stack/actions';
 import { useActionStackStore } from '../../redux/ducks/action-stack/selectors';

@@ -3,7 +3,7 @@ import { setAppSettings } from '../../helpers/ChromeApiHelpers';
 import { defaultSettings } from './default';
 import { Settings } from './types';
 
-export class SettingsApi {
+export class SettingsService {
   private settings: Settings;
   private settingsUpdatedFn = this.forceUpdate.bind(this);
 
