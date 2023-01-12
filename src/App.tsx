@@ -21,15 +21,18 @@ function App() {
     bookmarksService === null || settingsService === null || actionsService == null || contextService == null;
 
   useEffect(() => {
-    Promise.all([chrome.bookmarks.getTree(), chrome.storage.local.get(null)]).then(([tree, settings]) => {
+    chrome.storage.local.get((settings) => {
       const settingsService = new SettingsService(settings as Settings);
-      const bookmarksService = new BookmarksService(tree, settings?.defaultOpenMap ?? {});
-      const actionsService = new ActionsService();
-      const contextService = new ContextService();
       setSettingsService(settingsService);
-      setBookmarksService(bookmarksService);
-      setActionsService(actionsService);
-      setContextService(contextService);
+
+      chrome.bookmarks.getTree((tree) => {
+        const bookmarksService = new BookmarksService(tree, settings?.defaultOpenMap ?? {});
+        const actionsService = new ActionsService();
+        const contextService = new ContextService();
+        setBookmarksService(bookmarksService);
+        setActionsService(actionsService);
+        setContextService(contextService);
+      });
     });
   }, []);
 

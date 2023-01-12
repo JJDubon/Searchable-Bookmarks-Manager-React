@@ -28,5 +28,5 @@
     "128": "/images/icon-128.png"
   },
 
-  "permissions": ["activeTab", "bookmarks", "storage", "favicon", "tabGroups"]
+  "permissions": ["activeTab", "bookmarks", "storage", "favicon", "tabGroups", "alarms"]
 }

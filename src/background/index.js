@@ -3,12 +3,21 @@ class IconLoader {
   constructor() {
     chrome.runtime.onInstalled.addListener(() => {
       this.updateIcon();
+      chrome.alarms.create('icon-refresh', { periodInMinutes: 1 });
     });
 
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       if (request && request.type === 'SBM_ICON_UPDATED') {
         this.updateIcon();
         sendResponse({});
+      }
+    });
+
+    chrome.alarms.onAlarm.addListener((alarm) => {
+      if (alarm.name === 'icon-refresh') {
+        this.updateIcon();
+        chrome.bookmarks.getTree(() => {});
+        chrome.storage.local.get(null, () => {});
       }
     });
   }
