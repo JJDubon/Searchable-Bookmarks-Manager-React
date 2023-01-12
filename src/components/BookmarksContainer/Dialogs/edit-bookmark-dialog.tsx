@@ -1,11 +1,10 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import * as validUrl from 'valid-url';
 import { cleanUrl } from '../../../helpers/BrowserHelpers';
 import { editBookmark, getBookmark } from '../../../helpers/ChromeApiHelpers';
-import { pushAction } from '../../../redux/ducks/action-stack/actions';
-import { useContextStore } from '../../../redux/ducks/context/selectors';
+import { useActionsService } from '../../../providers/ServiceProvider/hooks';
+import { useContextServiceData } from '../../../services/ContextService/hooks';
 import { DialogErrorText } from './styles';
 
 interface EditBookmarkDialogProps {
@@ -14,8 +13,8 @@ interface EditBookmarkDialogProps {
 }
 
 export const EditBookmarkDialog = ({ open, onClose }: EditBookmarkDialogProps) => {
-  const dispatch = useDispatch();
-  const { bookmark } = useContextStore();
+  const actionsService = useActionsService();
+  const { bookmark } = useContextServiceData();
   const [error, setError] = useState('');
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
@@ -91,16 +90,11 @@ export const EditBookmarkDialog = ({ open, onClose }: EditBookmarkDialogProps) =
       const bookmarkUrl = urlValid ? url : cleanedUrl;
       const oldBookmarkNode = await getBookmark(bookmark!.id);
       const result = await editBookmark(bookmark!.id, title, bookmarkUrl);
-      dispatch(
-        pushAction({
-          action: {
-            type: 'Change',
-            bookmark: oldBookmarkNode,
-            previousBookmark: result,
-          },
-          showSnackbar: true,
-        })
-      );
+      actionsService.push({
+        type: 'Change',
+        bookmark: oldBookmarkNode,
+        previousBookmark: result,
+      });
 
       handleClose();
     }

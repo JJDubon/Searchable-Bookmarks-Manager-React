@@ -1,12 +1,10 @@
 import { RefObject, useEffect, useState } from 'react';
 import { DropTargetMonitor, useDrag, useDrop, XYCoord } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
-import { useDispatch } from 'react-redux';
+import { getBookmark, moveBookmark } from '../../../helpers/ChromeApiHelpers';
+import { useActionsService, useBookmarksService } from '../../../providers/ServiceProvider/hooks';
 import { useBookmark, useBookmarksServiceData } from '../../../services/BookmarksService/hooks';
 import { BookmarkMap, FlattenedBookmarkTreeNode } from '../../../services/BookmarksService/types';
-import { getBookmark, moveBookmark } from '../../../helpers/ChromeApiHelpers';
-import { useBookmarksService } from '../../../providers/ServiceProvider/hooks';
-import { pushAction } from '../../../redux/ducks/action-stack/actions';
 import { DropType, getDropBehavior, isModifiable, useOpenMap } from '../utils';
 
 export const DragTypes = {
@@ -55,7 +53,7 @@ export function useBookmarkDrop(
   isOver: boolean;
   dropType: DropType;
 } {
-  const dispatch = useDispatch();
+  const actionsService = useActionsService();
   const bookmarksService = useBookmarksService();
   const { map } = useBookmarksServiceData();
   const openMap = useOpenMap();
@@ -119,19 +117,16 @@ export function useBookmarkDrop(
               const oldBookmarkNode = await getBookmark(dragItem.id);
               await moveBookmark(dragItem.id, newParentId, newIndex);
               const newBookmarkNode = await getBookmark(dragItem.id);
-
-              dispatch(
-                pushAction({
-                  showSnackbar: false,
-                  action: {
-                    type: 'Move',
-                    previousBookmark: {
-                      ...oldBookmarkNode,
-                      index: dragItem.index! + previousBookmarkIndexAdjustment,
-                    },
-                    bookmark: newBookmarkNode,
+              actionsService.push(
+                {
+                  type: 'Move',
+                  previousBookmark: {
+                    ...oldBookmarkNode,
+                    index: dragItem.index! + previousBookmarkIndexAdjustment,
                   },
-                })
+                  bookmark: newBookmarkNode,
+                },
+                false
               );
             })();
           }

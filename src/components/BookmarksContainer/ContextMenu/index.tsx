@@ -1,7 +1,6 @@
 import { useCallback, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useContextService } from '../../../providers/ServiceProvider/hooks';
 import { FlattenedBookmarkTreeNode } from '../../../services/BookmarksService/types';
-import { setContextMenuClose, setContextMenuOpen } from '../../../redux/ducks/context/actions';
 
 interface WithContextMenuProps {
   path: string;
@@ -10,10 +9,10 @@ interface WithContextMenuProps {
 }
 
 export const WithContextMenu = ({ path, bookmark, children }: WithContextMenuProps) => {
-  const dispatch = useDispatch();
+  const contextService = useContextService();
   const closeFn = useCallback(() => {
-    dispatch(setContextMenuClose());
-  }, [dispatch]);
+    contextService.closeMenu();
+  }, [contextService]);
 
   useEffect(() => {
     document.addEventListener('click', closeFn);
@@ -26,7 +25,7 @@ export const WithContextMenu = ({ path, bookmark, children }: WithContextMenuPro
     <div
       onContextMenu={(e) => {
         e.preventDefault();
-        dispatch(setContextMenuOpen({ path, bookmark, x: e.pageX, y: e.pageY }));
+        contextService.openMenu(path, bookmark, e.pageX, e.pageY);
       }}
     >
       {children}

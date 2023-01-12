@@ -4,12 +4,12 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useCallback, useRef, useState } from 'react';
-import { useBookmarksServiceData } from '../../services/BookmarksService/hooks';
-import { useSettings } from '../../services/SettingsService/hooks';
 import { useKeyDown } from '../../helpers/BrowserHelpers';
 import { useBookmarksService } from '../../providers/ServiceProvider/hooks';
-import { useContextStore } from '../../redux/ducks/context/selectors';
-import { AppDialogs } from '../../redux/ducks/context/store';
+import { useBookmarksServiceData } from '../../services/BookmarksService/hooks';
+import { useContextServiceData } from '../../services/ContextService/hooks';
+import { AppDialogs } from '../../services/ContextService/types';
+import { useSettings } from '../../services/SettingsService/hooks';
 import { ignoredSearchKeys } from './ignored-keys';
 import { Container, SearchField } from './styles';
 
@@ -23,7 +23,7 @@ export const Header = ({ showSettings }: HeaderProps) => {
   const [value, setValue] = useState('');
   const { query } = useBookmarksServiceData();
   const { escapeBehavior } = useSettings();
-  const { activeDialog } = useContextStore();
+  const { activeDialog } = useContextServiceData();
   const queryExists = query.length !== 0;
 
   // Either close the extension or clear the search input when the escape button is clicked

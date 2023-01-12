@@ -1,8 +1,7 @@
 import CloseIcon from '@mui/icons-material/Close';
 import { Box, Drawer, FormControl, IconButton, MenuItem, PaletteMode, TextField } from '@mui/material';
-import { useSettings } from '../../services/SettingsService/hooks';
 import { useSettingsService } from '../../providers/ServiceProvider/hooks';
-import { useAppIsLoading } from '../../redux/selectors';
+import { useSettings } from '../../services/SettingsService/hooks';
 import { SettingsForm, SettingsHeader, SettingsTitle } from './styles';
 
 interface SettingsDrawerProps {
@@ -11,13 +10,8 @@ interface SettingsDrawerProps {
 }
 
 export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
-  const loading = useAppIsLoading();
   const settingsService = useSettingsService();
   const { palette, iconColor, fontSize, lineHeight, noWrap, escapeBehavior } = useSettings();
-
-  if (loading) {
-    return <></>;
-  }
 
   return (
     <Drawer sx={{ zIndex: 'modal' }} anchor={'right'} open={open} onClose={hideSettings}>

@@ -16,10 +16,6 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import { useMemo } from 'react';
-import { useDispatch } from 'react-redux';
-import { useBookmarksServiceData } from '../../../services/BookmarksService/hooks';
-import { BookmarkMap, FlattenedBookmarkTreeNode } from '../../../services/BookmarksService/types';
-import { useSettings } from '../../../services/SettingsService/hooks';
 import { copyToClipboard } from '../../../helpers/BrowserHelpers';
 import {
   openInCurrentTab,
@@ -28,9 +24,15 @@ import {
   openInNewWindow,
   openTabsInNewGroup,
 } from '../../../helpers/ChromeApiHelpers';
-import { useBookmarksService, useSettingsService } from '../../../providers/ServiceProvider/hooks';
-import { setActiveDialog } from '../../../redux/ducks/context/actions';
-import { AppDialogs } from '../../../redux/ducks/context/store';
+import {
+  useBookmarksService,
+  useContextService,
+  useSettingsService,
+} from '../../../providers/ServiceProvider/hooks';
+import { useBookmarksServiceData } from '../../../services/BookmarksService/hooks';
+import { BookmarkMap, FlattenedBookmarkTreeNode } from '../../../services/BookmarksService/types';
+import { AppDialogs } from '../../../services/ContextService/types';
+import { useSettings } from '../../../services/SettingsService/hooks';
 import { isModifiable, isRootNode } from '../utils';
 
 interface MenuProps {
@@ -39,7 +41,7 @@ interface MenuProps {
 }
 
 export const Menu = ({ path, bookmark }: MenuProps) => {
-  const dispatch = useDispatch();
+  const contextService = useContextService();
   const { defaultOpenMap } = useSettings();
   const { map } = useBookmarksServiceData();
   const settingsService = useSettingsService();
@@ -120,16 +122,13 @@ export const Menu = ({ path, bookmark }: MenuProps) => {
         <ListItemText>Set {openByDefault ? 'closed' : 'open'} by default</ListItemText>
       </MenuItem>,
       <Divider key='d2' />,
-      <MenuItem
-        key='add-bookmark'
-        onClick={() => dispatch(setActiveDialog({ dialog: AppDialogs.AddBookmark }))}
-      >
+      <MenuItem key='add-bookmark' onClick={() => contextService.setActiveDialog(AppDialogs.AddBookmark)}>
         <ListItemIcon>
           <BookmarkBorderIcon fontSize='small' />
         </ListItemIcon>
         <ListItemText>Add Bookmark</ListItemText>
       </MenuItem>,
-      <MenuItem key='add-folder' onClick={() => dispatch(setActiveDialog({ dialog: AppDialogs.AddFolder }))}>
+      <MenuItem key='add-folder' onClick={() => contextService.setActiveDialog(AppDialogs.AddFolder)}>
         <ListItemIcon>
           <CreateNewFolderOutlinedIcon fontSize='small' />
         </ListItemIcon>
@@ -150,9 +149,9 @@ export const Menu = ({ path, bookmark }: MenuProps) => {
         key='edit'
         onClick={() => {
           if (type === 'folder') {
-            dispatch(setActiveDialog({ dialog: AppDialogs.EditFolder }));
+            contextService.setActiveDialog(AppDialogs.EditFolder);
           } else {
-            dispatch(setActiveDialog({ dialog: AppDialogs.EditBookmark }));
+            contextService.setActiveDialog(AppDialogs.EditBookmark);
           }
         }}
       >
@@ -161,7 +160,7 @@ export const Menu = ({ path, bookmark }: MenuProps) => {
         </ListItemIcon>
         <ListItemText>Edit {type}</ListItemText>
       </MenuItem>,
-      <MenuItem key='delete' onClick={() => dispatch(setActiveDialog({ dialog: AppDialogs.DeleteBookmark }))}>
+      <MenuItem key='delete' onClick={() => contextService.setActiveDialog(AppDialogs.DeleteBookmark)}>
         <ListItemIcon>
           <DeleteOutlineIcon fontSize='small' />
         </ListItemIcon>
@@ -174,7 +173,17 @@ export const Menu = ({ path, bookmark }: MenuProps) => {
       ...(type === 'folder' ? folderOptions : []),
       ...(modifiable ? modifiableOptions : []),
     ];
-  }, [bookmark, defaultOpenMap, type, modifiable, settingsService, bookmarksService, path, dispatch, map]);
+  }, [
+    bookmark,
+    bookmarksService,
+    contextService,
+    defaultOpenMap,
+    map,
+    modifiable,
+    path,
+    settingsService,
+    type,
+  ]);
 
   return <MenuList dense>{menuItems}</MenuList>;
 };

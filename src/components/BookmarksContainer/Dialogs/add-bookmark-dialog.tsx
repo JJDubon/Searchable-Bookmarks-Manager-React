@@ -1,12 +1,10 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import * as validUrl from 'valid-url';
 import { cleanUrl } from '../../../helpers/BrowserHelpers';
 import { createBookmark } from '../../../helpers/ChromeApiHelpers';
-import { useBookmarksService } from '../../../providers/ServiceProvider/hooks';
-import { pushAction } from '../../../redux/ducks/action-stack/actions';
-import { useContextStore } from '../../../redux/ducks/context/selectors';
+import { useActionsService, useBookmarksService } from '../../../providers/ServiceProvider/hooks';
+import { useContextServiceData } from '../../../services/ContextService/hooks';
 import { DialogErrorText } from './styles';
 
 interface AddBookmarkDialogProps {
@@ -15,9 +13,9 @@ interface AddBookmarkDialogProps {
 }
 
 export const AddBookmarkDialog = ({ open, onClose }: AddBookmarkDialogProps) => {
-  const dispatch = useDispatch();
+  const actionsService = useActionsService();
   const bookmarksService = useBookmarksService();
-  const { path, bookmark } = useContextStore();
+  const { path, bookmark } = useContextServiceData();
   const [error, setError] = useState('');
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
@@ -88,15 +86,10 @@ export const AddBookmarkDialog = ({ open, onClose }: AddBookmarkDialogProps) => 
         result = await createBookmark(title, bookmark!.children!.length ?? 0, bookmark!.id, url);
       }
 
-      dispatch(
-        pushAction({
-          action: {
-            type: 'Add',
-            bookmark: result,
-          },
-          showSnackbar: true,
-        })
-      );
+      actionsService.push({
+        type: 'Add',
+        bookmark: result,
+      });
 
       bookmarksService.setOpen(path, true);
       handleClose();

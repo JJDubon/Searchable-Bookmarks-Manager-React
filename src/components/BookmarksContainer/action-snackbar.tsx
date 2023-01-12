@@ -1,23 +1,22 @@
 import CloseIcon from '@mui/icons-material/Close';
 import { Button, IconButton, Snackbar } from '@mui/material';
-import { AnyAction, Dispatch } from '@reduxjs/toolkit';
 import { truncate } from 'lodash';
 import React, { useCallback, useMemo } from 'react';
-import { useDispatch } from 'react-redux';
-import { BookmarkTreeNode } from '../../services/BookmarksService/types';
 import { createBookmark, editBookmark, moveBookmark, removeBookmark } from '../../helpers/ChromeApiHelpers';
-import { clearCurrentAction, mapActionStackItem, popAction } from '../../redux/ducks/action-stack/actions';
-import { useActionStackStore } from '../../redux/ducks/action-stack/selectors';
-import { BookmarkAction } from '../../redux/ducks/action-stack/store';
+import { useActionsService } from '../../providers/ServiceProvider/hooks';
+import { ActionsService } from '../../services/ActionsService';
+import { useActionsServiceData } from '../../services/ActionsService/hooks';
+import { BookmarkAction } from '../../services/ActionsService/types';
+import { BookmarkTreeNode } from '../../services/BookmarksService/types';
 
-export const inverseAction = async (action: BookmarkAction, dispatch: Dispatch<AnyAction>) => {
+export const inverseAction = async (action: BookmarkAction, actionsService: ActionsService) => {
   const bookmark = action.bookmark;
   if (action.type === 'Add') {
     await removeBookmark(bookmark.id);
   } else if (action.type === 'Delete') {
     const walk = async (node: BookmarkTreeNode, newParentId: string) => {
       const newNode = await createBookmark(node.title, node.index!, newParentId, node.url);
-      dispatch(mapActionStackItem({ id: node.id, newNode }));
+      actionsService.mapItem(node.id, newNode);
       await Promise.all(
         (node.children ?? []).map((childNode) => {
           return walk(childNode, newNode.id);
@@ -32,21 +31,21 @@ export const inverseAction = async (action: BookmarkAction, dispatch: Dispatch<A
       action.previousBookmark.parentId!,
       action.previousBookmark.index!
     );
-    dispatch(mapActionStackItem({ id: bookmark.id, newNode: movedNode }));
+    actionsService.mapItem(bookmark.id, movedNode);
   } else if (action.type === 'Change') {
     await editBookmark(bookmark.id, action.previousBookmark.title, action.previousBookmark.url);
   }
 
-  dispatch(popAction());
+  actionsService.pop();
 };
 
 export const ActionSnackbar = () => {
-  const dispatch = useDispatch();
-  const { currentAction, stack } = useActionStackStore();
+  const actionsService = useActionsService();
+  const { currentAction, stack } = useActionsServiceData();
 
   const handleClose = useCallback(() => {
-    dispatch(clearCurrentAction());
-  }, [dispatch]);
+    actionsService.clearCurrentAction();
+  }, [actionsService]);
 
   const actionText = useMemo(() => {
     const options = { length: 16 };
@@ -69,11 +68,11 @@ export const ActionSnackbar = () => {
   const handleUndo = useCallback(() => {
     const action = stack[stack.length - 1];
     if (action) {
-      inverseAction(action, dispatch).then(() => {
-        dispatch(clearCurrentAction());
+      inverseAction(action, actionsService).then(() => {
+        actionsService.clearCurrentAction();
       });
     }
-  }, [dispatch, stack]);
+  }, [actionsService, stack]);
 
   const action = useMemo(
     () => (
@@ -93,7 +92,7 @@ export const ActionSnackbar = () => {
     <Snackbar
       open={!!currentAction}
       autoHideDuration={4000}
-      onClose={() => dispatch(clearCurrentAction())}
+      onClose={() => actionsService.clearCurrentAction()}
       message={actionText}
       action={action}
     />

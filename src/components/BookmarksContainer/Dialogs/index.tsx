@@ -1,8 +1,7 @@
 import ReactDOM from 'react-dom';
-import { useDispatch } from 'react-redux';
-import { setActiveDialog } from '../../../redux/ducks/context/actions';
-import { useContextStore } from '../../../redux/ducks/context/selectors';
-import { AppDialogs } from '../../../redux/ducks/context/store';
+import { useContextService } from '../../../providers/ServiceProvider/hooks';
+import { useContextServiceData } from '../../../services/ContextService/hooks';
+import { AppDialogs } from '../../../services/ContextService/types';
 import { AddBookmarkDialog } from './add-bookmark-dialog';
 import { AddFolderDialog } from './add-folder-dialog';
 import { DeleteBookmarkDialog } from './delete-bookmark-dialog';
@@ -10,8 +9,8 @@ import { EditBookmarkDialog } from './edit-bookmark-dialog';
 import { EditFolderDialog } from './edit-folder-dialog';
 
 export const Dialogs = () => {
-  const dispatch = useDispatch();
-  const { activeDialog } = useContextStore();
+  const contextService = useContextService();
+  const { activeDialog } = useContextServiceData();
   return ReactDOM.createPortal(
     <>
       <AddBookmarkDialog open={activeDialog === AppDialogs.AddBookmark} onClose={() => close()} />
@@ -24,6 +23,6 @@ export const Dialogs = () => {
   );
 
   function close() {
-    dispatch(setActiveDialog({ dialog: AppDialogs.None }));
+    contextService.setActiveDialog(AppDialogs.None);
   }
 };

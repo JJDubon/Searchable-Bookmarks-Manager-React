@@ -8,19 +8,28 @@ import { Header } from './components/Header';
 import { SettingsDrawer } from './components/Settings';
 import { ServiceProvider } from './providers/ServiceProvider';
 import { AppThemeProvider } from './providers/AppThemeProvider';
+import { ActionsService } from './services/ActionsService';
+import { ContextService } from './services/ContextService';
 
 function App() {
   const [bookmarksService, setBookmarksService] = useState<BookmarksService | null>(null);
   const [settingsService, setSettingsService] = useState<SettingsService | null>(null);
+  const [actionsService, setActionsService] = useState<ActionsService | null>(null);
+  const [contextService, setContextService] = useState<ContextService | null>(null);
   const [showSettings, setShowSettings] = useState(false);
-  const loading = bookmarksService === null || settingsService === null;
+  const loading =
+    bookmarksService === null || settingsService === null || actionsService == null || contextService == null;
 
   useEffect(() => {
     Promise.all([chrome.bookmarks.getTree(), chrome.storage.local.get(null)]).then(([tree, settings]) => {
       const settingsService = new SettingsService(settings as Settings);
       const bookmarksService = new BookmarksService(tree, settings?.defaultOpenMap ?? {});
+      const actionsService = new ActionsService();
+      const contextService = new ContextService();
       setSettingsService(settingsService);
       setBookmarksService(bookmarksService);
+      setActionsService(actionsService);
+      setContextService(contextService);
     });
   }, []);
 
@@ -29,7 +38,12 @@ function App() {
   }
 
   return (
-    <ServiceProvider bookmarksService={bookmarksService} settingsService={settingsService}>
+    <ServiceProvider
+      bookmarksService={bookmarksService}
+      settingsService={settingsService}
+      actionsService={actionsService}
+      contextService={contextService}
+    >
       <AppThemeProvider>
         <SettingsDrawer open={showSettings} hideSettings={() => setShowSettings(false)} />
         <ApplicationFrame header={<Header showSettings={() => setShowSettings(true)} />}>

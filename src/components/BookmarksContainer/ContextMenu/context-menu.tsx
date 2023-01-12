@@ -1,14 +1,14 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { useElementSize } from '../../../helpers/BrowserHelpers';
-import { useContextStore } from '../../../redux/ducks/context/selectors';
+import { useContextServiceData } from '../../../services/ContextService/hooks';
 import { Menu } from './menu';
 import { ContextMenuContainer } from './styles';
 
 export const ContextMenu = () => {
   const ref = useRef(null);
   const dimensions = useElementSize(ref);
-  const { open, path, bookmark, x, y } = useContextStore();
+  const { open, path, bookmark, x, y } = useContextServiceData();
   const [delayOpen, setDelayOpen] = useState(false);
 
   // Small hack to avoid the element popping/snapping

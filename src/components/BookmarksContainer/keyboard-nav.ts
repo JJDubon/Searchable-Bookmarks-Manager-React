@@ -1,20 +1,19 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useBookmarksServiceData } from '../../services/BookmarksService/hooks';
 import { useKeyDown, useMouseDown, useMouseMove } from '../../helpers/BrowserHelpers';
 import { useRateLimit } from '../../helpers/CallbackHelpers';
 import { openInCurrentTab } from '../../helpers/ChromeApiHelpers';
-import { useBookmarksService } from '../../providers/ServiceProvider/hooks';
-import { useActionStackStore } from '../../redux/ducks/action-stack/selectors';
-import { useContextStore } from '../../redux/ducks/context/selectors';
-import { AppDialogs } from '../../redux/ducks/context/store';
+import { useActionsService, useBookmarksService } from '../../providers/ServiceProvider/hooks';
+import { useActionsServiceData } from '../../services/ActionsService/hooks';
+import { useBookmarksServiceData } from '../../services/BookmarksService/hooks';
+import { useContextServiceData } from '../../services/ContextService/hooks';
+import { AppDialogs } from '../../services/ContextService/types';
 import { inverseAction } from './action-snackbar';
 
 export function useKeyboardNavigation() {
-  const dispatch = useDispatch();
+  const actionsService = useActionsService();
   const bookmarksService = useBookmarksService();
-  const { activeDialog } = useContextStore();
-  const { stack } = useActionStackStore();
+  const { activeDialog } = useContextServiceData();
+  const { stack } = useActionsServiceData();
   const { map, query, openMap, searchResultsOpenMap, linearList } = useBookmarksServiceData();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
@@ -53,17 +52,17 @@ export function useKeyboardNavigation() {
         } else if (e.key === 'z' && e.ctrlKey && query.length === 0) {
           const action = stack[stack.length - 1];
           if (action) {
-            inverseAction(action, dispatch);
+            inverseAction(action, actionsService);
           }
         } else {
           clearActiveIndex();
         }
       },
       [
+        actionsService,
         activeIndex,
         bookmarksService,
         clearActiveIndex,
-        dispatch,
         linearList,
         map,
         openMap,
@@ -89,7 +88,7 @@ export function useKeyboardNavigation() {
 
   useEffect(() => {
     bookmarksService.setActivePath(activeIndex === null ? null : linearList[activeIndex]);
-  }, [activeIndex, bookmarksService, dispatch, linearList]);
+  }, [activeIndex, bookmarksService, linearList]);
 
   useKeyDown(null, onKeyDown);
   useMouseMove(clearActiveIndex);
