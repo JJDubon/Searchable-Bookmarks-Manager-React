@@ -41,7 +41,7 @@ export const AppThemeProvider = ({ children }: AppThemeProviderProps) => {
         if (settings.palette === 'light') {
           return `rgba(0,0,0,${0.01 * factor})`;
         } else {
-          return `rgba(18,18,18,${1 - 0.01 * (factor - 1)})`;
+          return `rgba(255,255,255,${0.01 * factor})`;
         }
       },
     },

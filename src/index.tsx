@@ -10,6 +10,26 @@ import { ContextService } from './services/ContextService';
 import { SettingsService } from './services/SettingsService';
 import { Settings } from './services/SettingsService/types';
 
+// Note: Awkward to do this here, but this is necessary given how chrome extensions load. Otherwise there will
+// be a small box that popups up before the window expands into the full application.
+function updateBackground() {
+  chrome.storage.local.get('palette', (settings) => {
+    if (settings && settings.palette && settings.palette === 'dark') {
+      document.body.style.backgroundColor = 'rgba(18, 18, 18, 1)';
+    } else {
+      document.body.style.backgroundColor = 'rgba(0, 0, 0, 0.015)';
+    }
+
+    document.body.style.width = '500px';
+    document.body.style.height = '600px';
+  });
+}
+
+updateBackground();
+chrome.storage.local.onChanged.addListener(() => {
+  updateBackground();
+});
+
 const [settings, tree] = await Promise.all([chrome.storage.local.get(null), chrome.bookmarks.getTree()]);
 const settingsService = new SettingsService(settings as Settings);
 const bookmarksService = new BookmarksService(tree, settings?.defaultOpenMap ?? {});

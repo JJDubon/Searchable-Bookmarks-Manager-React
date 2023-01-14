@@ -3,7 +3,7 @@ import { BookmarkType, DropType, getDropBehavior } from './utils';
 
 export const Container = styled('div')(({ theme }) => ({
   boxSizing: 'border-box',
-  backgroundColor: theme.backgrounds.offset(1),
+  backgroundColor: theme.palette.mode === 'dark' ? theme.backgrounds.offset(2) : '',
   maxWidth: '100%',
   minHeight: '100%',
   padding: '0',
