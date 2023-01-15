@@ -1,38 +1,14 @@
 import { createContext } from 'react';
-import { ActionsService } from '../../services/ActionsService';
-import { BookmarksService } from '../../services/BookmarksService';
-import { ContextService } from '../../services/ContextService';
-import { SettingsService } from '../../services/SettingsService';
+import { ServiceList } from '../../services';
 
-interface ContextType {
-  bookmarksService: BookmarksService;
-  settingsService: SettingsService;
-  actionsService: ActionsService;
-  contextService: ContextService;
-}
+interface ContextType extends ServiceList {}
 
 export const ServiceProviderContext = createContext<ContextType | undefined>(undefined);
 
-interface ServiceProviderProps {
-  bookmarksService: BookmarksService;
-  settingsService: SettingsService;
-  actionsService: ActionsService;
-  contextService: ContextService;
+interface ServiceProviderProps extends ServiceList {
   children: JSX.Element | JSX.Element[];
 }
 
-export const ServiceProvider = ({
-  bookmarksService,
-  settingsService,
-  actionsService,
-  contextService,
-  children,
-}: ServiceProviderProps) => {
-  return (
-    <ServiceProviderContext.Provider
-      value={{ bookmarksService, settingsService, actionsService, contextService }}
-    >
-      {children}
-    </ServiceProviderContext.Provider>
-  );
+export const ServiceProvider = ({ children, ...services }: ServiceProviderProps) => {
+  return <ServiceProviderContext.Provider value={services}>{children}</ServiceProviderContext.Provider>;
 };

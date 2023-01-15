@@ -5,27 +5,14 @@ import { Header } from './components/Header';
 import { SettingsDrawer } from './components/Settings';
 import { AppThemeProvider } from './providers/AppThemeProvider';
 import { ServiceProvider } from './providers/ServiceProvider';
-import { ActionsService } from './services/ActionsService';
-import { BookmarksService } from './services/BookmarksService';
-import { ContextService } from './services/ContextService';
-import { SettingsService } from './services/SettingsService';
+import { ServiceList } from './services';
 
-interface AppProps {
-  bookmarksService: BookmarksService;
-  settingsService: SettingsService;
-  actionsService: ActionsService;
-  contextService: ContextService;
-}
+interface AppProps extends ServiceList {}
 
-function App({ bookmarksService, settingsService, actionsService, contextService }: AppProps) {
+function App({ ...services }: AppProps) {
   const [showSettings, setShowSettings] = useState(false);
   return (
-    <ServiceProvider
-      bookmarksService={bookmarksService}
-      settingsService={settingsService}
-      actionsService={actionsService}
-      contextService={contextService}
-    >
+    <ServiceProvider {...services}>
       <AppThemeProvider>
         <SettingsDrawer open={showSettings} hideSettings={() => setShowSettings(false)} />
         <ApplicationFrame header={<Header showSettings={() => setShowSettings(true)} />}>
