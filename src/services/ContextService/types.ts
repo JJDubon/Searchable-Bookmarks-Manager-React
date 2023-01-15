@@ -5,4 +5,5 @@ export enum AppDialogs {
   AddFolder,
   EditFolder,
   DeleteBookmark,
+  ColorSelector,
 }

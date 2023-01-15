@@ -7,6 +7,7 @@ import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
+import FormatColorFill from '@mui/icons-material/FormatColorFill';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import PreviewIcon from '@mui/icons-material/Preview';
 import TabIcon from '@mui/icons-material/Tab';
@@ -126,13 +127,13 @@ export const Menu = ({ path, bookmark }: MenuProps) => {
         <ListItemIcon>
           <BookmarkBorderIcon fontSize='small' />
         </ListItemIcon>
-        <ListItemText>Add Bookmark</ListItemText>
+        <ListItemText>Add bookmark</ListItemText>
       </MenuItem>,
       <MenuItem key='add-folder' onClick={() => contextService.setActiveDialog(AppDialogs.AddFolder)}>
         <ListItemIcon>
           <CreateNewFolderOutlinedIcon fontSize='small' />
         </ListItemIcon>
-        <ListItemText>Add Folder</ListItemText>
+        <ListItemText>Add folder</ListItemText>
       </MenuItem>,
       <Divider key='d3' />,
       <MenuItem key='open-all-children' onClick={() => openAllChildrenInNewTabs(bookmark!, map)}>
@@ -168,10 +169,21 @@ export const Menu = ({ path, bookmark }: MenuProps) => {
       </MenuItem>,
     ];
 
+    const colorSelector = [
+      <Divider key='d5' />,
+      <MenuItem key='color-selector' onClick={() => contextService.setActiveDialog(AppDialogs.ColorSelector)}>
+        <ListItemIcon>
+          <FormatColorFill fontSize='small' />
+        </ListItemIcon>
+        <ListItemText>Change folder color</ListItemText>
+      </MenuItem>,
+    ];
+
     return [
       ...(type === 'bookmark' ? bookmarkOptions : []),
       ...(type === 'folder' ? folderOptions : []),
       ...(modifiable ? modifiableOptions : []),
+      ...(type === 'folder' ? colorSelector : []),
     ];
   }, [
     bookmark,
