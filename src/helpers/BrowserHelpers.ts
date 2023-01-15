@@ -1,4 +1,4 @@
-import { RefObject, useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { RefObject, useCallback, useLayoutEffect, useState } from 'react';
 
 export const useElementSize = (ref: RefObject<HTMLElement>) => {
   const [size, setSize] = useState({ height: 0, width: 0 });
@@ -32,52 +32,6 @@ export const useElementSize = (ref: RefObject<HTMLElement>) => {
 
   return size;
 };
-
-export function useKeyDown(key: string | null, cb: (event: KeyboardEvent) => void): void {
-  const callback = useCallback(
-    (e: KeyboardEvent) => {
-      if (key === null || e.key === key) {
-        cb(e);
-      }
-    },
-    [cb, key]
-  );
-
-  useEffect(() => {
-    document.body.addEventListener('keydown', callback);
-    return () => document.body.removeEventListener('keydown', callback);
-  }, [callback]);
-}
-
-export function useMouseMove(cb: (event: MouseEvent) => void): void {
-  const callback = useCallback(
-    (e: MouseEvent) => {
-      cb(e);
-    },
-    [cb]
-  );
-
-  useEffect(() => {
-    document.body.addEventListener('mousemove', callback);
-    return () => document.body.removeEventListener('mousemove', callback);
-  }, [callback]);
-}
-
-export function useMouseDown(cb: (event: MouseEvent) => void): void {
-  const callback = useCallback(
-    (e: MouseEvent) => {
-      setTimeout(() => {
-        cb(e);
-      }, 0);
-    },
-    [cb]
-  );
-
-  useEffect(() => {
-    document.body.addEventListener('mousedown', callback);
-    return () => document.body.removeEventListener('mousedown', callback);
-  }, [callback]);
-}
 
 export function cleanUrl(url: string): string {
   const hasValidHttpOrHttpsHeader = url.indexOf('http://') !== -1 || url.indexOf('https://') !== -1;

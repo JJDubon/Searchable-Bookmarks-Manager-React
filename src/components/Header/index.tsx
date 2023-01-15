@@ -3,14 +3,14 @@ import SearchOffIcon from '@mui/icons-material/SearchOff';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
-import { useCallback, useRef, useState } from 'react';
-import { useKeyDown } from '../../helpers/BrowserHelpers';
-import { useBookmarksService } from '../../providers/ServiceProvider/hooks';
+import { useRef, useState } from 'react';
+import { useObserver } from '../../helpers/RxjsHelpers';
+import { useBookmarksService, useKeyboardService } from '../../providers/ServiceProvider/hooks';
 import { useBookmarksServiceData } from '../../services/BookmarksService/hooks';
 import { useContextServiceData } from '../../services/ContextService/hooks';
 import { AppDialogs } from '../../services/ContextService/types';
 import { useSettings } from '../../services/SettingsService/hooks';
-import { ignoredSearchKeys } from './ignored-keys';
+import { ignoredSearchKeys } from '../../services/KeyboardService/ignored-keys';
 import { Container, SearchField } from './styles';
 
 interface HeaderProps {
@@ -20,15 +20,16 @@ interface HeaderProps {
 export const Header = ({ showSettings }: HeaderProps) => {
   const ref = useRef<HTMLElement>(null);
   const bookmarksService = useBookmarksService();
+  const keyboardService = useKeyboardService();
   const [value, setValue] = useState('');
   const { query } = useBookmarksServiceData();
   const { escapeBehavior } = useSettings();
   const { activeDialog } = useContextServiceData();
   const queryExists = query.length !== 0;
 
-  // Either close the extension or clear the search input when the escape button is clicked
-  const onEscapePressed = useCallback(
-    (e: KeyboardEvent) => {
+  useObserver(
+    keyboardService.observables.escapeKeyPressed,
+    (e) => {
       if (activeDialog !== AppDialogs.None) {
         return;
       }
@@ -43,11 +44,12 @@ export const Header = ({ showSettings }: HeaderProps) => {
         ref.current?.focus();
       }
     },
-    [activeDialog, escapeBehavior, queryExists, bookmarksService]
+    [activeDialog, escapeBehavior, queryExists, bookmarksService, ref, ref.current]
   );
 
-  const onKeyDown = useCallback(
-    (e: KeyboardEvent) => {
+  useObserver(
+    keyboardService.observables.onKeyPressed,
+    (e) => {
       if (activeDialog !== AppDialogs.None) {
         return;
       }
@@ -56,11 +58,8 @@ export const Header = ({ showSettings }: HeaderProps) => {
         ref.current?.focus();
       }
     },
-    [activeDialog]
+    [activeDialog, ref, ref.current]
   );
-
-  useKeyDown('Escape', onEscapePressed);
-  useKeyDown(null, onKeyDown);
 
   return (
     <Container>

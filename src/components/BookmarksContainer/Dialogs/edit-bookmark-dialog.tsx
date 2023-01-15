@@ -1,4 +1,5 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { cloneDeep } from 'lodash';
 import { useEffect, useState } from 'react';
 import * as validUrl from 'valid-url';
 import { cleanUrl } from '../../../helpers/BrowserHelpers';
@@ -92,8 +93,8 @@ export const EditBookmarkDialog = ({ open, onClose }: EditBookmarkDialogProps) =
       const result = await editBookmark(bookmark!.id, title, bookmarkUrl);
       actionsService.push({
         type: 'Change',
-        bookmark: oldBookmarkNode,
-        previousBookmark: result,
+        bookmark: cloneDeep(result),
+        previousBookmark: cloneDeep(oldBookmarkNode),
       });
 
       handleClose();

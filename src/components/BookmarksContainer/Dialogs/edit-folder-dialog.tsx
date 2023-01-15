@@ -1,4 +1,5 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { cloneDeep } from 'lodash';
 import { useEffect, useState } from 'react';
 import { editBookmark, getBookmark } from '../../../helpers/ChromeApiHelpers';
 import { useActionsService } from '../../../providers/ServiceProvider/hooks';
@@ -65,7 +66,11 @@ export const EditFolderDialog = ({ open, onClose }: EditFolderDialogProps) => {
     } else {
       const oldBookmarkNode = await getBookmark(bookmark!.id);
       const result = await editBookmark(bookmark!.id, title);
-      actionsService.push({ type: 'Change', bookmark: result, previousBookmark: oldBookmarkNode });
+      actionsService.push({
+        type: 'Change',
+        bookmark: cloneDeep(result),
+        previousBookmark: cloneDeep(oldBookmarkNode),
+      });
       handleClose();
     }
   }

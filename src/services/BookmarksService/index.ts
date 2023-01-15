@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
 import { createBookmarkMap, createOpenMap, toLinearList } from '../../helpers/BookmarkHelpers';
 import { getTree, searchTree } from '../../helpers/ChromeApiHelpers';
@@ -33,6 +34,7 @@ export class BookmarksService {
     chrome.bookmarks.onCreated.addListener(this.resetEventFn);
     chrome.bookmarks.onMoved.addListener(this.resetEventFn);
     chrome.bookmarks.onRemoved.addListener(this.resetEventFn);
+    chrome.bookmarks.onImportEnded.addListener(this.resetEventFn);
     this.loadTree(tree, defaultOpenMap);
   }
 
@@ -61,7 +63,7 @@ export class BookmarksService {
 
   public async resetTree() {
     const tree = await getTree();
-    this.loadTree(tree, this.openMap);
+    this.loadTree(tree, cloneDeep(this.openMap));
     this.onUpdate();
   }
 

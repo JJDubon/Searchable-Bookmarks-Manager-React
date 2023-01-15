@@ -1,4 +1,5 @@
 import { BehaviorSubject } from 'rxjs';
+import { emitIfModified } from '../../helpers/RxjsHelpers';
 import { FlattenedBookmarkTreeNode } from '../BookmarksService/types';
 import { AppDialogs } from './types';
 
@@ -43,10 +44,10 @@ export class ContextService {
   }
 
   private onUpdate() {
-    this.observables.open.next(this.open);
-    this.observables.path.next(this.path);
-    this.observables.bookmark.next(this.bookmark);
-    this.observables.position.next({ x: this.x, y: this.y });
-    this.observables.activeDialog.next(this.activeDialog);
+    emitIfModified(this.observables.open, this.open);
+    emitIfModified(this.observables.path, this.path);
+    emitIfModified(this.observables.bookmark, this.bookmark);
+    emitIfModified(this.observables.position, { x: this.x, y: this.y });
+    emitIfModified(this.observables.activeDialog, this.activeDialog);
   }
 }

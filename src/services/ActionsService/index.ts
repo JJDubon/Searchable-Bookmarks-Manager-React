@@ -1,4 +1,5 @@
 import { BehaviorSubject } from 'rxjs';
+import { emitIfModified } from '../../helpers/RxjsHelpers';
 import { BookmarkTreeNode } from '../BookmarksService/types';
 import { BookmarkAction } from './types';
 
@@ -43,8 +44,8 @@ export class ActionsService {
   }
 
   private onUpdate() {
-    this.observables.stack.next(this.stack);
-    this.observables.currentAction.next(this.currentAction);
+    emitIfModified(this.observables.stack, this.stack);
+    emitIfModified(this.observables.currentAction, this.currentAction);
   }
 }
 

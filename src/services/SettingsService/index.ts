@@ -1,5 +1,6 @@
 import { BehaviorSubject } from 'rxjs';
 import { setAppSettings } from '../../helpers/ChromeApiHelpers';
+import { emitIfModified } from '../../helpers/RxjsHelpers';
 import { defaultSettings } from './default';
 import { Settings } from './types';
 
@@ -34,6 +35,6 @@ export class SettingsService {
   }
 
   private onUpdate() {
-    this.observables.settings.next(this.settings);
+    emitIfModified(this.observables.settings, this.settings);
   }
 }

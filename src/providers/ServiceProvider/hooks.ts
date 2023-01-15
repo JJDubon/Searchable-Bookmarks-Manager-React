@@ -3,6 +3,7 @@ import { ServiceProviderContext } from '.';
 import { ActionsService } from '../../services/ActionsService';
 import { BookmarksService } from '../../services/BookmarksService';
 import { ContextService } from '../../services/ContextService';
+import { KeyboardService } from '../../services/KeyboardService';
 import { SettingsService } from '../../services/SettingsService';
 
 export function useBookmarksService(): BookmarksService {
@@ -39,4 +40,13 @@ export function useContextService(): ContextService {
   }
 
   return context.contextService;
+}
+
+export function useKeyboardService(): KeyboardService {
+  const context = useContext(ServiceProviderContext);
+  if (!context) {
+    throw new Error('Could not ready ServiceProviderContext');
+  }
+
+  return context.keyboardService;
 }
