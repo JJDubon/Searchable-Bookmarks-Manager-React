@@ -35,3 +35,34 @@ export function getMuiColor(color: FolderColor | null | undefined) {
       return muiColors.grey;
   }
 }
+
+export function toChromeColor(color: FolderColor | null | undefined): chrome.tabGroups.ColorEnum {
+  switch (color) {
+    case FolderColor.Amber:
+      return 'red';
+    case FolderColor.Blue:
+      return 'blue';
+    case FolderColor.Green:
+    case FolderColor.Lime:
+      return 'green';
+    case FolderColor.Orange:
+      return 'orange';
+    case FolderColor.Pink:
+      return 'pink';
+    case FolderColor.Purple:
+    case FolderColor.Indigo:
+      return 'purple';
+    case FolderColor.Red:
+      return 'red';
+    case FolderColor.Teal:
+    case FolderColor.Cyan:
+      return 'cyan';
+    case FolderColor.Yellow:
+      return 'yellow';
+
+    default:
+    case FolderColor.Brown:
+    case FolderColor.Grey:
+      return 'grey';
+  }
+}

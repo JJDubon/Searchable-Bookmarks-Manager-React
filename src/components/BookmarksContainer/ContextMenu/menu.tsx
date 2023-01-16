@@ -34,6 +34,7 @@ import { useBookmarksServiceData } from '../../../services/BookmarksService/hook
 import { BookmarkMap, FlattenedBookmarkTreeNode } from '../../../services/BookmarksService/types';
 import { AppDialogs } from '../../../services/ContextService/types';
 import { useSettings } from '../../../services/SettingsService/hooks';
+import { ColorMap } from '../../../services/SettingsService/types';
 import { isModifiable, isRootNode } from '../utils';
 
 interface MenuProps {
@@ -43,7 +44,7 @@ interface MenuProps {
 
 export const Menu = ({ path, bookmark }: MenuProps) => {
   const contextService = useContextService();
-  const { defaultOpenMap } = useSettings();
+  const { defaultOpenMap, colorMap } = useSettings();
   const { map } = useBookmarksServiceData();
   const settingsService = useSettingsService();
   const bookmarksService = useBookmarksService();
@@ -136,7 +137,7 @@ export const Menu = ({ path, bookmark }: MenuProps) => {
         <ListItemText>Add folder</ListItemText>
       </MenuItem>,
       <Divider key='d3' />,
-      <MenuItem key='open-all-children' onClick={() => openAllChildrenInNewTabs(bookmark!, map)}>
+      <MenuItem key='open-all-children' onClick={() => openAllChildrenInNewTabs(bookmark!, map, colorMap)}>
         <ListItemIcon>
           <DriveFolderUploadIcon fontSize='small' />
         </ListItemIcon>
@@ -188,6 +189,7 @@ export const Menu = ({ path, bookmark }: MenuProps) => {
   }, [
     bookmark,
     bookmarksService,
+    colorMap,
     contextService,
     defaultOpenMap,
     map,
@@ -200,10 +202,14 @@ export const Menu = ({ path, bookmark }: MenuProps) => {
   return <MenuList dense>{menuItems}</MenuList>;
 };
 
-async function openAllChildrenInNewTabs(bookmark: FlattenedBookmarkTreeNode, map: BookmarkMap) {
+async function openAllChildrenInNewTabs(
+  bookmark: FlattenedBookmarkTreeNode,
+  map: BookmarkMap,
+  colorMap: ColorMap
+) {
   const urls: string[] = [];
   walk(bookmark);
-  await openTabsInNewGroup(bookmark.title, urls);
+  await openTabsInNewGroup(bookmark.title, colorMap[bookmark.id], urls);
 
   function walk(node: FlattenedBookmarkTreeNode) {
     if (node.children) {

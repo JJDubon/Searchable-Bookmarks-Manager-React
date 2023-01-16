@@ -1,5 +1,6 @@
 import { BookmarkTreeNode } from '../services/BookmarksService/types';
-import { Settings } from '../services/SettingsService/types';
+import { FolderColor, Settings } from '../services/SettingsService/types';
+import { toChromeColor } from './ColorHelpers';
 
 export function getChromeInstance(): typeof chrome {
   const browserInstance = window.chrome || (window as any)['browser'];
@@ -75,7 +76,11 @@ export async function openInNewTab(url: string, focus: boolean = false): Promise
   }
 }
 
-export async function openTabsInNewGroup(groupTitle: string, urls: string[]): Promise<void> {
+export async function openTabsInNewGroup(
+  groupTitle: string,
+  color: FolderColor | null | undefined,
+  urls: string[]
+): Promise<void> {
   const tabs = await Promise.all(
     urls.map((url) => {
       return chrome.tabs.create({ url: String(url), active: false });
@@ -84,7 +89,11 @@ export async function openTabsInNewGroup(groupTitle: string, urls: string[]): Pr
 
   const tabIds = tabs.map((t) => t.id!);
   var groupId = await chrome.tabs.group({ tabIds: tabIds });
-  await chrome.tabGroups.update(groupId, { collapsed: false, title: groupTitle, color: getRandomColor() });
+  await chrome.tabGroups.update(groupId, {
+    collapsed: false,
+    title: groupTitle,
+    color: toChromeColor(color),
+  });
 }
 
 export async function openInNewWindow(url: string): Promise<void> {
@@ -93,20 +102,4 @@ export async function openInNewWindow(url: string): Promise<void> {
 
 export async function openInNewIncognitoWindow(url: string): Promise<void> {
   await chrome.windows.create({ url: String(url), incognito: true });
-}
-
-function getRandomColor(): chrome.tabGroups.ColorEnum {
-  const values: chrome.tabGroups.ColorEnum[] = [
-    'grey',
-    'blue',
-    'red',
-    'yellow',
-    'green',
-    'pink',
-    'purple',
-    'cyan',
-    'orange',
-  ];
-  const index = Math.floor(Math.random() * values.length);
-  return values[index];
 }
