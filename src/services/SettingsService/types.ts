@@ -9,6 +9,7 @@ export const SettingsKeys: (keyof Settings)[] = [
   'noWrap',
   'defaultOpenMap',
   'escapeBehavior',
+  'colorMap',
 ];
 
 export interface Settings {
@@ -20,4 +21,26 @@ export interface Settings {
   noWrap: boolean;
   escapeBehavior: 'clear' | 'close';
   defaultOpenMap: OpenMap;
+  colorMap: ColorMap;
+}
+
+export enum FolderColor {
+  Amber = 'Amber',
+  Blue = 'Blue',
+  Brown = 'Brown',
+  Cyan = 'Cyan',
+  Green = 'Green',
+  Grey = 'Grey',
+  Indigo = 'Indigo',
+  Lime = 'Lime',
+  Orange = 'Orange',
+  Pink = 'Pink',
+  Purple = 'Purple',
+  Red = 'Red',
+  Teal = 'Teal',
+  Yellow = 'Yellow',
+}
+
+export interface ColorMap {
+  [id: string]: FolderColor | undefined;
 }

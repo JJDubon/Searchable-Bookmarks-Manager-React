@@ -1,8 +1,9 @@
+import { cloneDeep } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
 import { setAppSettings } from '../../helpers/ChromeApiHelpers';
 import { emitIfModified } from '../../helpers/RxjsHelpers';
 import { defaultSettings } from './default';
-import { Settings } from './types';
+import { FolderColor, Settings } from './types';
 
 export class SettingsService {
   private settings: Settings;
@@ -32,6 +33,28 @@ export class SettingsService {
     }
 
     this.onUpdate();
+  }
+
+  public async setColor(id: string, color: FolderColor | undefined) {
+    const clonedMap = cloneDeep(this.settings.colorMap || {});
+    if (color === undefined) {
+      delete clonedMap[id];
+    } else {
+      clonedMap[id] = color;
+    }
+
+    await this.updateSettings({ colorMap: clonedMap });
+  }
+
+  public async mapColor(id: string, newId: string) {
+    if (id !== newId && this.settings.colorMap !== undefined && this.settings.colorMap[id] !== undefined) {
+      const clonedMap = cloneDeep(this.settings.colorMap || {});
+      clonedMap[newId] = clonedMap[id];
+      clonedMap[id] = undefined;
+      delete clonedMap[id];
+      console.log({ id, newId, colorMap: clonedMap });
+      await this.updateSettings({ colorMap: clonedMap });
+    }
   }
 
   private onUpdate() {

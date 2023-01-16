@@ -3,8 +3,11 @@ import FolderIcon from '@mui/icons-material/Folder';
 import TabUnselectedIcon from '@mui/icons-material/TabUnselected';
 import { Collapse, List } from '@mui/material';
 import { useCallback, useMemo, useRef } from 'react';
-import { useBookmark } from '../../services/BookmarksService/hooks';
+import { getMuiColor } from '../../helpers/ColorHelpers';
 import { useBookmarksService } from '../../providers/ServiceProvider/hooks';
+import { useBookmark } from '../../services/BookmarksService/hooks';
+import { useSettings } from '../../services/SettingsService/hooks';
+import { FolderColor } from '../../services/SettingsService/types';
 import { ActiveBookmarkWrapper } from './active-bookmark-wrapper';
 import { BookmarksList } from './bookmark-list';
 import { BookmarkListItem } from './bookmark-list-item';
@@ -29,6 +32,7 @@ export const Folder = ({ id, indentLevel, path, hideDetails = false, forceClose 
   const { isDragging } = useBookmarkDrag(id, path, ref);
   const { dropType } = useBookmarkDrop(id, path, ref);
   const overrides = useListItemOverrides();
+  const { colorMap, palette } = useSettings();
 
   let open = useOpenStatus(path);
   if (forceClose) {
@@ -37,12 +41,13 @@ export const Folder = ({ id, indentLevel, path, hideDetails = false, forceClose 
 
   const folderIcon = useMemo(() => {
     const dropBehavior = getDropBehavior('folder', isModifiable(folder), open, dropType);
+    const color = getMuiColor(colorMap[id] ?? FolderColor.Grey)[palette === 'dark' ? 300 : 600];
     if (dropBehavior === 'inside') {
-      return <CreateNewFolderIcon />;
+      return <CreateNewFolderIcon sx={{ color }} />;
     } else {
-      return <FolderIcon />;
+      return <FolderIcon sx={{ color }} />;
     }
-  }, [dropType, folder, open]);
+  }, [folder, open, dropType, colorMap, palette, id]);
 
   const onClick = useCallback(() => {
     if (!forceClose) {

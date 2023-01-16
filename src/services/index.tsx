@@ -19,7 +19,7 @@ export async function buildServices(): Promise<ServiceList> {
   const bookmarksService = new BookmarksService(tree, settings?.defaultOpenMap ?? {});
   const actionsService = new ActionsService();
   const contextService = new ContextService();
-  const keyboardService = new KeyboardService(bookmarksService, actionsService);
+  const keyboardService = new KeyboardService(bookmarksService, settingsService, actionsService);
 
   return { settingsService, bookmarksService, actionsService, contextService, keyboardService };
 }

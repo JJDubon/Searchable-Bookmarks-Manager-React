@@ -3,19 +3,25 @@ import { Button, IconButton, Snackbar } from '@mui/material';
 import { truncate } from 'lodash';
 import React, { useCallback, useMemo } from 'react';
 import { createBookmark, editBookmark, moveBookmark, removeBookmark } from '../../helpers/ChromeApiHelpers';
-import { useActionsService } from '../../providers/ServiceProvider/hooks';
+import { useActionsService, useSettingsService } from '../../providers/ServiceProvider/hooks';
 import { ActionsService } from '../../services/ActionsService';
 import { useActionsServiceData } from '../../services/ActionsService/hooks';
 import { BookmarkAction } from '../../services/ActionsService/types';
 import { BookmarkTreeNode } from '../../services/BookmarksService/types';
+import { SettingsService } from '../../services/SettingsService';
 
-export const inverseAction = async (action: BookmarkAction, actionsService: ActionsService) => {
+export const inverseAction = async (
+  action: BookmarkAction,
+  actionsService: ActionsService,
+  settingsService: SettingsService
+) => {
   const bookmark = action.bookmark;
   if (action.type === 'Add') {
     await removeBookmark(bookmark.id);
   } else if (action.type === 'Delete') {
     const walk = async (node: BookmarkTreeNode, newParentId: string) => {
       const newNode = await createBookmark(node.title, node.index!, newParentId, node.url);
+      await settingsService.mapColor(node.id, newNode.id);
       actionsService.mapItem(node.id, newNode);
       await Promise.all(
         (node.children ?? []).map((childNode) => {
@@ -32,6 +38,7 @@ export const inverseAction = async (action: BookmarkAction, actionsService: Acti
       action.previousBookmark.index!
     );
     actionsService.mapItem(bookmark.id, movedNode);
+    await settingsService.mapColor(bookmark.id, movedNode.id);
   } else if (action.type === 'Change') {
     await editBookmark(bookmark.id, action.previousBookmark.title, action.previousBookmark.url);
   }
@@ -41,6 +48,7 @@ export const inverseAction = async (action: BookmarkAction, actionsService: Acti
 
 export const ActionSnackbar = () => {
   const actionsService = useActionsService();
+  const settingsService = useSettingsService();
   const { currentAction, stack } = useActionsServiceData();
 
   const handleClose = useCallback(() => {
@@ -68,11 +76,11 @@ export const ActionSnackbar = () => {
   const handleUndo = useCallback(() => {
     const action = stack[stack.length - 1];
     if (action) {
-      inverseAction(action, actionsService).then(() => {
+      inverseAction(action, actionsService, settingsService).then(() => {
         actionsService.clearCurrentAction();
       });
     }
-  }, [actionsService, stack]);
+  }, [actionsService, settingsService, stack]);
 
   const action = useMemo(
     () => (

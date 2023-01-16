@@ -9,4 +9,5 @@ export const defaultSettings: Settings = {
   noWrap: true,
   escapeBehavior: 'clear',
   defaultOpenMap: {},
+  colorMap: {},
 };

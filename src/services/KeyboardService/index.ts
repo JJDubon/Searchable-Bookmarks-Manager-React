@@ -5,6 +5,7 @@ import { ActionsService } from '../ActionsService';
 import { BookmarkAction } from '../ActionsService/types';
 import { BookmarksService } from '../BookmarksService';
 import { BookmarkMap, OpenMap } from '../BookmarksService/types';
+import { SettingsService } from '../SettingsService';
 
 export class KeyboardService {
   private activeIndex: number | null = null;
@@ -20,7 +21,11 @@ export class KeyboardService {
     onKeyPressed: new Subject<KeyboardEvent>(),
   };
 
-  constructor(private bookmarksService: BookmarksService, private actionsService: ActionsService) {
+  constructor(
+    private bookmarksService: BookmarksService,
+    private settingsService: SettingsService,
+    private actionsService: ActionsService
+  ) {
     bookmarksService.observables.linearList.subscribe((list) => {
       this.linearList = list;
     });
@@ -93,7 +98,7 @@ export class KeyboardService {
     } else if (e.key === 'z' && e.ctrlKey && !this.inSearchMode) {
       const action = this.actionStack[this.actionStack.length - 1];
       if (action) {
-        inverseAction(action, this.actionsService).then(() => {
+        inverseAction(action, this.actionsService, this.settingsService).then(() => {
           this.actionsService.clearCurrentAction();
         });
       }
