@@ -52,7 +52,6 @@ export class SettingsService {
       clonedMap[newId] = clonedMap[id];
       clonedMap[id] = undefined;
       delete clonedMap[id];
-      console.log({ id, newId, colorMap: clonedMap });
       await this.updateSettings({ colorMap: clonedMap });
     }
   }
