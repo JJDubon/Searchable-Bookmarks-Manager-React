@@ -81,9 +81,9 @@ export const AddBookmarkDialog = ({ open, onClose }: AddBookmarkDialogProps) => 
     } else {
       let result;
       if (!urlValid) {
-        result = await createBookmark(title, bookmark!.children!.length ?? 0, bookmark!.id, cleanedUrl);
+        result = await createBookmark(title, 0, bookmark!.id, cleanedUrl);
       } else {
-        result = await createBookmark(title, bookmark!.children!.length ?? 0, bookmark!.id, url);
+        result = await createBookmark(title, 0, bookmark!.id, url);
       }
 
       actionsService.push({

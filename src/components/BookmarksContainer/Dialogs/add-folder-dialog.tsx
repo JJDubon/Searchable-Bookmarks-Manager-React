@@ -56,7 +56,7 @@ export const AddFolderDialog = ({ open, onClose }: AddFolderDialogProps) => {
     if (title.trim().length === 0) {
       setError('Please provide a bookmark name');
     } else {
-      const result = await createBookmark(title, bookmark!.children!.length ?? 0, bookmark!.id);
+      const result = await createBookmark(title, 0, bookmark!.id);
       actionsService.push({
         type: 'Add',
         bookmark: result,
