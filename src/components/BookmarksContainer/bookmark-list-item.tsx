@@ -68,11 +68,7 @@ const BookmarkListItemComponent = ({
         </BookmarkIcon>
         <ListItemText primary={title} primaryTypographyProps={overrides} />
         {!hideDetails && (
-          <motion.div
-            animate={{ rotate: getRotation() }}
-            transition={{ type: 'ease' }}
-            style={{ rotate: getRotation() }}
-          >
+          <motion.div animate={{ rotate: getRotation() }} style={{ rotate: getRotation() }}>
             <ExpandMore style={{ opacity: 0.15 }} />
           </motion.div>
         )}
