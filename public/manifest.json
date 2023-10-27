@@ -1,14 +1,14 @@
 {
   "manifest_version": 3,
 
-  "name": "Searchable Bookmarks Manager",
-  "description": "Easily search through your bookmarks, straight from your browser's address bar!",
+  "name": "Compact Bookmarks Sidebar",
+  "description": "Easily search through your bookmarks all in one beautiful side panel!",
   "version": "5",
   "short_name": "SBM",
 
   "commands": {
     "_execute_browser_action": {
-      "description": "Searchable Bookmarks Manager"
+      "description": "Compact Bookmarks Sidebar"
     }
   },
 
