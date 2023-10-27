@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 class IconLoader {
   constructor() {
     chrome.runtime.onInstalled.addListener(() => {
@@ -49,9 +48,9 @@ class DataCleaner {
   cleanData = async () => {
     const tree = await chrome.bookmarks.getTree();
     const { colorMap, defaultOpenMap } = (await chrome.storage.local.get(null)) ?? {};
-    const walk = (node, cb) => {
+    const walk = (node: chrome.bookmarks.BookmarkTreeNode, cb: { (node: any): void; (arg0: any): void }) => {
       cb(node);
-      node.children?.forEach((childNode) => {
+      node.children?.forEach((childNode: any) => {
         walk(childNode, cb);
       });
     };
@@ -85,3 +84,7 @@ class DataCleaner {
 
 new IconLoader();
 new DataCleaner();
+
+chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true }).catch((error) => console.error(error));
+
+export {};
