@@ -15,7 +15,7 @@ export const SettingsDrawer = ({ open, hideSettings }: SettingsDrawerProps) => {
 
   return (
     <Drawer sx={{ zIndex: 'modal' }} anchor={'right'} open={open} onClose={hideSettings}>
-      <Box sx={{ width: 400 }}>
+      <Box sx={{ minWidth: 280 }}>
         <SettingsForm spacing={3}>
           <SettingsHeader>
             <SettingsTitle variant='h6'>Settings</SettingsTitle>

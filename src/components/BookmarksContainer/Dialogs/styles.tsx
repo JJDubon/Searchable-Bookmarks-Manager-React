@@ -11,3 +11,9 @@ export const DialogContentTitleText = styled(DialogContentText)(({ theme }) => (
 export const BookmarkTitle = styled('span')(({ theme }) => ({
   color: theme.palette.info.main,
 }));
+
+export const ColorSelector = styled('div')(({ theme }) => ({
+  display: 'grid',
+  gridTemplateColumns: 'repeat(7, 1fr)',
+  gridGap: '4px',
+}));

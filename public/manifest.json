@@ -1,16 +1,9 @@
 {
   "manifest_version": 3,
 
-  "name": "Compact Bookmarks Sidebar",
+  "name": "Compact Bookmarks",
   "description": "Easily search through your bookmarks all in one beautiful side panel!",
   "version": "5",
-  "short_name": "SBM",
-
-  "commands": {
-    "_execute_browser_action": {
-      "description": "Compact Bookmarks Sidebar"
-    }
-  },
 
   "action": {
     "default_title": "Open side panel"

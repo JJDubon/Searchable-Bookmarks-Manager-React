@@ -62,11 +62,7 @@ export const ChangeColorDialog = ({ open, onClose }: ChangeColorDialogProps) => 
       </DialogTitle>
       <DialogContent>
         {colors.map(({ key, props }, i) => {
-          if ((i + 1) % 7 === 0) {
-            return [<Radio {...props} />, <br key={'color-line-break-' + i} />];
-          } else {
-            return <Radio {...props} />;
-          }
+          return <Radio {...props} key={key} />;
         })}
       </DialogContent>
       <DialogActions>

@@ -1,8 +1,7 @@
 import { styled } from '@mui/material';
 
 export const Frame = styled('div')(({ theme }) => ({
-  height: '600px',
-  width: '500px',
+  height: '100vh',
   overflow: 'hidden',
 
   display: 'grid',

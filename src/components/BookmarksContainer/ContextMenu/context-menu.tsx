@@ -27,7 +27,7 @@ export const ContextMenu = () => {
       open={delayOpen}
       x={position.x}
       y={position.y}
-      sx={{ zIndex: 'tooltip', width: 300, maxWidth: '100%' }}
+      sx={{ zIndex: 'tooltip', minWidth: 280, maxWidth: '100%' }}
       onContextMenu={(e) => e.preventDefault()}
     >
       <Menu path={path} bookmark={bookmark} />

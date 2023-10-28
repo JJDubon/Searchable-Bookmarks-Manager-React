@@ -15,9 +15,6 @@ function updateBackground() {
     } else {
       document.body.style.backgroundColor = 'rgba(0, 0, 0, 0.015)';
     }
-
-    document.body.style.width = '500px';
-    document.body.style.height = '600px';
   });
 }
 
